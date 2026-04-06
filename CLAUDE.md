@@ -8,14 +8,15 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 - Global unified pricing: USD $2.99 (打人名) / USD $4.99 (封印詛咒) / USD $4.99 (全套)
 - Revenue target: HKD $5k-10k/month (realistic steady state: HKD $2k-5k/month, 驚蟄月可能衝到 HKD $10k+)
 - SEO-driven organic traffic + TikTok/X viral growth
-- **Core monetization logic**: 不靠回頭率，靠全球新用戶持續增長。打小人是 one-off 體驗，像電影票 — 不需要同一個人每月回來，只需要不斷有新好奇用戶付 $2.99-4.99。
+- **Core monetization logic**: 不靠回頭率，靠全球新用戶持續增長。打小人是 one-off 體驗，像電影票 — 不需要同一個人每月回來，只需要不斷有新好奇用戶付 $2.99-4.99。但需要一個低成本回鉤機制（見「回訪策略」）。
 
 ## Core Strategy: 「寧可信其有」
-- Position as ritual, NOT game — 懸疑 atmosphere, not playful
-- Hook: "萬一呢？" — suggest supernatural possibility without claiming it
+- Position as **curse ritual**, NOT game or therapy — 暗黑 atmosphere, not playful, not healing
+- Hook: "萬一呢？" — suggest supernatural possibility without claiming guaranteed results
 - Dark candlelit aesthetic, ritual chanting sounds, solemn pacing
 - Never claim "guaranteed effective" — let users convince themselves
-- **全球市場的包裝**：不是「遊戲」或「玩具」，而是「你不知道存在的真實古老中國儀式」。類比西方人對 Voodoo doll、Tarot 的迷戀 — 神秘、異國、有一點危險感。
+- **全球市場的包裝**：這不是「遊戲」或「療癒工具」，而是「你不知道存在的真實古老中國詛咒儀式」。類比西方人對 Voodoo doll、黑魔術的迷戀 — 神秘、異國、有一點危險感。
+- **不回避「詛咒」這個詞**：用戶搜 "curse" 來的，就給他們 curse。不用「釋放負能量」「保護自己」這類稀釋包裝。直接說：這是一個 300 年歷史的中國詛咒儀式。
 
 ## Product Design
 
@@ -161,14 +162,14 @@ beatpetty.com/zh-Hans/   → 簡體中文
 
 ### Phase 1 — Landing Page 基礎 SEO
 
-**英文關鍵字**：
+**英文關鍵字**（對齊「詛咒」定位）：
 
 | 頁面 | 核心關鍵字 | 搜索意圖 |
 |------|----------|---------|
-| /en/ (首頁) | beat petty person, Chinese curse ritual | Brand + 儀式體驗 |
-| /en/what-is | what is petty person beating | 資訊性 |
-| /en/how-it-works | how to beat petty person | How-to |
-| /en/history | petty person ritual history | 深度資訊 |
+| /en/ (首頁) | ancient Chinese curse, Chinese curse ritual, beat petty person | Brand + 詛咒體驗 |
+| /en/what-is | what is beating petty person, Chinese folk curse | 資訊性 |
+| /en/how-it-works | how to curse someone, online curse ritual | How-to |
+| /en/history | petty person curse history, 驚蟄 curse tradition | 深度資訊 |
 
 **中文關鍵字**：
 
@@ -193,7 +194,7 @@ beatpetty.com/zh-Hans/   → 簡體中文
 | "Chinese ritual curse" | 1K-3K | 極低 | 極高 |
 | "bad luck curse" | 5K-15K | 低 | 高 |
 
-**SEO 不用 "petty person" 做主關鍵字**（月搜索 <500），改用以上高流量詞。Domain 品牌用 beatpetty.com，SEO 內容圍繞高搜索量詞。
+**SEO 不用 "petty person" 做主關鍵字**（月搜索 <500），改用以上高流量詞。Domain 品牌用 beatpetty.com，SEO 內容圍繞高搜索量詞。所有頁面標題和內容直接使用「curse」「ritual」字眼，對齊用戶搜索意圖。
 
 ### Keyword Cannibalization 防範
 - 每個頁面攻一組核心詞，嚴格不重疊
@@ -242,7 +243,35 @@ beatpetty.com/zh-Hans/   → 簡體中文
 - **Monthly**: ~HKD $6-13 (domain 攤分)
 - Vercel: Free tier (100GB bandwidth, unlimited static deploys)
 - Stripe: No monthly fee, 2.9% + $0.30 per transaction
+- Email（回訪策略）: Resend free tier (100 emails/day) 或 Vercel内置
 - Zero financial risk, main cost is time
+
+## 回訪策略：「封印守護」7 天回鉤
+
+一次性產品在注意力經濟裡是逆風。需要一個零成本的回訪機制。
+
+### 機制
+1. 付費用戶完成儀式後，結果頁顯示：「你的封印將在 7 天後開始減弱」
+2. 可選輸入 email（不強制，不建帳號）→ 7 天後收到一封邮件
+3. 郵件內容：「你的封印狀態：仍在生效 / 需要強化」+ 一個「再打一個小人」$2.99 按鈕
+4. 回到網站看結果頁面 → 順便看到新的付費提示
+
+### 技術實現
+- Email input + Resend API（或 Vercel 内置 email）
+- Cron job（Vercel cron 或簡單的 setTimeout）7 天後觸發
+- 郵件模板：暗黑美學，儀式語言，不是商業郵件
+- 不需要用戶帳號——用 sessionId + email 綁定
+
+### 為什麼有效
+- Email 是唯一不依賴第三方演算法的分發渠道
+- 付費用戶已有投入（沉沒成本），回訪意願高
+- 不違反「不訂閱」原則——只是一封提醒，不是月費
+- MVP 實現成本：半天
+
+### 免費用戶的回鉤
+- 結果頁顯示：「7 天後回來查看完整影響」
+- 用 localStorage 記錄日期，7 天後回訪時解鎖一個「後續發展」動畫
+- 零成本，純前端實現
 
 ## Allen 開工前 Checklist
 - [ ] 註冊 Cloudflare → 購買 beatpetty.com (10 min)
@@ -410,16 +439,28 @@ beatpetty.com/zh-Hans/   → 簡體中文
 ### 風險矩陣
 | 風險 | 嚴重度 | 應對 |
 |------|--------|------|
-| 文化挪用批評 | 中 | 定位「文化保存者」，KB 詳細介紹歷史淵源，強調「廣東民俗文化遺產」 |
-| 「迷信」標籤 | 低 | 年輕用戶可能覺得「老餅」，用暗黑美學重新包裝 |
-| 道德爭議 | 中 | 不說「詛咒」說「釋放負能量」，不說「報復」說「保護自己」 |
-| 鼓勵仇恨 | 高 | 禁止輸入完整個人資料（只需名字/暱稱），免責聲明強調「象徵性儀式」 |
+| 文化挪用批評 | **高** | 這是最大商業風險。見下方「文化挪用公關策略」 |
+| 「迷信」標籤 | 低 | 暗黑美學包裝，年輕用戶接受度高 |
+| 鼓勵仇恨 | 中 | 禁止輸入完整個人資料（只需名字/暱稱），免責聲明強調娛樂性質 |
 
-### 正面框架重構
-- 不說「詛咒」，說「釋放負能量」
-- 不說「報復」，說「保護自己」
-- 不說「迷信」，說「心理療癒儀式」
-- 免責聲明：「This is a cultural ritual experience, not a guarantee of outcomes. Results may vary.」
+### 文化挪用公關策略（預案）
+
+**核心策略：不要防禦，要進攻。被指控時不是說「我不是文化挪用」，而是反擊「我在保存正在消亡的文化」。**
+
+**回應模板**：
+> 「這個儀式正在消亡。鵝頸橋下的打小人婆婆每年都在減少。如果沒有人用新方式讓年輕人認識這個傳統，20 年後沒有人會記得它。我們做的事情，是把一個快要消失的廣東民俗帶給全世界。」
+
+**具體準備**：
+1. **Blog 預埋「打小人的文化遺產價值」**——SEO 長尾詞 + 公關彈藥。被攻擊時直接貼連結。
+2. **Landing page 底部**：「Based on authentic Cantonese folk traditions. We work to preserve and share this cultural heritage.」（已加入品牌語言框架）
+3. **如果爆了被圍攻**：不要刪帖、不要道歉、不要辯論。發一條：「香港鵝頸橋下還有幾位婆婆在做這件事。下次去香港，去看看她們。真正的文化在街頭，不在博物館。」——附一張鵝頸橋的真實照片。
+4. **長期**：考慮將部分收入捐給香港民俗文化保育組織，作為持續的「文化保存」證據。
+
+### 品牌語言框架
+- 直接用「詛咒」「報復」「宣洩」——這是用戶搜尋的關鍵字，也是產品的真實定位
+- 不用「釋放負能量」「保護自己」「心理療癒」——這些詞稀釋產品力，且對不上 SEO 意圖
+- 免責聲明：「This is an authentic Chinese folk curse ritual, presented for cultural experience and entertainment. Results may vary.」——承認是詛咒，同時提供法律護盾
+- Landing page 底部固定文字：「Based on authentic Cantonese folk traditions. We work to preserve and share this cultural heritage.」
 
 ## Status
 - Project initialized: 2026-04-03
