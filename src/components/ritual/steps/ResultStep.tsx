@@ -16,6 +16,7 @@ export default function ResultStep() {
   const locale = useLocale();
   const { dispatch, enemy } = useRitual();
   const [loading, setLoading] = useState<PlanType | null>(null);
+  const [error, setError] = useState(false);
 
   const handleStartOver = useCallback(() => {
     dispatch({ type: 'RESET' });
@@ -24,6 +25,7 @@ export default function ResultStep() {
   const handleCheckout = useCallback(
     async (plan: PlanType) => {
       setLoading(plan);
+      setError(false);
 
       // Save enemy info to localStorage before leaving
       if (enemy) {
@@ -57,8 +59,8 @@ export default function ResultStep() {
         if (url) {
           window.location.href = url;
         }
-      } catch (error) {
-        console.error('Checkout error:', error);
+      } catch {
+        setError(true);
         setLoading(null);
       }
     },
@@ -101,6 +103,11 @@ export default function ResultStep() {
 
       {/* Paid upsell prompt */}
       <div className="mt-10 animate-fade-in-up">
+        {error && (
+          <p className="text-sm text-vermillion font-serif text-center mb-4">
+            {t('resultCheckoutError')}
+          </p>
+        )}
         <p className="text-sm sm:text-base text-gold font-serif text-center mb-6">
           {t('resultPaidPrompt')}
         </p>

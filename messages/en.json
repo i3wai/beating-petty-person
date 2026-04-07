@@ -91,6 +91,7 @@
     "resultSealButton": "Complete the Sealing — $4.99",
     "resultNameButton": "Name Your Enemy — $2.99",
     "resultFullButton": "Full Power Ritual — $4.99",
+    "resultCheckoutError": "Payment is not yet available. Please try again later.",
     "resultShareButton": "Share This Ritual",
     "startOver": "Start Over",
     "beginButton": "Begin the Ritual"

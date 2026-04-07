@@ -91,6 +91,7 @@
     "resultSealButton": "完成封印 — $4.99",
     "resultNameButton": "点名小人 — $2.99",
     "resultFullButton": "全套仪式 — $4.99",
+    "resultCheckoutError": "付款功能尚未开放，请稍后再试。",
     "resultShareButton": "分享此仪式",
     "startOver": "重新开始",
     "beginButton": "开始仪式"
