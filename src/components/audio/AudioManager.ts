@@ -169,6 +169,7 @@ class AudioManagerSingleton {
     this.buffers.clear();
     this.masterGain = null;
     this.initialized = false;
+    instance = null;
   }
 }
 

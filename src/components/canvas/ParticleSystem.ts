@@ -46,7 +46,7 @@ export class ParticleSystem {
     const rect = this.canvas.getBoundingClientRect();
     this.canvas.width = rect.width * this.dpr;
     this.canvas.height = rect.height * this.dpr;
-    this.ctx.scale(this.dpr, this.dpr);
+    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
   }
 
   private findInactive(): number {
@@ -75,14 +75,12 @@ export class ParticleSystem {
     // Degrade: halve count if degraded
     const actualCount = this.degraded ? Math.ceil(count / 2) : count;
 
-    let spawned = 0;
     for (let i = 0; i < actualCount; i++) {
       const idx = this.findInactive();
       const p = this.particles[idx];
       if (p.active) this.activeCount--;
       resetParticle(p, type, x, y);
       this.activeCount++;
-      spawned++;
     }
   }
 
