@@ -16,7 +16,7 @@ export function FinalCtaSection() {
 
         <Link
           href="/ritual"
-          className="inline-flex items-center px-10 py-5 bg-vermillion text-paper font-serif font-semibold text-xl rounded-sm hover:bg-vermillion-light transition-colors animate-pulse-glow focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-vermillion"
+          className="inline-flex items-center px-10 py-5 bg-vermillion-dark text-paper font-serif font-semibold text-xl rounded-sm hover:bg-vermillion transition-colors animate-pulse-glow focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-vermillion"
         >
           {t("button")}
         </Link>

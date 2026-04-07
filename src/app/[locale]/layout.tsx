@@ -98,6 +98,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: t("ogDescription"),
       images: [`${siteUrl}/og-image.png`],
     },
+    manifest: "/manifest.json",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "black-translucent",
+      title: "BeatPetty",
+    },
   };
 }
 

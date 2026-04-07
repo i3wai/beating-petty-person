@@ -3,6 +3,7 @@
 Digital 打小人 website — one-person company. Global market, Chinese culture as hook.
 
 > **每個新 session 第一件事：讀 `docs/ARCHITECTURE.md`，不要全掃描 codebase。**
+> **項目 mistakes + decisions 在 `memory/MEMORY.md`。**
 
 ## Business Model
 - One-time payment, NO subscription

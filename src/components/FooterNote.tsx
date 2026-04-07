@@ -5,7 +5,7 @@ export function FooterNote() {
 
   return (
     <div className="px-4 py-6">
-      <p className="mx-auto max-w-2xl text-center text-paper-muted text-xs font-serif opacity-60 leading-relaxed">
+      <p className="mx-auto max-w-2xl text-center text-paper-muted text-xs font-serif opacity-80 leading-relaxed">
         {t("heritage")}
       </p>
     </div>
