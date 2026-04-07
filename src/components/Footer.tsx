@@ -1,6 +1,3 @@
-import { useTranslations } from "next-intl";
-import { routing } from "@/i18n/routing";
-
 export function Footer({ locale }: { locale: string }) {
   const footerText: Record<string, string> = {
     en: "Based on authentic Cantonese folk traditions",

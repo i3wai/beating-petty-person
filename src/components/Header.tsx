@@ -11,7 +11,7 @@ export function Header({ locale }: { locale: string }) {
     <header className="sticky top-0 z-50 border-b border-ink-lighter bg-ink/95 backdrop-blur-sm">
       <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="text-vermillion text-xl font-bold font-serif group-hover:text-vermillion-light transition-colors">
+          <span className="text-gold text-xl font-bold font-serif group-hover:text-gold-light transition-colors focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-gold">
             {t("title")}
           </span>
         </Link>
