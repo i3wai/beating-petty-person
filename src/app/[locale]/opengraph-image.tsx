@@ -26,7 +26,7 @@ export default async function OGImage() {
             position: 'absolute',
             inset: 0,
             background:
-              'radial-gradient(ellipse at 50% 80%, rgba(194,54,22,0.15) 0%, transparent 60%)',
+              'radial-gradient(ellipse at 50% 80%, rgba(239,96,48,0.15) 0%, transparent 60%)',
           }}
         />
 
@@ -38,7 +38,7 @@ export default async function OGImage() {
             left: 0,
             right: 0,
             height: 4,
-            background: 'linear-gradient(90deg, transparent, #c23616, transparent)',
+            background: 'linear-gradient(90deg, transparent, #ef6030, transparent)',
           }}
         />
 
@@ -50,7 +50,7 @@ export default async function OGImage() {
             left: 0,
             right: 0,
             height: 4,
-            background: 'linear-gradient(90deg, transparent, #c23616, transparent)',
+            background: 'linear-gradient(90deg, transparent, #ef6030, transparent)',
           }}
         />
 
@@ -58,7 +58,7 @@ export default async function OGImage() {
         <div
           style={{
             fontSize: 28,
-            color: '#c23616',
+            color: '#ef6030',
             opacity: 0.4,
             letterSpacing: 32,
             marginBottom: 24,
@@ -84,7 +84,7 @@ export default async function OGImage() {
         <div
           style={{
             fontSize: 40,
-            color: '#c23616',
+            color: '#ef6030',
             marginTop: 8,
             fontWeight: 700,
           }}
@@ -118,7 +118,7 @@ export default async function OGImage() {
         <div
           style={{
             fontSize: 16,
-            color: '#4a4a4a',
+            color: '#8a8078',
             marginTop: 16,
           }}
         >
