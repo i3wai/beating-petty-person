@@ -219,12 +219,12 @@ common        → comingSoon
 | ink | #1a1a1a | Background (dark base) |
 | ink-light | #2a2a2a | Borders, subtle bg |
 | ink-lighter | #3a3a3a | Borders, dividers |
-| vermillion | #c23616 | Primary accent (CTAs, titles, flames) |
+| vermillion | #ef6030 | Primary accent (CTAs, titles, flames) |
 | gold | #d4a843 | Secondary accent (buttons, icons) |
 | paper | #f5f0e8 | Text color (light on dark) |
 | paper-muted | #a89e90 | Secondary text |
 | ember | #ff6b35 | Particle color |
-| smoke | #4a4a4a | Tertiary text |
+| smoke | #8a8078 | Tertiary text |
 
 ## Component Types
 
@@ -268,4 +268,4 @@ common        → comingSoon
 - og-image.png referenced in SEO metadata doesn't exist yet
 - Web Audio synthesis is functional but crude — Phase 2 can upgrade to recorded samples
 - No error boundary around Canvas — if context fails, particles silently skip
-- PWA service worker not configured (Day 5)
+- PWA service worker not configured (manifest-only, @serwist/next incompatible with Turbopack)

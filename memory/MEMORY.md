@@ -1,0 +1,65 @@
+# BeatPetty Project Memory
+
+> Project-specific lessons and decisions. Generic memories stay in ~/.claude.
+
+## Day 3 Mistakes (2026-04-07)
+
+### Audio
+- useAudio unmount 時不能 dispose singleton AudioManager — 只提供播放方法
+- Web Audio API 合成取代外部 MP3（目錼是空的）— MVP 零外部依賴
+- 轉場組件 mount 時必須立即停前一個步驟的 ambient，不能等 completion
+
+### React/Effect
+- useAudio() 返回不穩定引用，不能放進 useEffect deps — 用 empty `[]` + ref
+- 所有 completion handler 用 `completedRef = useRef(false)` 防重複 dispatch
+
+### Visual
+- 跨步驟共享視覺數據（clip-path、顏色）必須放獨立共享模組（silhouettes.ts）
+- 溶解效果用 transform + opacity + filter，不用 clip-path（會覆蓋形狀）
+
+### Process
+- Agent 完成後必須 build + 手動測試，不能假設代碼正確
+
+## Day 4 Mistakes (2026-04-07)
+
+### Stripe
+- Stripe SDK 初始化時沒有 key 會 crash — 用 null-safe singleton，routes 回 503
+- `apiVersion` 不要硬編碼，讓 SDK 用預設值
+- checkout route 要驗證 priceId 是否為空（env var 沒設時）
+- locale 參數要白名單驗證，不能直接信任前端傳值
+
+### UI/UX
+- 付費按鈕失敗時必須顯示錯誤訊息，不能靜默失敗
+- Pricing page features array：next-intl 可能返回 string 或 array，要 type check
+- ResultStep 的 share 按鈕不能是 dead button
+- "Best Value" badge 要 i18n，不能硬編碼英文
+
+### Next.js
+- `useSearchParams()` 必須包 `<Suspense>` boundary
+- 刪掉 unused imports（useAudio 在 ResultStep 裡沒用到但 import 了）
+- OG image 用 `opengraph-image.tsx` file convention，放在 [locale] 目錄下
+
+## Day 5 Mistakes (2026-04-08)
+
+### next-intl v4
+- `t('key')` 對 array 值會拋 INVALID_MESSAGE — 必須用 `t.raw('key')` 取得原始 array
+- Pricing page 因此 SSR 500（features 是 array）
+- `typeof raw === 'string' ? JSON.parse(raw) : raw` 的防禦不夠，要用 `t.raw()` + `Array.isArray()`
+
+### SEO/OG
+- opengraph-image.tsx 的 `export const alt` 會覆蓋 layout metadata 的 images[].alt — 不能刪掉 alt export
+- `og:image` 和 `twitter:image` 不能指向不存在的 `/og-image.png`，要指向 `/${locale}/opengraph-image`
+- OG image 裡的顏色要跟 CSS @theme 保持同步（vermillion 改了 OG 沒改）
+
+### Contrast/A11y
+- `bg-vermillion text-paper` 按鈕對比度不夠（vermillion #c23616 太暗）→ 用 `bg-vermillion-dark` (#c23616) 當按鈕背景
+- `bg-gold text-paper` 活躍語言按鈕對比度 2.44:1 → 改成 `bg-gold text-ink`
+- vermillion 需要拉到 #ef6030 才能在 #1a1a1a 背景上過 4.5:1
+
+### PWA
+- @serwist/next 不支援 Turbopack（Next.js 16 預設）→ 只做 manifest + icons，不做 service worker
+- PWA manifest 的 start_url 用 `/en` 不是 `/`
+
+### Process
+- macOS 的 zsh for loop 裡不能直接用 curl，要用 `/usr/bin/curl` 完整路徑
+- macOS grep 不支援 `-P` (Perl regex)，要用 `-o` 替代
