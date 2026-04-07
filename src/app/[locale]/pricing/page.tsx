@@ -55,12 +55,12 @@ function PricingContent() {
     [locale, router],
   );
 
-  // Parse features arrays from i18n once
+  // Parse features arrays from i18n once (t.raw for arrays)
   const features: Record<TierKey, string[]> = useMemo(() => {
     const result: Record<string, string[]> = {};
     for (const { key } of TIERS) {
-      const raw = t(`${key}.features`);
-      result[key] = typeof raw === 'string' ? JSON.parse(raw) : raw;
+      const raw = t.raw(`${key}.features`);
+      result[key] = Array.isArray(raw) ? raw : typeof raw === 'string' ? JSON.parse(raw) : [];
     }
     return result as Record<TierKey, string[]>;
   }, [t]);

@@ -85,10 +85,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: `${siteUrl}/og-image.png`,
+          url: `${siteUrl}/${locale}/opengraph-image`,
           width: 1200,
           height: 630,
-          alt: "BeatPetty — Ancient Chinese Curse Ritual",
+          alt: t("ogTitle"),
         },
       ],
     },
@@ -96,7 +96,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: t("ogTitle"),
       description: t("ogDescription"),
-      images: [`${siteUrl}/og-image.png`],
+      images: [`${siteUrl}/${locale}/opengraph-image`],
     },
     manifest: "/manifest.json",
     appleWebApp: {
