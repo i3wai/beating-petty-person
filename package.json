@@ -1,0 +1,40 @@
+{
+  "name": "beating-petty-person",
+  "version": "1.0.0",
+  "description": "Digital 打小人 ritual experience website.",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i3wai/beating-petty-person.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/i3wai/beating-petty-person/issues"
+  },
+  "homepage": "https://github.com/i3wai/beating-petty-person#readme",
+  "dependencies": {
+    "next": "^16.2.2",
+    "next-intl": "^4.9.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/node": "^25.5.2",
+    "@types/react": "^19.2.14",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.2",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^6.0.2"
+  }
+}

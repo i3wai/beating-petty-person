@@ -1,0 +1,22 @@
+{
+  "site": {
+    "title": "打小人",
+    "subtitle": "Beating the Petty Person",
+    "description": "流传千年的中国古老诅咒仪式。在线打走你身边的小人。"
+  },
+  "landing": {
+    "hero": "体验千年古老中国诅咒仪式",
+    "tagline": "千百年来，人们用这个仪式驱逐生活中的小人。",
+    "cta": "开始仪式",
+    "learnMore": "了解更多"
+  },
+  "ritual": {
+    "step1Title": "选择你的小人",
+    "step2Title": "打击小人",
+    "step3Title": "烧掉它",
+    "step4Title": "结果揭示"
+  },
+  "common": {
+    "comingSoon": "即将推出"
+  }
+}

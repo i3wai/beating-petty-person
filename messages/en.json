@@ -1,0 +1,22 @@
+{
+  "site": {
+    "title": "Beating the Petty Person",
+    "subtitle": "打小人",
+    "description": "An ancient Chinese curse ritual. Beat your petty person online."
+  },
+  "landing": {
+    "hero": "Experience an Ancient Chinese Curse Ritual",
+    "tagline": "For thousands of years, people have used this ritual to banish petty people from their lives.",
+    "cta": "Begin the Ritual",
+    "learnMore": "Learn More"
+  },
+  "ritual": {
+    "step1Title": "Choose Your Enemy",
+    "step2Title": "Beat the Petty Person",
+    "step3Title": "Burn It",
+    "step4Title": "The Verdict"
+  },
+  "common": {
+    "comingSoon": "Coming Soon"
+  }
+}
