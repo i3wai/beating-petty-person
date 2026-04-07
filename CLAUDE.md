@@ -142,8 +142,20 @@ Stripe Keys: `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECR
 ## Status
 - Project initialized: 2026-04-03
 - Planning completed: 2026-04-06
-- Phase: **Ready to build MVP (5 days)**
+- **Day 1 completed: 2026-04-07** — beatpetty.com live, 3-language routing, Tailwind dark theme, GA4
+- Phase: **Day 2 — Landing Page + Candle Animations + SEO**
 - Owner: Allen (business, content, tool setup) | Claude (design, code, SEO, tech)
+
+### Day 1 完成清單
+- Next.js 16 App Router + TypeScript + Tailwind v4
+- next-intl: en, zh-TW, zh-Hans (localePrefix: always)
+- Dark theme: ink #1a1a1a, vermillion #c23616, gold #d4a843, paper #f5f0e8
+- Pages: Landing, Ritual, Pricing, Result (all under [locale]/)
+- Components: Header, Footer, LanguageSwitcher
+- GA4 (G-HVR1CTNSQ6) via next/script
+- Ritual prep modules: ParticleSystem, AudioManager, hooks (in src/)
+- Ritual architecture: docs/ritual-architecture.md
+- Deployed: beatpetty.com on Vercel (team: i3wais-projects)
 
 ### 重要設計原則
 - 免費版 = 完整體驗，付費 = 「加強」不是「解鎖」
