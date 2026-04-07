@@ -38,7 +38,8 @@ src/
 │       ├── page.tsx             # Landing page: 6 sections composition (server component)
 │       ├── pricing/page.tsx     # Pricing page: 4-tier cards + Stripe Checkout (Day 4)
 │       ├── result/page.tsx      # Result page: payment verification + enhanced result (Day 4)
-│       └── ritual/page.tsx      # Ritual page wrapper (server component)
+│       ├── ritual/page.tsx      # Ritual page wrapper (server component)
+│       └── opengraph-image.tsx  # Dynamic OG image (1200×630, dark+vermillion, Day 4)
 │
 │   └── api/
 │       ├── checkout/route.ts    # POST: create Stripe Checkout Session
@@ -56,7 +57,7 @@ src/
 │   ├── HowItWorksSection.tsx    # 3 steps (✠⚔☢) with icons, responsive grid
 │   ├── TrustSection.tsx         # Two trust lines
 │   ├── FinalCtaSection.tsx      # Bold headline + vermillion pulsing CTA
-│   ├── FooterNote.tsx           # Heritage statement (60% opacity)
+│   ├── FooterNote.tsx           # Heritage statement (80% opacity)
 │   │
 │   │  # Atmospheric Effects (Day 2) — pure CSS animation
 │   ├── CandleFlame.tsx          # 3 candles (sm/md/lg) with flame inner/outer, wick, body
@@ -111,6 +112,17 @@ docs/
 ├── ARCHITECTURE.md             # THIS FILE
 ├── FUTURE_ROADMAP.md           # Business roadmap & analysis
 └── ritual-architecture.md      # Ritual flow technical design
+
+memory/
+└── MEMORY.md                   # Project-specific mistakes & decisions
+
+public/
+├── manifest.json               # PWA manifest (Add to Home Screen)
+├── robots.txt                  # Search engine crawling rules
+├── sitemap.xml                 # All locale URLs for search engines
+└── icons/
+    ├── icon-192.png            # PWA icon (封 on dark bg)
+    └── icon-512.png            # PWA icon (封 on dark bg)
 ```
 
 ## Ritual State Machine
@@ -219,12 +231,18 @@ common        → comingSoon
 | ink | #1a1a1a | Background (dark base) |
 | ink-light | #2a2a2a | Borders, subtle bg |
 | ink-lighter | #3a3a3a | Borders, dividers |
-| vermillion | #ef6030 | Primary accent (CTAs, titles, flames) |
+| vermillion | #ef6030 | Primary accent (text, titles, flames) — WCAG AA on #1a1a1a |
+| vermillion-dark | #c23616 | CTA button backgrounds (contrasts with text-paper) |
+| vermillion-light | #ff7050 | Button hover states, glow effects |
 | gold | #d4a843 | Secondary accent (buttons, icons) |
+| gold-dark | #b8922e | — |
+| gold-light | #e8c46a | Hover states |
 | paper | #f5f0e8 | Text color (light on dark) |
+| paper-dark | #d8d0c4 | — |
 | paper-muted | #a89e90 | Secondary text |
 | ember | #ff6b35 | Particle color |
-| smoke | #8a8078 | Tertiary text |
+| smoke | #8a8078 | Tertiary text (WCAG AA on #1a1a1a) |
+| shadow | #0d0d0d | Deepest dark |
 
 ## Component Types
 
@@ -265,7 +283,17 @@ common        → comingSoon
 
 ## Known Technical Debt (Post-MVP)
 
-- og-image.png referenced in SEO metadata doesn't exist yet
+- OG image alt text is English-only (opengraph-image.tsx alt export overrides layout metadata)
 - Web Audio synthesis is functional but crude — Phase 2 can upgrade to recorded samples
 - No error boundary around Canvas — if context fails, particles silently skip
-- PWA service worker not configured (manifest-only, @serwist/next incompatible with Turbopack)
+- PWA is manifest-only — no service worker (@serwist/next incompatible with Turbopack)
+- next-intl `t.raw()` needed for array values — easy to forget when adding new features
+
+## Lighthouse Scores (as of Day 5)
+
+| Category | Score | Notes |
+|----------|-------|-------|
+| Performance | 67 | Google Fonts render-blocking; CDN improves FCP/LCP |
+| Accessibility | 100 | WCAG AA contrast on all elements |
+| Best Practices | 100 | — |
+| SEO | 92+ | 100 on production (localhost canonical false positive) |

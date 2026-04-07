@@ -58,41 +58,19 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 - **Day 2 completed: 2026-04-07** — Full landing page, candle/glow/particle animations, SEO
 - **Day 3 completed: 2026-04-07** — Full ritual flow (4 steps + 2 transitions), Canvas particles, Web Audio synthesis, shared silhouettes
 - **Day 4 completed: 2026-04-07** — Stripe Checkout API, Webhook, Pricing Page, Result Page, OG image
-- **Day 5 completed: 2026-04-08** — PWA manifest+icons, Lighthouse A11y 100, SEO (robots.txt, sitemap, hreflang), contrast fixes, pricing page bug fix
+- **Day 5 completed: 2026-04-08** — PWA manifest+icons, Lighthouse A11y 100, SEO (robots.txt, sitemap, hreflang), contrast fixes, pricing page bug fix, OG image URL fix
 - Phase: **Pre-launch — Stripe keys pending**
 - Owner: Allen (business, content, tool setup) | Claude (design, code, SEO, tech)
 - Deploy: `npx vercel --prod --yes`
 
-## Day 4 Plan — Stripe + Result + Pricing
-
-### 前置條件（Allen）⚠️ BLOCKER
-1. 註冊 Stripe HK 帳號
-2. 建立 3 個 Products: 打人名 $2.99, 封印詛咒 $4.99, 全套 $4.99
-3. 提供 `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`
-4. 設定 Vercel env vars
-
-### Claude 工作
-1. ~~**Stripe Checkout API** — `/api/checkout` route, create Checkout Session~~ ✅
-2. ~~**Stripe Webhook** — `/api/webhook` route, verify signature, mark payment~~ ✅
-3. ~~**Result Page** — 免費結果 + 付費 CTA + payment verification~~ ✅
-4. ~~**Pricing Page** — 4 方案卡片，Stripe Checkout 連結~~ ✅
-5. ~~**Payment verification** — success_url callback → localStorage 標記~~ ✅
-6. ~~**og-image.png** — 生成 OG 分享圖~~ ✅
-
-## Day 5 — Completed
-
-1. ~~**PWA** — manifest.json + icons (192/512) + appleWebApp meta~~ ✅
-2. ~~**全流程 E2E 測試** — 所有路由 200，pricing bug 已修~~ ✅
-3. **Mobile 測試** — viewport + responsive OK，需 Allen 實機驗證
-4. ~~**SEO 驗證** — robots.txt, sitemap.xml, hreflang, canonical, OG~~ ✅
-5. ~~**Performance** — Lighthouse: A11y 100, SEO 92+, BP 100, Perf 67~~ ✅
-6. **Launch** — Stripe keys pending, Allen 提供 test keys 後上線
-
 ## Pre-Launch Checklist (Allen)
 
 1. 註冊 Stripe HK 帳號
-2. 建立 3 個 Products + Prices
-3. 設定 Vercel env vars (6 keys)
-4. 實機測試 (iPhone + Android)
-5. Google Search Console 提交
-6. 切換 Stripe live mode
+2. 建立 3 個 Products: 打人名 $2.99, 封印詛咒 $4.99, 全套 $4.99
+3. 設定 Vercel env vars: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID_NAME`, `STRIPE_PRICE_ID_SEAL`, `STRIPE_PRICE_ID_FULL`
+4. 實機測試 (iPhone Safari + Android Chrome)
+5. Google Search Console 提交 (sitemap.xml + hreflang)
+6. 切換 Stripe live mode → final deploy
+
+## Post-Launch → Phase 2
+→ 見 `docs/FUTURE_ROADMAP.md`
