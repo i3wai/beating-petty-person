@@ -1,6 +1,34 @@
 # Beating the Petty Person — Future Roadmap & Reference
 
-> MVP 開發階段不需要的內容，但為未來 Phase 2/3 保留。原封不動從 CLAUDE.md 搬出。
+> MVP 開發階段不需要的內容，但為未來 Phase 2/3 保留。
+
+---
+
+## 用戶三重門檻
+
+1. **「這不是玩笑嗎？」** → 暗色調、燭光、低頻鼓聲、毛筆字體。每個細節傳達「這是認真的」
+2. **「值得付錢嗎？」** → 免費版足夠好到讓人驚訝。$2.99 是衝動消費。Apple Pay / Google Pay 一鍵付款
+3. **「跟別人說不出口」** → 分享卡片：「I just experienced an ancient Chinese ritual」。分享「酷」不分享「羞恥」
+
+---
+
+## Budget
+
+- **Startup**: ~HKD $76-152 (Cloudflare Registrar domain only)
+- **Monthly**: ~HKD $6-13 | Vercel free | Stripe per-transaction | Zero financial risk
+
+---
+
+## SEO (Phase 1)
+
+| 頁面 | 核心關鍵字 |
+|------|----------|
+| /en/ | ancient Chinese curse, Chinese curse ritual, beat petty person |
+| /en/what-is | what is beating petty person, Chinese folk curse |
+| /en/how-it-works | how to curse someone, online curse ritual |
+| /en/history | petty person curse history, 驚蟄 curse tradition |
+| /zh-TW/ | 打小人 |
+| /zh-TW/打小人是什麼 | 打小人是什麼 |
 
 ---
 

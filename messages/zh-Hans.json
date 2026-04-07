@@ -56,9 +56,93 @@
   },
   "ritual": {
     "step1Title": "选择你的小人",
+    "step1Subtitle": "六种小人类型，认清你的对手。",
+    "step1Confirm": "确认选择",
+    "step1CustomPlaceholder": "输入名字...",
+    "step1CustomLabel": "点名小人 — $2.99",
+    "enemies": {
+      "backstabber": { "name": "是非小人", "desc": "当面笑脸，背后捅刀。" },
+      "toxicBoss": { "name": "职场小人", "desc": "有权无德，仗势欺人。" },
+      "ex": { "name": "感情小人", "desc": "有些门，该永远关上。" },
+      "energyVampire": { "name": "财运小人", "desc": "吸干你的好运，留你一身空。" },
+      "bully": { "name": "官非小人", "desc": "以恶为乐。今晚，轮到你出手。" },
+      "custom": { "name": "自定义", "desc": "你心里清楚是谁。" }
+    },
     "step2Title": "打击小人",
+    "step2Subtitle": "用鞋拍打纸人，发泄怒火。",
+    "step2Enough": "够了",
+    "step2Timer": "剩余 {seconds} 秒",
+    "step2TapCount": "已打 {count} 下",
+    "step2TapAria": "点击纸人来打击它",
+    "invocationTitle": "仪式开始",
+    "invocationSubtitle": "点燃蜡烛，打开阴门。",
+    "invocationButton": "进入仪式",
     "step3Title": "烧掉它",
-    "step4Title": "结果揭示"
+    "step3Subtitle": "化为灰烬。",
+    "step3Burning": "火焰吞噬中...",
+    "step3Complete": "已成灰烬。",
+    "sealingTitle": "封印",
+    "sealingSubtitle": "诅咒已成。",
+    "step4Title": "结果揭示",
+    "resultFreeTitle": "小人势力已被削弱...",
+    "resultFreeSubtitle": "...但尚未完全消除。",
+    "resultFreeDescription": "仪式已生效。纸人已毁。但封印尚未完成。",
+    "resultPaidPrompt": "完成封印仪式，确保效果持久。",
+    "resultSealButton": "完成封印 — $4.99",
+    "resultNameButton": "点名小人 — $2.99",
+    "resultFullButton": "全套仪式 — $4.99",
+    "resultShareButton": "分享此仪式",
+    "startOver": "重新开始",
+    "beginButton": "开始仪式"
+  },
+  "pricing": {
+    "title": "选择你的仪式",
+    "subtitle": "基本仪式完整免费。胆子大的，可以加强。",
+    "free": {
+      "name": "基本仪式",
+      "price": "免费",
+      "description": "选择小人类型，拍打纸人，化为灰烬。",
+      "features": ["6 种小人类型", "完整打击仪式", "燃烧仪式", "基本结果"],
+      "cta": "开始免费仪式"
+    },
+    "name": {
+      "name": "点名小人",
+      "price": "$2.99",
+      "description": "说出真名，诅咒才能生效。名字一旦喊出，无法收回。",
+      "features": ["基本仪式全部", "输入具体名字", "名字燃烧动画", "针对性结果"],
+      "cta": "点名小人 — $2.99"
+    },
+    "seal": {
+      "name": "封印诅咒",
+      "price": "$4.99",
+      "description": "封印确保诅咒持久。不封印，效果可能消散。",
+      "features": ["基本仪式全部", "强化封印动画", "数字封印证书", "强化版结果"],
+      "cta": "完成封印 — $4.99"
+    },
+    "full": {
+      "name": "全套仪式",
+      "price": "$4.99",
+      "description": "点名小人 + 封印诅咒。最强仪式，一并完成。",
+      "features": ["基本仪式全部", "输入具体名字", "强化封印动画", "数字封印证书", "全套强化结果"],
+      "cta": "全套仪式 — $4.99",
+      "badge": "最超值"
+    }
+  },
+  "result": {
+    "title": "仪式完成",
+    "paidTitle": "诅咒已封印",
+    "paidSubtitle": "你的仪式已以全套力量完成。",
+    "paidDescription": "封印已成。{enemyName} 已被点名诅咒。封印将持续生效。",
+    "paidDescriptionNoName": "封印完成。小人的影响力已被完全消除。",
+    "freeTitle": "小人势力已被削弱...",
+    "freeSubtitle": "...但尚未完全消除。",
+    "freeDescription": "基本仪式已完成。考虑完成封印，确保效果持久。",
+    "verifying": "验证仪式中...",
+    "verificationFailed": "无法验证付款。请联系支持。",
+    "shareTitle": "我刚体验了一个古老的中国诅咒仪式",
+    "shareText": "BeatPetty — 来自香港的三百年诅咒仪式",
+    "startOver": "重新开始",
+    "backToHome": "返回首页"
   },
   "common": {
     "comingSoon": "即将推出"

@@ -56,9 +56,93 @@
   },
   "ritual": {
     "step1Title": "選擇你的小人",
+    "step1Subtitle": "六種小人，認清你的宿敵。",
+    "step1Confirm": "確認選擇",
+    "step1CustomPlaceholder": "輸入名字...",
+    "step1CustomLabel": "點名小人 — $2.99",
+    "enemies": {
+      "backstabber": { "name": "是非小人", "desc": "表面笑臉，背後插刀。" },
+      "toxicBoss": { "name": "職場小人", "desc": "有權無德，以勢壓人。" },
+      "ex": { "name": "感情小人", "desc": "有些門，該永遠關上。" },
+      "energyVampire": { "name": "財運小人", "desc": "吸乾你的氣運，留你一身空。" },
+      "bully": { "name": "官非小人", "desc": "以惡為樂。今夜，風水輪流轉。" },
+      "custom": { "name": "自定義", "desc": "你心知肚明是誰。" }
+    },
     "step2Title": "打擊小人",
+    "step2Subtitle": "用鞋拍打紙人，宣洩怒火。",
+    "step2Enough": "夠了",
+    "step2Timer": "剩餘 {seconds} 秒",
+    "step2TapCount": "已打 {count} 下",
+    "step2TapAria": "點擊紙人以打擊它",
+    "invocationTitle": "儀式開始",
+    "invocationSubtitle": "點燃蠟燭，開啟陰門。",
+    "invocationButton": "進入儀式",
     "step3Title": "燒掉它",
-    "step4Title": "結果揭示"
+    "step3Subtitle": "化為灰燼。",
+    "step3Burning": "火焰吞噬中...",
+    "step3Complete": "已成灰燼。",
+    "sealingTitle": "封印",
+    "sealingSubtitle": "詛咒已成。",
+    "step4Title": "結果揭示",
+    "resultFreeTitle": "小人勢力已被削弱...",
+    "resultFreeSubtitle": "...但尚未完全消除。",
+    "resultFreeDescription": "儀式已生效。紙人已毀。但封印尚未完成。",
+    "resultPaidPrompt": "完成封印儀式，確保效果持久。",
+    "resultSealButton": "完成封印 — $4.99",
+    "resultNameButton": "點名小人 — $2.99",
+    "resultFullButton": "全套儀式 — $4.99",
+    "resultShareButton": "分享此儀式",
+    "startOver": "重新開始",
+    "beginButton": "開始儀式"
+  },
+  "pricing": {
+    "title": "選擇你的儀式",
+    "subtitle": "基本儀式完整免費。膽大的，可以加強。",
+    "free": {
+      "name": "基本儀式",
+      "price": "免費",
+      "description": "選擇小人類型，拍打紙人，化為灰燼。",
+      "features": ["6 種小人類型", "完整打擊儀式", "燃燒儀式", "基本結果"],
+      "cta": "開始免費儀式"
+    },
+    "name": {
+      "name": "點名小人",
+      "price": "$2.99",
+      "description": "道出真名，詛咒才能生效。名字一旦喊出，無法收回。",
+      "features": ["基本儀式全部", "輸入具體名字", "名字燃燒動畫", "針對性結果"],
+      "cta": "點名小人 — $2.99"
+    },
+    "seal": {
+      "name": "封印詛咒",
+      "price": "$4.99",
+      "description": "封印確保詛咒持久。不封印，效果可能消散。",
+      "features": ["基本儀式全部", "強化封印動畫", "數位封印證書", "強化版結果"],
+      "cta": "完成封印 — $4.99"
+    },
+    "full": {
+      "name": "全套儀式",
+      "price": "$4.99",
+      "description": "點名小人 + 封印詛咒。最強儀式，一併完成。",
+      "features": ["基本儀式全部", "輸入具體名字", "強化封印動畫", "數位封印證書", "全套強化結果"],
+      "cta": "全套儀式 — $4.99",
+      "badge": "最超值"
+    }
+  },
+  "result": {
+    "title": "儀式完成",
+    "paidTitle": "詛咒已封印",
+    "paidSubtitle": "你的儀式已以全套力量完成。",
+    "paidDescription": "封印已成。{enemyName} 已被點名詛咒。封印將持續生效。",
+    "paidDescriptionNoName": "封印完成。小人的影響力已被完全消除。",
+    "freeTitle": "小人勢力已被削弱...",
+    "freeSubtitle": "...但尚未完全消除。",
+    "freeDescription": "基本儀式已完成。考慮完成封印，確保效果持久。",
+    "verifying": "驗證儀式中...",
+    "verificationFailed": "無法驗證付款。請聯絡支援。",
+    "shareTitle": "我剛體驗了一個古老的中國詛咒儀式",
+    "shareText": "BeatPetty — 來自香港的三百年詛咒儀式",
+    "startOver": "重新開始",
+    "backToHome": "返回首頁"
   },
   "common": {
     "comingSoon": "即將推出"

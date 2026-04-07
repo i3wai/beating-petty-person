@@ -56,9 +56,93 @@
   },
   "ritual": {
     "step1Title": "Choose Your Enemy",
+    "step1Subtitle": "Six types of petty persons. Identify yours.",
+    "step1Confirm": "Confirm Selection",
+    "step1CustomPlaceholder": "Enter a name...",
+    "step1CustomLabel": "Name your enemy — $2.99",
+    "enemies": {
+      "backstabber": { "name": "The Backstabber", "desc": "They smile to your face, plot behind your back." },
+      "toxicBoss": { "name": "The Toxic Boss", "desc": "Power without wisdom. Authority without empathy." },
+      "ex": { "name": "The Ex", "desc": "Some doors should stay closed. Forever." },
+      "energyVampire": { "name": "The Energy Vampire", "desc": "They drain your light and leave you hollow." },
+      "bully": { "name": "The Bully", "desc": "They feed on fear. Tonight, the table turns." },
+      "custom": { "name": "Custom", "desc": "You know exactly who they are." }
+    },
     "step2Title": "Beat the Petty Person",
+    "step2Subtitle": "Strike the paper effigy. Release your fury.",
+    "step2Enough": "Enough",
+    "step2Timer": "{seconds}s remaining",
+    "step2TapCount": "{count, plural, one {# strike} other {# strikes}}",
+    "step2TapAria": "Tap the paper effigy to strike it",
+    "invocationTitle": "The Ritual Begins",
+    "invocationSubtitle": "Light the candle. Open the gate.",
+    "invocationButton": "Enter the Ritual",
     "step3Title": "Burn It",
-    "step4Title": "The Verdict"
+    "step3Subtitle": "Watch it turn to ash.",
+    "step3Burning": "The flames consume...",
+    "step3Complete": "It is done.",
+    "sealingTitle": "The Seal",
+    "sealingSubtitle": "The curse is bound.",
+    "step4Title": "The Verdict",
+    "resultFreeTitle": "The petty person's influence has been weakened...",
+    "resultFreeSubtitle": "...but not fully eradicated.",
+    "resultFreeDescription": "The ritual has taken effect. The paper effigy is destroyed. But the sealing is incomplete.",
+    "resultPaidPrompt": "Complete the Sealing Ritual to ensure lasting effect.",
+    "resultSealButton": "Complete the Sealing — $4.99",
+    "resultNameButton": "Name Your Enemy — $2.99",
+    "resultFullButton": "Full Power Ritual — $4.99",
+    "resultShareButton": "Share This Ritual",
+    "startOver": "Start Over",
+    "beginButton": "Begin the Ritual"
+  },
+  "pricing": {
+    "title": "Choose Your Ritual",
+    "subtitle": "The basic ritual is complete and free. Enhance it if you dare.",
+    "free": {
+      "name": "Basic Ritual",
+      "price": "Free",
+      "description": "Choose an enemy type. Strike the effigy. Burn it to ash.",
+      "features": ["6 enemy types", "Full beating ritual", "Burning ceremony", "Basic result"],
+      "cta": "Begin Free Ritual"
+    },
+    "name": {
+      "name": "Name Your Enemy",
+      "price": "$2.99",
+      "description": "Speak their true name into the ritual. The curse becomes personal.",
+      "features": ["Everything in Basic", "Name a specific person", "Name burning animation", "Targeted result"],
+      "cta": "Name Your Enemy — $2.99"
+    },
+    "seal": {
+      "name": "Sealing Ritual",
+      "price": "$4.99",
+      "description": "The seal ensures the curse holds. Without it, the effect may fade.",
+      "features": ["Everything in Basic", "Enhanced sealing animation", "Digital seal certificate", "Strengthened result"],
+      "cta": "Complete the Sealing — $4.99"
+    },
+    "full": {
+      "name": "Full Power Ritual",
+      "price": "$4.99",
+      "description": "Name your enemy AND seal the curse. The most powerful ritual available.",
+      "features": ["Everything in Basic", "Name a specific person", "Enhanced sealing animation", "Digital seal certificate", "Full power result"],
+      "cta": "Full Power Ritual — $4.99",
+      "badge": "Best Value"
+    }
+  },
+  "result": {
+    "title": "The Ritual is Complete",
+    "paidTitle": "The Curse is Sealed",
+    "paidSubtitle": "Your ritual has been completed with full power.",
+    "paidDescription": "The sealing is bound. {enemyName} has been named and cursed. The seal will hold.",
+    "paidDescriptionNoName": "The sealing is complete. Your enemy's influence has been fully eradicated.",
+    "freeTitle": "The petty person's influence has been weakened...",
+    "freeSubtitle": "...but not fully eradicated.",
+    "freeDescription": "The basic ritual is complete. Consider completing the sealing to ensure lasting effect.",
+    "verifying": "Verifying your ritual...",
+    "verificationFailed": "Could not verify payment. Please contact support.",
+    "shareTitle": "I just experienced an ancient Chinese curse ritual",
+    "shareText": "BeatPetty — The 300-year-old curse ritual from Hong Kong",
+    "startOver": "Start Over",
+    "backToHome": "Back to Home"
   },
   "common": {
     "comingSoon": "Coming Soon"

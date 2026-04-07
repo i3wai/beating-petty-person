@@ -42,6 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonicalUrl = `${siteUrl}${localePath}`;
 
   return {
+    metadataBase: new URL(siteUrl),
     title: {
       default: t("title"),
       template: `%s | BeatPetty`,

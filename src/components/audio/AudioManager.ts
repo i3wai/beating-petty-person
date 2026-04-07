@@ -1,18 +1,87 @@
 type SoundId = string;
 
-interface SoundConfig {
-  url: string;
-  layer: 'ambient' | 'action' | 'transition';
+// --- Sound Synthesis ---
+// Instead of loading external MP3 files, we synthesize sounds
+// using the Web Audio API. This eliminates the need for audio files
+// and works immediately without network requests.
+
+interface SynthConfig {
+  type: 'oscillator' | 'noise' | 'filtered-noise';
+  frequency?: number;
+  duration: number; // ms
+  gain: number;
+  // Oscillator-specific
+  oscType?: OscillatorType;
+  frequencyEnd?: number;
+  // Filter
+  filterFreq?: number;
+  filterQ?: number;
+  filterType?: BiquadFilterType;
 }
 
-const SOUND_MAP: Record<SoundId, SoundConfig> = {
-  'ambient-drone': { url: '/audio/drone-low-freq.mp3', layer: 'ambient' },
-  'ambient-wind': { url: '/audio/wind-whisper.mp3', layer: 'ambient' },
-  'action-beat': { url: '/audio/wood-knock.mp3', layer: 'action' },
-  'action-paper': { url: '/audio/paper-rustle.mp3', layer: 'action' },
-  'transition-invocation': { url: '/audio/candle-whoosh.mp3', layer: 'transition' },
-  'transition-sealing': { url: '/audio/gong-resonate.mp3', layer: 'transition' },
-  'transition-result': { url: '/audio/wind-gust.mp3', layer: 'transition' },
+const SOUND_SYNTH: Record<SoundId, SynthConfig> = {
+  'ambient-drone': {
+    type: 'oscillator',
+    oscType: 'sawtooth',
+    frequency: 55,
+    frequencyEnd: 58,
+    duration: 0, // 0 = loop
+    gain: 0.15,
+    filterFreq: 200,
+    filterQ: 2,
+    filterType: 'lowpass',
+  },
+  'ambient-wind': {
+    type: 'filtered-noise',
+    duration: 0,
+    gain: 0.08,
+    filterFreq: 800,
+    filterQ: 0.5,
+    filterType: 'bandpass',
+  },
+  'action-beat': {
+    type: 'noise',
+    duration: 80,
+    gain: 0.4,
+    filterFreq: 2000,
+    filterQ: 1,
+    filterType: 'highpass',
+  },
+  'action-paper': {
+    type: 'noise',
+    duration: 120,
+    gain: 0.2,
+    filterFreq: 4000,
+    filterQ: 0.8,
+    filterType: 'bandpass',
+  },
+  'transition-invocation': {
+    type: 'oscillator',
+    oscType: 'sine',
+    frequency: 200,
+    frequencyEnd: 80,
+    duration: 1500,
+    gain: 0.25,
+  },
+  'transition-sealing': {
+    type: 'oscillator',
+    oscType: 'sine',
+    frequency: 120,
+    frequencyEnd: 60,
+    duration: 2000,
+    gain: 0.35,
+    filterFreq: 400,
+    filterQ: 3,
+    filterType: 'lowpass',
+  },
+  'transition-result': {
+    type: 'filtered-noise',
+    duration: 1000,
+    gain: 0.15,
+    filterFreq: 500,
+    filterQ: 1,
+    filterType: 'lowpass',
+  },
 };
 
 const VOLUME = {
@@ -24,15 +93,13 @@ const VOLUME = {
 
 class AudioManagerSingleton {
   private ctx: AudioContext | null = null;
-  private buffers: Map<SoundId, AudioBuffer> = new Map();
-  private ambientNode: AudioBufferSourceNode | null = null;
-  private ambientGain: GainNode | null = null;
   private masterGain: GainNode | null = null;
+  private ambientNodes: AudioNode[] = [];
+  private ambientGains: GainNode[] = [];
   private initialized = false;
 
   async init(): Promise<void> {
     if (this.initialized) {
-      // Resume if suspended (iOS Safari tab backgrounded)
       if (this.ctx?.state === 'suspended') {
         await this.ctx.resume();
       }
@@ -40,8 +107,6 @@ class AudioManagerSingleton {
     }
 
     this.ctx = new AudioContext();
-
-    // Master gain
     this.masterGain = this.ctx.createGain();
     this.masterGain.gain.value = VOLUME.master;
     this.masterGain.connect(this.ctx.destination);
@@ -53,67 +118,106 @@ class AudioManagerSingleton {
     this.initialized = true;
   }
 
-  async loadSound(id: SoundId): Promise<void> {
-    if (!this.ctx) return;
-    if (this.buffers.has(id)) return;
+  // --- Synthesis helpers ---
 
-    const config = SOUND_MAP[id];
-    if (!config) return;
-
-    try {
-      const response = await fetch(config.url);
-      const arrayBuffer = await response.arrayBuffer();
-      const audioBuffer = await this.ctx.decodeAudioData(arrayBuffer);
-      this.buffers.set(id, audioBuffer);
-    } catch {
-      // Sound file not available yet (stub phase)
+  private createNoiseBuffer(durationSec: number): AudioBuffer {
+    const ctx = this.ctx!;
+    const sampleRate = ctx.sampleRate;
+    const length = Math.floor(sampleRate * durationSec);
+    const buffer = ctx.createBuffer(1, length, sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < length; i++) {
+      data[i] = Math.random() * 2 - 1;
     }
+    return buffer;
   }
 
-  async loadCriticalSounds(): Promise<void> {
-    await Promise.all([
-      this.loadSound('ambient-drone'),
-      this.loadSound('action-beat'),
-    ]);
+  private makeGain(volume: number): GainNode {
+    const gain = this.ctx!.createGain();
+    gain.gain.value = volume;
+    gain.connect(this.masterGain!);
+    return gain;
   }
+
+  // --- Ambient sounds (loop) ---
 
   async playAmbient(id: SoundId, volume?: number): Promise<void> {
     if (!this.ctx || !this.masterGain) return;
 
-    // Stop existing ambient
     this.stopAmbient();
 
-    await this.loadSound(id);
-    const buffer = this.buffers.get(id);
-    if (!buffer) return;
+    const config = SOUND_SYNTH[id];
+    if (!config) return;
 
-    const source = this.ctx.createBufferSource();
-    source.buffer = buffer;
-    source.loop = true;
+    const layerGain = this.makeGain(volume ?? VOLUME.ambient);
 
-    this.ambientGain = this.ctx.createGain();
-    this.ambientGain.gain.value = volume ?? VOLUME.ambient;
-    this.ambientGain.connect(this.masterGain);
-    source.connect(this.ambientGain);
-    source.start();
+    if (config.type === 'oscillator') {
+      // Low-frequency drone
+      const osc = this.ctx.createOscillator();
+      osc.type = config.oscType ?? 'sine';
+      osc.frequency.value = config.frequency ?? 100;
+      if (config.frequencyEnd) {
+        osc.frequency.linearRampToValueAtTime(
+          config.frequencyEnd,
+          this.ctx.currentTime + 4,
+        );
+      }
 
-    this.ambientNode = source;
+      let lastNode: AudioNode = osc;
+
+      if (config.filterFreq) {
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = config.filterType ?? 'lowpass';
+        filter.frequency.value = config.filterFreq;
+        filter.Q.value = config.filterQ ?? 1;
+        osc.connect(filter);
+        lastNode = filter;
+      }
+
+      lastNode.connect(layerGain);
+      osc.start();
+      this.ambientNodes.push(osc);
+      this.ambientGains.push(layerGain);
+
+    } else if (config.type === 'filtered-noise') {
+      // Wind-like ambient
+      const buffer = this.createNoiseBuffer(2);
+      const source = this.ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = config.filterType ?? 'bandpass';
+      filter.frequency.value = config.filterFreq ?? 1000;
+      filter.Q.value = config.filterQ ?? 1;
+
+      source.connect(filter);
+      filter.connect(layerGain);
+      source.start();
+      this.ambientNodes.push(source, filter);
+      this.ambientGains.push(layerGain);
+    }
   }
 
   stopAmbient(): void {
-    if (this.ambientNode) {
+    for (const node of this.ambientNodes) {
       try {
-        this.ambientNode.stop();
+        if (node instanceof OscillatorNode || node instanceof AudioBufferSourceNode) {
+          node.stop();
+        }
+        node.disconnect();
       } catch {
         // Already stopped
       }
-      this.ambientNode = null;
     }
-    if (this.ambientGain) {
-      this.ambientGain.disconnect();
-      this.ambientGain = null;
+    for (const gain of this.ambientGains) {
+      try { gain.disconnect(); } catch { /* ok */ }
     }
+    this.ambientNodes = [];
+    this.ambientGains = [];
   }
+
+  // --- One-shot sounds ---
 
   playAction(id: SoundId, volume?: number): void {
     this.playOneShot(id, volume ?? VOLUME.action);
@@ -126,32 +230,64 @@ class AudioManagerSingleton {
   private playOneShot(id: SoundId, volume: number): void {
     if (!this.ctx || !this.masterGain) return;
 
-    const buffer = this.buffers.get(id);
-    if (!buffer) {
-      // Lazy load for next time
-      this.loadSound(id);
-      return;
+    const config = SOUND_SYNTH[id];
+    if (!config) return;
+
+    // Random pitch variation for action sounds
+    const pitchVar = 0.9 + Math.random() * 0.2;
+    const freq = (config.frequency ?? 100) * pitchVar;
+
+    const layerGain = this.makeGain(volume);
+
+    if (config.type === 'oscillator' || config.type === 'filtered-noise') {
+      const osc = this.ctx.createOscillator();
+      osc.type = config.oscType ?? 'sine';
+      osc.frequency.value = freq;
+      if (config.frequencyEnd) {
+        osc.frequency.linearRampToValueAtTime(
+          config.frequencyEnd * pitchVar,
+          this.ctx.currentTime + config.duration / 1000,
+        );
+      }
+
+      let lastNode: AudioNode = osc;
+
+      if (config.filterFreq) {
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = config.filterType ?? 'lowpass';
+        filter.frequency.value = config.filterFreq;
+        filter.Q.value = config.filterQ ?? 1;
+        osc.connect(filter);
+        lastNode = filter;
+      }
+
+      lastNode.connect(layerGain);
+      osc.start();
+      osc.stop(this.ctx.currentTime + config.duration / 1000);
+
+    } else if (config.type === 'noise') {
+      const durationSec = config.duration / 1000;
+      const buffer = this.createNoiseBuffer(durationSec);
+      const source = this.ctx.createBufferSource();
+      source.buffer = buffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = config.filterType ?? 'highpass';
+      filter.frequency.value = (config.filterFreq ?? 1000) * pitchVar;
+      filter.Q.value = config.filterQ ?? 1;
+
+      // Envelope: quick attack, fast decay
+      const envelope = this.ctx.createGain();
+      envelope.gain.setValueAtTime(0, this.ctx.currentTime);
+      envelope.gain.linearRampToValueAtTime(1, this.ctx.currentTime + 0.005);
+      envelope.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + durationSec);
+
+      source.connect(filter);
+      filter.connect(envelope);
+      envelope.connect(layerGain);
+      source.start();
+      source.stop(this.ctx.currentTime + durationSec);
     }
-
-    const source = this.ctx.createBufferSource();
-    source.buffer = buffer;
-
-    // Slight random pitch variation for action sounds
-    const config = SOUND_MAP[id];
-    if (config?.layer === 'action') {
-      source.playbackRate.value = 0.9 + Math.random() * 0.2;
-    }
-
-    const gain = this.ctx.createGain();
-    gain.gain.value = volume;
-    gain.connect(this.masterGain);
-    source.connect(gain);
-
-    source.onended = () => {
-      gain.disconnect();
-    };
-
-    source.start();
   }
 
   setMasterVolume(v: number): void {
@@ -166,14 +302,13 @@ class AudioManagerSingleton {
       this.ctx.close();
       this.ctx = null;
     }
-    this.buffers.clear();
     this.masterGain = null;
     this.initialized = false;
     instance = null;
   }
 }
 
-// Singleton instance
+// Singleton
 let instance: AudioManagerSingleton | null = null;
 
 export function getAudioManager(): AudioManagerSingleton {
