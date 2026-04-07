@@ -145,6 +145,16 @@
     "startOver": "重新開始",
     "backToHome": "返回首頁"
   },
+  "nav": {
+    "blog": "咒語集",
+    "ritual": "開始儀式"
+  },
+  "blog": {
+    "title": "咒語集",
+    "subtitle": "古老知識。禁忌智慧。",
+    "backToBlog": "返回咒語集",
+    "noPosts": "尚無文章。咒語集等待第一個記錄。"
+  },
   "common": {
     "comingSoon": "即將推出"
   }

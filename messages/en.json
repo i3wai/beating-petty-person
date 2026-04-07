@@ -145,6 +145,16 @@
     "startOver": "Start Over",
     "backToHome": "Back to Home"
   },
+  "nav": {
+    "blog": "The Grimoire",
+    "ritual": "Begin the Ritual"
+  },
+  "blog": {
+    "title": "The Grimoire",
+    "subtitle": "Ancient knowledge. Forbidden wisdom.",
+    "backToBlog": "Back to The Grimoire",
+    "noPosts": "No posts yet. The grimoire awaits its first entry."
+  },
   "common": {
     "comingSoon": "Coming Soon"
   }

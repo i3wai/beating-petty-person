@@ -6,6 +6,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function Header({ locale }: { locale: string }) {
   const t = useTranslations("site");
+  const tNav = useTranslations("nav");
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink-lighter bg-ink/95 backdrop-blur-sm">
@@ -15,6 +16,20 @@ export function Header({ locale }: { locale: string }) {
             {t("title")}
           </span>
         </Link>
+        <nav className="hidden sm:flex items-center gap-6">
+          <Link
+            href="/blog"
+            className="font-serif text-sm text-paper-muted hover:text-vermillion transition-colors"
+          >
+            {tNav("blog")}
+          </Link>
+          <Link
+            href="/ritual"
+            className="font-serif text-sm text-paper-muted hover:text-vermillion transition-colors"
+          >
+            {tNav("ritual")}
+          </Link>
+        </nav>
         <LanguageSwitcher locale={locale} />
       </div>
     </header>
