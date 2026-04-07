@@ -23,9 +23,9 @@ export function LanguageSwitcher({ locale }: { locale: string }) {
         <button
           key={l}
           onClick={() => handleChange(l)}
-          className={`px-2 py-1 text-xs font-serif rounded transition-colors ${
+          className={`px-2 py-1 text-xs font-serif rounded transition-colors focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-gold ${
             l === locale
-              ? "bg-vermillion text-paper"
+              ? "bg-gold text-paper"
               : "text-paper-muted hover:text-paper hover:bg-ink-light"
           }`}
           aria-label={`Switch to ${localeLabels[l]}`}

@@ -5,10 +5,54 @@
     "description": "An ancient Chinese curse ritual. Beat your petty person online."
   },
   "landing": {
-    "hero": "Experience an Ancient Chinese Curse Ritual",
-    "tagline": "For thousands of years, people have used this ritual to banish petty people from their lives.",
+    "hero": {
+      "title": "The Ancient Curse Ritual They Don't Want You to Know About",
+      "subtitle": "For 300 years, beneath the bridges of Hong Kong, a curse has been passed down in whispers. Now it is in your hands.",
+      "cta": "Begin the Ritual"
+    },
+    "whatIs": {
+      "title": "What Is This?",
+      "description": "打小人 — Beating the Petty Person — is a 300-year-old curse ritual born on the streets of Hong Kong. Practitioners gather beneath bridges at the start of spring, striking paper effigies to curse those who wronged them. The ritual is real. The tradition is alive. The question is not whether it works — but whether you dare to try."
+    },
+    "howItWorks": {
+      "title": "The Ritual",
+      "steps": [
+        {
+          "icon": "✠",
+          "title": "Choose Your Enemy",
+          "description": "Six types of petty persons. Identify yours."
+        },
+        {
+          "icon": "⚔",
+          "title": "Strike",
+          "description": "Beat the paper effigy. Release your fury."
+        },
+        {
+          "icon": "☢",
+          "title": "Burn & Seal",
+          "description": "Burn it to ash. The curse is sealed."
+        }
+      ]
+    },
+    "trust": {
+      "line1": "Based on authentic Cantonese folk traditions",
+      "line2": "Join thousands who have completed the ritual"
+    },
+    "finalCta": {
+      "headline": "Your enemy still walks free.",
+      "button": "Begin the Ritual"
+    },
+    "footer": {
+      "heritage": "Based on authentic Cantonese folk traditions. We work to preserve and share this cultural heritage."
+    },
     "cta": "Begin the Ritual",
     "learnMore": "Learn More"
+  },
+  "meta": {
+    "title": "BeatPetty — Ancient Chinese Curse Ritual | 打小人",
+    "description": "Experience 打小人, a 300-year-old Chinese curse ritual from Hong Kong. Strike paper effigies, burn your enemy's influence. The ancient art of cursing petty people — now online.",
+    "ogTitle": "BeatPetty — The Ancient Chinese Curse Ritual",
+    "ogDescription": "A 300-year-old curse ritual from the streets of Hong Kong. Strike. Burn. Seal. What if it works?"
   },
   "ritual": {
     "step1Title": "Choose Your Enemy",

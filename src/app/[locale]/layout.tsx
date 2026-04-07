@@ -35,14 +35,68 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "site" });
+  const t = await getTranslations({ locale, namespace: "meta" });
+
+  const siteUrl = "https://beatpetty.com";
+  const localePath = `/${locale}`;
+  const canonicalUrl = `${siteUrl}${localePath}`;
 
   return {
     title: {
-      default: `${t("title")} | ${t("subtitle")}`,
-      template: `%s | ${t("title")}`,
+      default: t("title"),
+      template: `%s | BeatPetty`,
     },
     description: t("description"),
+    keywords: [
+      "打小人",
+      "beat petty person",
+      "ancient Chinese curse",
+      "curse ritual",
+      "Chinese folk tradition",
+      "Hong Kong ritual",
+      "诅咒仪式",
+      "詛咒儀式",
+      "廣東民間傳統",
+      "广东民间传统",
+      "鹅颈桥",
+      "鵝頸橋",
+      "惊蛰",
+      "驚蟄",
+    ],
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${siteUrl}/en`,
+        "zh-TW": `${siteUrl}/zh-TW`,
+        "zh-Hans": `${siteUrl}/zh-Hans`,
+      },
+    },
+    openGraph: {
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      url: canonicalUrl,
+      siteName: "BeatPetty",
+      locale: locale === "zh-TW" ? "zh_HK" : locale === "zh-Hans" ? "zh_CN" : "en_US",
+      type: "website",
+      images: [
+        {
+          url: `${siteUrl}/og-image.png`,
+          width: 1200,
+          height: 630,
+          alt: "BeatPetty — Ancient Chinese Curse Ritual",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      images: [`${siteUrl}/og-image.png`],
+    },
   };
 }
 
