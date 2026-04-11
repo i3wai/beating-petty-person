@@ -4,6 +4,8 @@ import { useCallback, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRitual } from '@/components/ritual/RitualProvider';
 import type { PlanType } from '@/lib/stripe';
+import { generateReading, resolveTarget } from '@/lib/curseReading';
+import type { EnemyCategory } from '@/components/ritual/silhouettes';
 
 const LS_KEY_ENEMY = 'beatpetty_enemy';
 
@@ -39,6 +41,27 @@ export default function ResultStep() {
         }
       }
 
+      // Generate and store curse reading before redirect (for result page)
+      if (plan === 'name' || plan === 'full') {
+        try {
+          const category = (enemy?.category ?? 'custom') as EnemyCategory;
+          const fragments = {
+            openings: t.raw(`reading.${category}.openings`),
+            impacts: t.raw(`reading.${category}.impacts`),
+            closings: t.raw(`reading.${category}.closings`),
+          };
+          const target = resolveTarget(
+            category,
+            enemy?.name,
+            t(`enemies.${category}.name`),
+          );
+          const reading = generateReading(fragments, target, String(Date.now()));
+          localStorage.setItem('beatpetty_reading', reading);
+        } catch {
+          // reading generation failed — non-critical
+        }
+      }
+
       try {
         const res = await fetch('/api/checkout', {
           method: 'POST',
@@ -64,7 +87,7 @@ export default function ResultStep() {
         setLoading(null);
       }
     },
-    [enemy, locale],
+    [enemy, locale, t],
   );
 
   return (
@@ -101,38 +124,29 @@ export default function ResultStep() {
         </div>
       )}
 
-      {/* Paid upsell prompt */}
+      {/* Curse Reading prompt */}
       <div className="mt-10 animate-fade-in-up">
         {error && (
           <p className="text-sm text-vermillion font-serif text-center mb-4">
             {t('resultCheckoutError')}
           </p>
         )}
+
+        {/* Reading preview tease — shown before payment */}
+        <div className="mb-8 px-4 py-4 bg-ink-light border border-ink-lighter rounded-sm text-center">
+          <p className="text-sm text-paper-muted font-serif italic leading-relaxed">
+            {t('readingPreview')}
+          </p>
+        </div>
+
         <p className="text-sm sm:text-base text-gold font-serif text-center mb-6">
           {t('resultPaidPrompt')}
         </p>
 
         <div className="flex flex-col gap-3 w-full max-w-sm">
-          {/* Full Power Ritual — $6.99 */}
+          {/* Reveal the Curse Reading — $2.99 */}
           <button
-            onClick={() => handleCheckout('full')}
-            disabled={loading !== null}
-            className="
-              w-full px-6 py-3 rounded-sm
-              bg-vermillion text-paper font-serif font-semibold text-base
-              hover:bg-vermillion-light active:bg-vermillion-dark
-              disabled:opacity-50 disabled:cursor-not-allowed
-              transition-colors duration-200
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermillion
-            "
-            aria-label={t('resultFullButton')}
-          >
-            {loading === 'full' ? '...' : t('resultFullButton')}
-          </button>
-
-          {/* Complete the Sealing — $4.99 */}
-          <button
-            onClick={() => handleCheckout('seal')}
+            onClick={() => handleCheckout('name')}
             disabled={loading !== null}
             className="
               w-full px-6 py-3 rounded-sm
@@ -142,27 +156,44 @@ export default function ResultStep() {
               transition-colors duration-200
               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
             "
+            aria-label={t('resultNameButton')}
+          >
+            {loading === 'name' ? '...' : t('resultNameButton')}
+          </button>
+
+          {/* Complete the Sealing — $4.99 */}
+          <button
+            onClick={() => handleCheckout('seal')}
+            disabled={loading !== null}
+            className="
+              w-full px-6 py-3 rounded-sm
+              bg-vermillion text-paper font-serif font-semibold text-base
+              hover:bg-vermillion-light active:bg-vermillion-dark
+              disabled:opacity-50 disabled:cursor-not-allowed
+              transition-colors duration-200
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermillion
+            "
             aria-label={t('resultSealButton')}
           >
             {loading === 'seal' ? '...' : t('resultSealButton')}
           </button>
 
-          {/* Name Your Enemy — $2.99 */}
+          {/* Full Power Ritual — $6.99 */}
           <button
-            onClick={() => handleCheckout('name')}
+            onClick={() => handleCheckout('full')}
             disabled={loading !== null}
             className="
               w-full px-6 py-3 rounded-sm
-              bg-ink-light border border-gold/40 text-gold
+              bg-ink-light border border-vermillion/40 text-vermillion
               font-serif font-semibold text-base
-              hover:border-gold hover:bg-ink-lighter
+              hover:border-vermillion hover:bg-ink-lighter
               disabled:opacity-50 disabled:cursor-not-allowed
               transition-colors duration-200
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermillion
             "
-            aria-label={t('resultNameButton')}
+            aria-label={t('resultFullButton')}
           >
-            {loading === 'name' ? '...' : t('resultNameButton')}
+            {loading === 'full' ? '...' : t('resultFullButton')}
           </button>
         </div>
       </div>

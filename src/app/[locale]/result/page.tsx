@@ -129,6 +129,28 @@ function ResultContent() {
               : t('paidDescriptionNoName')}
           </p>
 
+          {/* Curse Reading display */}
+          {(() => {
+            try {
+              const reading = localStorage.getItem('beatpetty_reading');
+              if (!reading) return null;
+              return (
+                <div className="mt-8 px-6 py-6 bg-ink-light border border-gold/30 rounded-sm text-left max-w-md animate-fade-in-up">
+                  <h2 className="text-lg font-bold text-gold font-serif mb-4 text-center">
+                    {t('readingTitle')}
+                  </h2>
+                  {reading.split('\n\n').map((paragraph, i) => (
+                    <p key={i} className="text-paper-muted font-serif text-sm leading-relaxed mb-3 last:mb-0 italic">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              );
+            } catch {
+              return null;
+            }
+          })()}
+
           <div className="flex flex-col items-center gap-4">
             <button
               onClick={handleShare}
