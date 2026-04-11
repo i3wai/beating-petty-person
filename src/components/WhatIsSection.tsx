@@ -9,9 +9,9 @@ export function WhatIsSection() {
         {/* Decorative top divider */}
         <div className="flex items-center gap-4 mb-8">
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-ink-lighter to-transparent" />
-          <span className="text-gold text-xs tracking-[0.3em] uppercase font-serif">
+          <h2 className="text-gold text-xs tracking-[0.3em] uppercase font-serif">
             {t("title")}
-          </span>
+          </h2>
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-ink-lighter to-transparent" />
         </div>
 

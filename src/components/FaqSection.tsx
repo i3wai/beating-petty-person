@@ -10,7 +10,7 @@ export function FaqSection() {
   const items = t.raw("items") as Array<{ question: string; answer: string }>;
 
   return (
-    <section className="px-4 py-12">
+    <section className="px-4 py-16 sm:py-20">
       <div className="mx-auto max-w-2xl">
         <div className="h-px bg-gradient-to-r from-transparent via-ink-lighter to-transparent mb-8" />
 
