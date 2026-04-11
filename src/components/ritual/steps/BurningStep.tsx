@@ -138,7 +138,7 @@ export default function BurningStep() {
         )}
 
         <div
-          className="paper-figure burning-paper-figure relative z-0"
+          className="paper-figure burning-paper-figure relative z-0 flex items-center justify-center"
           style={{
             clipPath: SILHOUETTE_CLIPS[(enemy?.category as EnemyCategory) ?? 'custom'] ?? DEFAULT_CLIP,
             transform: `scale(${paperScale})`,
@@ -147,7 +147,20 @@ export default function BurningStep() {
             transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
           }}
           aria-hidden="true"
-        />
+        >
+          {enemy?.name && (
+            <span
+              className="text-ink font-serif text-sm font-semibold text-center leading-tight px-2 select-none"
+              style={{
+                maxWidth: '80%',
+                wordBreak: 'break-word',
+                filter: paperFilter,
+              }}
+            >
+              {enemy.name}
+            </span>
+          )}
+        </div>
       </div>
 
       <p className="mt-4 text-sm text-paper-muted font-serif">
