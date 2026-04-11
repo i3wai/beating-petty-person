@@ -188,7 +188,7 @@ export default function BeatingStep() {
         {/* Paper figure — clip-path matches selected enemy */}
         <div
           className={`
-            relative
+            relative flex items-center justify-center
             ${reducedMotion && pulseActive ? 'paper-figure-pulse' : ''}
           `}
           style={{
@@ -202,7 +202,20 @@ export default function BeatingStep() {
             transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
           }}
           aria-hidden="true"
-        />
+        >
+          {/* Enemy name on the paper figure */}
+          {enemy?.name && (
+            <span
+              className="text-ink font-serif text-sm font-semibold text-center leading-tight px-2 select-none"
+              style={{
+                maxWidth: '80%',
+                wordBreak: 'break-word',
+              }}
+            >
+              {enemy.name}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Tap counter */}
