@@ -10,9 +10,18 @@ export function FinalCtaSection() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--color-vermillion)_0%,_transparent_50%)] opacity-8 pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-paper font-serif leading-tight mb-10">
+        {/* Enemy luck fading hint */}
+        <p className="text-paper-dark text-xs font-mono tracking-[0.2em] uppercase mb-8 animate-pulse">
+          {t("hint")}
+        </p>
+
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-paper font-serif leading-tight mb-4">
           {t("headline")}
         </h2>
+
+        <p className="text-paper-muted text-sm font-serif mb-10">
+          {t("subtext")}
+        </p>
 
         <Link
           href="/ritual"

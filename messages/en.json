@@ -36,10 +36,20 @@
     },
     "trust": {
       "line1": "Based on authentic Cantonese folk traditions",
-      "line2": "Join thousands who have completed the curse ritual"
+      "line2": "Join thousands who have completed the curse ritual",
+      "counter": "{count} rituals completed today"
+    },
+    "atmosphere": {
+      "lines": [
+        "A ritual was completed 4 minutes ago. An enemy was named.",
+        "The paper effigy has been burned. The curse takes hold.",
+        "Your enemy's luck is shifting. You can feel it."
+      ]
     },
     "finalCta": {
+      "hint": "Your enemy's luck is fading...",
       "headline": "Your enemy still walks free. Curse them now.",
+      "subtext": "What's the worst that could happen? It's free. What if it works?",
       "button": "Begin the Ritual"
     },
     "footer": {
