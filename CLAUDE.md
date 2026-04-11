@@ -59,6 +59,9 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 - **Day 3 completed: 2026-04-07** — Full ritual flow (4 steps + 2 transitions), Canvas particles, Web Audio synthesis, shared silhouettes
 - **Day 4 completed: 2026-04-07** — Stripe Checkout API, Webhook, Pricing Page, Result Page, OG image
 - **Day 5 completed: 2026-04-08** — PWA manifest+icons, Lighthouse A11y 100, SEO (robots.txt, sitemap, hreflang), contrast fixes, pricing page bug fix, OG image URL fix
+- Phase 2 SEO completed: 2026-04-08 — MDX blog system, /what-is, /how-it-works, /history pages
+- **Landing Page SEO completed: 2026-04-12** — EN meta/hero/body/FAQ optimized, ZH-TW/ZH-Hans optimized, keyword cannibalization fixed, sitemap lastmod added
+- **GSC submitted: 2026-04-12** — sitemap.xml with lastmod, hreflang
 - Phase: **Soft Launch — Stripe live, accepting payments**
 - Owner: Allen (business, content, tool setup) | Claude (design, code, SEO, tech)
 - Deploy: `npx vercel --prod --yes`
@@ -70,7 +73,7 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 - [x] Vercel env vars: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID_NAME`, `STRIPE_PRICE_ID_SEAL`, `STRIPE_PRICE_ID_FULL`
 - [x] Stripe live mode
 - [x] 實機測試 (iPhone Safari + Android Chrome)
-- [ ] Google Search Console 提交 (sitemap.xml + hreflang) — 等 SEO 內容完成後再提交
+- [x] Google Search Console 提交 (sitemap.xml + hreflang)
 
 ## Post-Launch → Phase 2
 → 見 `docs/FUTURE_ROADMAP.md`
