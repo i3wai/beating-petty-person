@@ -98,7 +98,7 @@
     "step1Subtitle": "Six types of petty persons. Identify yours.",
     "step1Confirm": "Confirm Selection",
     "step1CustomPlaceholder": "Enter a name...",
-    "step1CustomLabel": "Name your enemy — $2.99",
+    "step1CustomLabel": "Enter their name",
     "enemies": {
       "backstabber": { "name": "The Backstabber", "desc": "They smile to your face, plot behind your back." },
       "toxicBoss": { "name": "The Toxic Boss", "desc": "Power without wisdom. Authority without empathy." },
@@ -128,12 +128,118 @@
     "resultFreeDescription": "The ritual has taken effect. The paper effigy is destroyed. But the sealing is incomplete.",
     "resultPaidPrompt": "Complete the Sealing Ritual to ensure lasting effect.",
     "resultSealButton": "Complete the Sealing — $4.99",
-    "resultNameButton": "Name Your Enemy — $2.99",
+    "resultNameButton": "Reveal the Curse Reading — $2.99",
     "resultFullButton": "Full Power Ritual — $6.99",
     "resultCheckoutError": "Payment is not yet available. Please try again later.",
     "resultShareButton": "Share This Ritual",
+    "readingPreview": "The curse has spoken — but its words remain sealed. Reveal the full reading.",
     "startOver": "Start Over",
-    "beginButton": "Begin the Ritual"
+    "beginButton": "Begin the Ritual",
+    "reading": {
+      "title": "The Curse Reading",
+      "backstabber": {
+        "openings": [
+          "The curse has found its mark. {target}, the betrayer, will not escape what has been set in motion.",
+          "The ritual energy has locked onto {target}. Their shadow has been claimed.",
+          "The ancient words have been spoken. {target}'s fate is now sealed in fire."
+        ],
+        "impacts": [
+          "Their deceptions will turn against them. By the next moon, those they betrayed will see the truth.",
+          "Every lie they speak will cost them an ally. The curse feeds on their greatest weakness — their tongue.",
+          "The bonds of trust they fractured will never heal in their favor. Isolation awaits."
+        ],
+        "closings": [
+          "This is not a warning. This is a verdict.",
+          "The curse has been spoken. It cannot be unspoken.",
+          "What is done cannot be undone. The fire has consumed. The ash has settled."
+        ]
+      },
+      "toxicBoss": {
+        "openings": [
+          "The curse descends upon {target}. Their authority means nothing here.",
+          "The ritual has named {target}. Power without wisdom invites its own destruction.",
+          "{target}'s reign of cruelty has been witnessed. The spirits remember."
+        ],
+        "impacts": [
+          "Those they crushed will rise. Their influence will crumble from within.",
+          "The fear they planted in others will bloom in their own chest. Sleep will not come easily.",
+          "Their commands will lose their weight. Subordinates will see through the illusion of strength."
+        ],
+        "closings": [
+          "The curse does not negotiate. Neither did they.",
+          "What they built on fear will collapse. The foundation was always hollow.",
+          "The ritual is complete. Their power was never real."
+        ]
+      },
+      "ex": {
+        "openings": [
+          "The curse reaches through closed doors. {target} is not beyond its grasp.",
+          "{target} should have stayed in the past. The ritual ensures they will.",
+          "The flame that burns for {target} is not love. It is reckoning."
+        ],
+        "impacts": [
+          "The memories they left behind will haunt them in reverse. What they took will be returned — doubled.",
+          "Their new foundations will crack. What they built on betrayal cannot stand.",
+          "Every door they closed will lock from the other side. They will knock. No one will answer."
+        ],
+        "closings": [
+          "Some doors should stay closed. The curse agrees.",
+          "This chapter is finished. The book has been burned.",
+          "The ritual has spoken. {target} is the past. The past stays buried."
+        ]
+      },
+      "energyVampire": {
+        "openings": [
+          "The curse has identified {target}. The drain ends now.",
+          "{target} has fed long enough. The ritual cuts the cord they never deserved.",
+          "The spirits see {target} for what they are — a parasite in human form."
+        ],
+        "impacts": [
+          "The energy they stole will sour in their possession. What nourished them will poison them.",
+          "Their presence will repel instead of attract. The rooms they enter will grow cold.",
+          "The void they carry will consume them from within. They will drain themselves dry."
+        ],
+        "closings": [
+          "The cord is cut. {target} feeds on nothing now.",
+          "The parasite has been named. The host is free.",
+          "The ritual is sealed. Their hunger will be their ruin."
+        ]
+      },
+      "bully": {
+        "openings": [
+          "The curse confronts {target}. Their cruelty has been recorded.",
+          "{target} ruled through fear. The ritual answers with something older.",
+          "The spirits have weighed {target} and found them wanting."
+        ],
+        "impacts": [
+          "The fear they planted will harvest in their own fields. They will know how it feels.",
+          "Their strength will become their prison. The walls they built for others will close in on them.",
+          "Those who stood silent will find their voice. {target} will not recognize the world they wake up in."
+        ],
+        "closings": [
+          "The table has turned. {target} just doesn't know it yet.",
+          "The ritual does not forget. Neither do the broken.",
+          "What goes around has come around. The circle is complete."
+        ]
+      },
+      "custom": {
+        "openings": [
+          "The curse has been aimed. {target} — you know exactly who they are. So does the ritual now.",
+          "The name {target} has been spoken into the fire. It cannot be unspoken.",
+          "The ritual accepts your target. {target} has been marked."
+        ],
+        "impacts": [
+          "Their plans will unravel. Their certainties will become questions. Their ground will shift beneath their feet.",
+          "The universe has been nudged. Coincidences will stack against them. Not dramatic — just relentless.",
+          "The curse works in silence. {target} will not see it coming. But they will feel it."
+        ],
+        "closings": [
+          "You named them. The ritual heard. What happens next is between them and the curse.",
+          "The paper has burned. The ash has scattered. The curse is loose.",
+          "This is between you, {target}, and the ancient ones. The ritual is done."
+        ]
+      }
+    }
   },
   "pricing": {
     "title": "Choose Your Ritual",
@@ -146,11 +252,11 @@
       "cta": "Begin Free Ritual"
     },
     "name": {
-      "name": "Name Your Enemy",
+      "name": "Curse Reading",
       "price": "$2.99",
-      "description": "Speak their true name into the ritual. The curse becomes personal.",
-      "features": ["Everything in Basic", "Name a specific person", "Name burning animation", "Targeted result"],
-      "cta": "Name Your Enemy — $2.99"
+      "description": "Unlock a personalized curse interpretation. Learn exactly how the curse will affect your enemy.",
+      "features": ["Personalized curse reading", "Enemy-specific prophecy", "Name woven into the curse"],
+      "cta": "Reveal the Curse Reading — $2.99"
     },
     "seal": {
       "name": "Sealing Ritual",
@@ -182,7 +288,8 @@
     "shareTitle": "I just experienced an ancient Chinese curse ritual",
     "shareText": "BeatPetty — The 300-year-old curse ritual from Hong Kong",
     "startOver": "Start Over",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "readingTitle": "The Curse Reading"
   },
   "nav": {
     "blog": "The Grimoire",
