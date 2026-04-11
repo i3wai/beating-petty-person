@@ -113,7 +113,7 @@ export default function ResultStep() {
         </p>
 
         <div className="flex flex-col gap-3 w-full max-w-sm">
-          {/* Full Power Ritual — $4.99 */}
+          {/* Full Power Ritual — $6.99 */}
           <button
             onClick={() => handleCheckout('full')}
             disabled={loading !== null}

@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/HeroSection";
 import { WhatIsSection } from "@/components/WhatIsSection";
 import { HowItWorksSection } from "@/components/HowItWorksSection";
 import { TrustSection } from "@/components/TrustSection";
+import { FaqSection } from "@/components/FaqSection";
 import { FinalCtaSection } from "@/components/FinalCtaSection";
 import { FooterNote } from "@/components/FooterNote";
 
@@ -24,6 +25,7 @@ function LandingContent() {
       <WhatIsSection />
       <HowItWorksSection />
       <TrustSection />
+      <FaqSection />
       <FinalCtaSection />
       <FooterNote />
     </div>

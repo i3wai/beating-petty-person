@@ -8,7 +8,7 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 ## Business Model
 - One-time payment, NO subscription
 - Free basic ritual + paid enhancements
-- USD $2.99 (打人名) / USD $4.99 (封印詛咒) / USD $4.99 (全套)
+- USD $2.99 (打人名) / USD $4.99 (封印詛咒) / USD $6.99 (全套)
 - 不靠回頭率，靠全球新用戶持續增長
 
 ## Core Strategy: 「寧可信其有」
@@ -41,7 +41,7 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 | 免費 | $0 | 選泛型 → 打 → 燒 → 基本結果（完整體驗）|
 | A 打人名 | $2.99 | 輸入具體名字 + 名字燃燒動畫 + 針對性結果 |
 | B 封印詛咒 | $4.99 | 強化封印動畫 + 數位證書 + 強化版結果 |
-| C 全套 | $4.99 | A + B 全部 |
+| C 全套 | $6.99 | A + B 全部 |
 
 **UX 原則**：免費 = 完整，付費 = 「加強」。付費牆在儀式結束後（沉沒成本）。不需帳號，Stripe Session ID + localStorage。
 
@@ -59,18 +59,18 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 - **Day 3 completed: 2026-04-07** — Full ritual flow (4 steps + 2 transitions), Canvas particles, Web Audio synthesis, shared silhouettes
 - **Day 4 completed: 2026-04-07** — Stripe Checkout API, Webhook, Pricing Page, Result Page, OG image
 - **Day 5 completed: 2026-04-08** — PWA manifest+icons, Lighthouse A11y 100, SEO (robots.txt, sitemap, hreflang), contrast fixes, pricing page bug fix, OG image URL fix
-- Phase: **Pre-launch — Stripe keys pending**
+- Phase: **Soft Launch — Stripe live, accepting payments**
 - Owner: Allen (business, content, tool setup) | Claude (design, code, SEO, tech)
 - Deploy: `npx vercel --prod --yes`
 
-## Pre-Launch Checklist (Allen)
+## Launch Status
 
-1. 註冊 Stripe HK 帳號
-2. 建立 3 個 Products: 打人名 $2.99, 封印詛咒 $4.99, 全套 $4.99
-3. 設定 Vercel env vars: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID_NAME`, `STRIPE_PRICE_ID_SEAL`, `STRIPE_PRICE_ID_FULL`
-4. 實機測試 (iPhone Safari + Android Chrome)
-5. Google Search Console 提交 (sitemap.xml + hreflang)
-6. 切換 Stripe live mode → final deploy
+- [x] Stripe HK 帳號註冊
+- [x] 3 Products 建立: 打人名 $2.99, 封印詛咒 $4.99, 全套 $6.99
+- [x] Vercel env vars: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID_NAME`, `STRIPE_PRICE_ID_SEAL`, `STRIPE_PRICE_ID_FULL`
+- [x] Stripe live mode
+- [x] 實機測試 (iPhone Safari + Android Chrome)
+- [ ] Google Search Console 提交 (sitemap.xml + hreflang) — 等 SEO 內容完成後再提交
 
 ## Post-Launch → Phase 2
 → 見 `docs/FUTURE_ROADMAP.md`

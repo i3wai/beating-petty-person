@@ -15,7 +15,7 @@ const PLAN_CONFIG: Record<PlanType, { priceId: string; amount: number; name: str
   },
   full: {
     priceId: process.env.STRIPE_PRICE_ID_FULL ?? '',
-    amount: 499,
+    amount: 699,
     name: 'Full Power Ritual',
   },
 };

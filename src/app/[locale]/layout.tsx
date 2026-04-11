@@ -51,6 +51,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: [
       "打小人",
       "beat petty person",
+      "online curse ritual",
+      "curse someone online",
+      "free curse ritual",
       "ancient Chinese curse",
       "curse ritual",
       "Chinese folk tradition",

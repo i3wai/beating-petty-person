@@ -279,7 +279,7 @@ common        → comingSoon
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook verification | **Not set** |
 | `STRIPE_PRICE_ID_NAME` | Price for 打人名 $2.99 | **Not set** |
 | `STRIPE_PRICE_ID_SEAL` | Price for 封印詛咒 $4.99 | **Not set** |
-| `STRIPE_PRICE_ID_FULL` | Price for 全套 $4.99 | **Not set** |
+| `STRIPE_PRICE_ID_FULL` | Price for 全套 $6.99 | **Not set** |
 
 ## Known Technical Debt (Post-MVP)
 

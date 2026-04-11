@@ -398,7 +398,7 @@ Add accordion-style FAQ with:
 2. **ritual_complete** — User completes free ritual
 3. **purchase_name** — User purchases "點名小人" ($2.99)
 4. **purchase_seal** — User purchases "封印詛咒" ($4.99)
-5. **purchase_full** — User purchases "全套儀式" ($4.99)
+5. **purchase_full** — User purchases "全套儀式" ($6.99)
 6. **language_switch** — User changes language
 7. **seasonal_landing_view** — View of 驚蟄 landing page
 
