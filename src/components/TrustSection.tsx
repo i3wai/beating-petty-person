@@ -8,11 +8,9 @@ function RitualCounter() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    // Deterministic pseudo-random based on today's date
     const today = new Date();
     const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-    const base = 47 + (seed % 38); // 47-84 range
-    // Add small random increment over the day
+    const base = 47 + (seed % 38);
     const hourFraction = (today.getHours() * 60 + today.getMinutes()) / 1440;
     const daily = Math.floor(base + hourFraction * 12);
     setCount(daily);
@@ -21,9 +19,9 @@ function RitualCounter() {
   if (count === 0) return null;
 
   return (
-    <span className="text-paper-muted text-xs font-serif">
+    <p className="text-vermillion text-base font-serif font-semibold mt-2 animate-pulse">
       {t("counter", { count })}
-    </span>
+    </p>
   );
 }
 
@@ -38,7 +36,7 @@ export function TrustSection() {
         <p className="text-paper-muted text-sm font-serif italic mb-3 tracking-wide">
           {t("line1")}
         </p>
-        <p className="text-paper-dark text-xs font-serif mb-4">
+        <p className="text-paper/80 text-sm font-serif mb-2">
           {t("line2")}
         </p>
         <RitualCounter />
