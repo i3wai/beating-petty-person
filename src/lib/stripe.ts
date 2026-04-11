@@ -6,7 +6,7 @@ const PLAN_CONFIG: Record<PlanType, { priceId: string; amount: number; name: str
   name: {
     priceId: process.env.STRIPE_PRICE_ID_NAME ?? '',
     amount: 299,
-    name: 'Name Your Enemy',
+    name: 'Curse Reading',
   },
   seal: {
     priceId: process.env.STRIPE_PRICE_ID_SEAL ?? '',
