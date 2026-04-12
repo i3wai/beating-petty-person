@@ -125,7 +125,7 @@ export default function ResultStep() {
       )}
 
       {/* Curse Reading prompt */}
-      <div className="mt-10 animate-fade-in-up">
+      <div className="mt-10 animate-fade-in-up w-full flex flex-col items-center">
         {error && (
           <p className="text-sm text-vermillion font-serif text-center mb-4">
             {t('resultCheckoutError')}

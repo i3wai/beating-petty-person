@@ -109,33 +109,46 @@ function ResultContent() {
   }
 
   if (state === 'paid' && payment) {
+    const plan = payment.plan as 'name' | 'seal' | 'full' | '';
+    const showReading = plan === 'name' || plan === 'full';
+    const showSeal = plan === 'seal' || plan === 'full';
+
     return (
       <div className="min-h-[80dvh] flex flex-col items-center justify-center px-4 py-16">
         <div className="text-center max-w-lg animate-fade-in">
-          {/* Seal stamp visual */}
-          <div className="w-24 h-24 mx-auto mb-6 rounded-full border-2 border-vermillion flex items-center justify-center animate-fade-in-up">
-            <span className="text-3xl text-vermillion font-serif font-bold">封</span>
-          </div>
+          {/* Seal stamp visual — only for seal/full plans */}
+          {showSeal && (
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full border-2 border-vermillion flex items-center justify-center animate-fade-in-up">
+              <span className="text-3xl text-vermillion font-serif font-bold">封</span>
+            </div>
+          )}
 
           <h1 className="text-3xl sm:text-4xl font-bold text-vermillion font-serif mb-4">
-            {t('paidTitle')}
+            {showSeal ? t('paidTitle') : t('readingTitle')}
           </h1>
           <p className="text-lg text-gold font-serif mb-2">
-            {t('paidSubtitle')}
+            {showSeal ? t('paidSubtitle') : ''}
           </p>
-          <p className="text-paper-muted font-serif leading-relaxed mb-8">
-            {payment.enemyName
-              ? t('paidDescription', { enemyName: payment.enemyName })
-              : t('paidDescriptionNoName')}
-          </p>
+          {showSeal && (
+            <p className="text-paper-muted font-serif leading-relaxed mb-8">
+              {payment.enemyName
+                ? t('paidDescription', { enemyName: payment.enemyName })
+                : t('paidDescriptionNoName')}
+            </p>
+          )}
 
-          {/* Curse Reading display */}
-          {(() => {
+          {/* Curse Reading display — only for name/full plans */}
+                  {reading.split('\n\n').map((paragraph, i) => (
+                    <p key={i} className="text-paper-muted font-serif text-sm leading-relaxed mb-3 last:mb-0">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
             try {
               const reading = localStorage.getItem('beatpetty_reading');
               if (!reading) return null;
               return (
-                <div className="mt-8 px-6 py-6 bg-ink-light border border-gold/30 rounded-sm text-left max-w-md animate-fade-in-up">
+                <div className="mt-8 px-6 py-6 bg-ink-light border border-gold/30 rounded-sm max-w-md mx-auto animate-fade-in-up">
                   <h2 className="text-lg font-bold text-gold font-serif mb-4 text-center">
                     {t('readingTitle')}
                   </h2>
