@@ -48,6 +48,8 @@ export default function ResultStep() {
           const fragments = {
             openings: t.raw(`reading.${category}.openings`),
             impacts: t.raw(`reading.${category}.impacts`),
+            timings: t.raw(`reading.${category}.timings`),
+            weaknesses: t.raw(`reading.${category}.weaknesses`),
             closings: t.raw(`reading.${category}.closings`),
           };
           const target = resolveTarget(

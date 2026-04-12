@@ -349,7 +349,13 @@
     "shareText": "BeatPetty — The 300-year-old curse ritual from Hong Kong",
     "startOver": "Start Over",
     "backToHome": "Back to Home",
-    "readingTitle": "The Curse Reading"
+    "readingTitle": "The Curse Reading",
+    "certificateTitle": "SEAL CERTIFICATE",
+    "certificateTarget": "Target",
+    "certificateType": "Curse Type",
+    "certificateSealed": "Sealed On",
+    "certificateExpires": "Seal Expires",
+    "certificateFooter": "This seal is verified by BeatPetty. Valid for 7 days from the date of sealing."
   },
   "nav": {
     "blog": "The Grimoire",

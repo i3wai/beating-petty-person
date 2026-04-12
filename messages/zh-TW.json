@@ -349,7 +349,13 @@
     "shareText": "BeatPetty — 來自香港的三百年詛咒儀式",
     "startOver": "重新開始",
     "backToHome": "返回首頁",
-    "readingTitle": "詛咒解讀"
+    "readingTitle": "詛咒解讀",
+    "certificateTitle": "封 印 證 書",
+    "certificateTarget": "目標",
+    "certificateType": "詛咒類型",
+    "certificateSealed": "封印日期",
+    "certificateExpires": "有效期限",
+    "certificateFooter": "此封印由 BeatPetty 驗證。自封印日起有效期七天。"
   },
   "nav": {
     "blog": "咒語集",

@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState, useCallback } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import SealCertificate from '@/components/SealCertificate';
 
 interface PaymentInfo {
   paid: boolean;
@@ -113,9 +114,12 @@ function ResultContent() {
     const showReading = plan === 'name' || plan === 'full';
     const showSeal = plan === 'seal' || plan === 'full';
 
+    // Get localized enemy type name for certificate
+    const enemyTypeLabel = payment.enemyCategory || '';
+
     return (
       <div className="min-h-[80dvh] flex flex-col items-center justify-center px-4 py-16">
-        <div className="text-center max-w-lg animate-fade-in">
+        <div className="text-center max-w-lg animate-fade-in w-full">
           {/* Seal stamp visual — only for seal/full plans */}
           {showSeal && (
             <div className="w-24 h-24 mx-auto mb-6 rounded-full border-2 border-vermillion flex items-center justify-center animate-fade-in-up">
@@ -138,17 +142,12 @@ function ResultContent() {
           )}
 
           {/* Curse Reading display — only for name/full plans */}
-                  {reading.split('\n\n').map((paragraph, i) => (
-                    <p key={i} className="text-paper-muted font-serif text-sm leading-relaxed mb-3 last:mb-0">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
+          {showReading && (() => {
             try {
               const reading = localStorage.getItem('beatpetty_reading');
               if (!reading) return null;
               return (
-                <div className="mt-8 px-6 py-6 bg-ink-light border border-gold/30 rounded-sm max-w-md mx-auto animate-fade-in-up">
+                <div className="mt-8 px-6 py-6 bg-ink-light border border-gold/30 rounded-sm max-w-md mx-auto text-left animate-fade-in-up">
                   <h2 className="text-lg font-bold text-gold font-serif mb-4 text-center">
                     {t('readingTitle')}
                   </h2>
@@ -164,7 +163,17 @@ function ResultContent() {
             }
           })()}
 
-          <div className="flex flex-col items-center gap-4">
+          {/* Seal Certificate — only for seal/full plans */}
+          {showSeal && (
+            <div className="mt-10">
+              <SealCertificate
+                enemyName={payment.enemyName || undefined}
+                enemyCategory={enemyTypeLabel}
+              />
+            </div>
+          )}
+
+          <div className="flex flex-col items-center gap-4 mt-8">
             <button
               onClick={handleShare}
               className="
