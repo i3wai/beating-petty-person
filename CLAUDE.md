@@ -3,6 +3,7 @@
 Digital 打小人 website — one-person company. Global market, Chinese culture as hook.
 
 > **每個新 session 第一件事：讀 `docs/ARCHITECTURE.md`，不要全掃描 codebase。**
+> **寫或改 blog 內容時，先讀 `docs/BLOG_SEO_STANDARD.md`，按標準執行。**
 > **項目 mistakes + decisions 在 `memory/MEMORY.md`。**
 
 ## Business Model
@@ -44,10 +45,14 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 | C 全套 | $6.99 | A + B 全部 |
 
 **UX 原則**：免費 = 完整，付費 = 「加強」。付費牆在儀式結束後（沉沒成本）。不需帳號，Stripe Session ID + localStorage。
+**信任原則**：不造假數據（無假計數器/假評價），用真實文化遺產代替。明確隱私政策 + 全額退款保證。Stripe 信任標章。
 
 ### 按鈕文案
 - ❌「Upgrade」「Pay to unlock」
 - ✓「Complete the Sealing Ritual」「Name Your Enemy — $2.99」
+
+### 新增頁面
+- `/about` — 創辦人故事 + 文化使命（3 語言）
 
 ## Tech Stack & Details
 → 見 `docs/ARCHITECTURE.md`（完整目錄結構、狀態機、音頻/Canvas 架構、CSS、顏色、技術風險）
@@ -62,6 +67,8 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 - Phase 2 SEO completed: 2026-04-08 — MDX blog system, /what-is, /how-it-works, /history pages
 - **Landing Page SEO completed: 2026-04-12** — EN meta/hero/body/FAQ optimized, ZH-TW/ZH-Hans optimized, keyword cannibalization fixed, sitemap lastmod added
 - **GSC submitted: 2026-04-12** — sitemap.xml with lastmod, hreflang
+- **Ritual Redesign completed: 2026-04-12** — $2.99 tier repositioned as "Curse Reading" (personalized modular reading), free name input in Step 1, name on paper figure, 162 unique readings (6 types × 27 combinations × 3 languages)
+- **Expert Review + UX Overhaul completed: 2026-04-13** — 3-expert panel (Marketing/UX/Cultural) scored 5.3/10 pre-fix → 39 improvements executed: removed fake counter & fake social proof, added honest heritage messaging, privacy policy, refund policy, About page (/about), keyboard accessibility, aria-live announcements, responsive interaction area (clamp), staggered entrance animations, landing page fade-out transition, Stripe trust badge on result page, haptic escalation, name always visible on paper figure, ignite hint pulsing text
 - Phase: **Soft Launch — Stripe live, accepting payments**
 - Owner: Allen (business, content, tool setup) | Claude (design, code, SEO, tech)
 - Deploy: `npx vercel --prod --yes`

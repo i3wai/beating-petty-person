@@ -134,8 +134,13 @@ export class ParticleSystem {
         this.ctx.beginPath();
         this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         this.ctx.fill();
+      } else if (p.type === ParticleType.HitSpark) {
+        // HitSpark: circles for natural particle feel
+        this.ctx.beginPath();
+        this.ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
+        this.ctx.fill();
       } else {
-        // Sparks, flames, glow: small rectangles (faster than circles)
+        // Flames, glow: small rectangles (faster rendering)
         this.ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
       }
     }

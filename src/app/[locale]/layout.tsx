@@ -7,6 +7,7 @@ import { hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/json-ld";
 import "../globals.css";
 
 const notoSerifTC = Noto_Serif_TC({
@@ -125,6 +126,14 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${notoSerifTC.variable} ${crimsonText.variable}`}
     >
       <body className="font-body antialiased bg-ink text-paper min-h-dvh flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
+        />
         <NextIntlClientProvider messages={messages}>
           <Header locale={locale} />
           <main className="flex-1">{children}</main>

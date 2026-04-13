@@ -36,6 +36,7 @@ src/
 │   └── [locale]/
 │       ├── layout.tsx           # Locale layout: fonts (Noto Serif TC, Crimson Text), SEO metadata, Header/Footer, GA4
 │       ├── page.tsx             # Landing page: 6 sections composition (server component)
+│       ├── about/page.tsx       # About page: founder story + cultural mission (Day 13)
 │       ├── pricing/page.tsx     # Pricing page: 4-tier cards + Stripe Checkout (Day 4)
 │       ├── result/page.tsx      # Result page: payment verification + enhanced result (Day 4)
 │       ├── ritual/page.tsx      # Ritual page wrapper (server component)
@@ -48,16 +49,16 @@ src/
 │
 ├── components/
 │   ├── Header.tsx               # Sticky header + LanguageSwitcher (client)
-│   ├── Footer.tsx               # Site footer (server)
+│   ├── Footer.tsx               # Site footer: privacy/refund policy, About link (server)
 │   ├── LanguageSwitcher.tsx     # EN/繁/简 buttons (client)
 │   │
 │   │  # Landing Page Sections (Day 2) — all client components
-│   ├── HeroSection.tsx          # 85dvh hero: CandleFlame + FlickerGlow + FloatingParticles + title + CTA
+│   ├── HeroSection.tsx          # 85dvh hero: CandleFlame + FlickerGlow + FloatingParticles + title + CTA (fade-out transition)
 │   ├── WhatIsSection.tsx        # 打小人 explanation with gradient separator
 │   ├── HowItWorksSection.tsx    # 3 steps (✠⚔☢) with icons, responsive grid
-│   ├── TrustSection.tsx         # Two trust lines
-│   ├── FinalCtaSection.tsx      # Bold headline + vermillion pulsing CTA
-│   ├── FooterNote.tsx           # Heritage statement (80% opacity)
+│   ├── TrustSection.tsx         # Honest heritage messaging (no fake counters)
+│   ├── FinalCtaSection.tsx      # Bold headline + vermillion pulsing CTA (fade-out transition)
+│   ├── FooterNote.tsx           # Heritage statement (80% opacity) — NOT rendered on landing page (Footer has same text)
 │   │
 │   │  # Atmospheric Effects (Day 2) — pure CSS animation
 │   ├── CandleFlame.tsx          # 3 candles (sm/md/lg) with flame inner/outer, wick, body
@@ -68,15 +69,15 @@ src/
 │   ├── ritual/
 │   │   ├── RitualProvider.tsx      # useReducer state machine + Context (7 states)
 │   │   ├── RitualOrchestrator.tsx  # Lazy-loads step components, renders by state
-│   │   ├── RitualPageClient.tsx    # Client wrapper: IdleScreen + RitualOrchestrator
-│   │   ├── InvocationTransition.tsx # 3s candle-lighting transition (CSS animation)
+│   │   ├── RitualPageClient.tsx    # Client wrapper: skip nav link + aria landmarks + IdleScreen + RitualOrchestrator
+│   │   ├── InvocationTransition.tsx # 3s candle-lighting transition + focus trap (CSS animation)
 │   │   ├── SealingTransition.tsx   # 3s stamp-slam + rune-flash transition
 │   │   ├── silhouettes.ts         # Shared clip-paths for 6 enemy types
 │   │   └── steps/
-│   │       ├── EnemySelectStep.tsx  # Step 1: 6-card grid + custom name input
-│   │       ├── BeatingStep.tsx      # Step 2: Canvas HitSpark + tap counter + timer (30s)
-│   │       ├── BurningStep.tsx      # Step 3: Canvas FireFlame/Smoke + paper dissolution (9s)
-│   │       └── ResultStep.tsx       # Step 4: Result + Stripe Checkout CTAs
+│   │       ├── EnemySelectStep.tsx  # Step 1: 6-card grid + name input (always visible) + shimmer loading + sticky confirm
+│   │       ├── BeatingStep.tsx      # Step 2: Canvas HitSpark + aria-live milestones + keyboard + haptic escalation + responsive area
+│   │       ├── BurningStep.tsx      # Step 3: Canvas FireFlame/Smoke + paper dissolution + ignite hint (9s)
+│   │       └── ResultStep.tsx       # Step 4: Result (first para clear, rest blurred) + Stripe badge + payment CTAs
 │   │
 │   │  # Canvas Engine (Day 1 prep, Day 3 integrated)
 │   ├── canvas/
@@ -150,8 +151,8 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `BEATING_COMPLET
 |-------|----------|--------|-------|------|
 | Invocation | 3s | Candle CSS animation + dark overlay | transition-invocation (sine sweep 200→80Hz) | CSS keyframes |
 | Step 1: Select | User-paced | 6-card grid, clip-path silhouettes | action-paper (bandpass noise 120ms) | CSS + React state |
-| Step 2: Beating | 30s timer | Canvas HitSpark (8-12/burst), paper degradation | action-beat (highpass noise 80ms) + ambient-drone | Canvas 2D + useCanvas hook |
-| Step 3: Burning | 9s auto | Canvas FireFlame (3/120ms) + Smoke (2/250ms), paper dissolution | ambient-wind | Canvas 2D (direct ParticleSystem) |
+| Step 2: Beating | 30s timer | Canvas HitSpark (8-12/burst), paper degradation, aria-live milestones, haptic escalation | action-beat (highpass noise 80ms) + ambient-drone | Canvas 2D + useCanvas hook + keyboard a11y |
+| Step 3: Burning | 9s auto | Canvas FireFlame (3/120ms) + Smoke (2/250ms), paper dissolution, ignite hint | ambient-wind | Canvas 2D (direct ParticleSystem) |
 | Sealing | 3s | Stamp slam + rune flash CSS | transition-sealing (sine sweep 120→60Hz) | CSS keyframes |
 | Step 4: Result | User-paced | Result text + payment CTAs | transition-result (lowpass noise) | React + Stripe (Day 4) |
 
@@ -191,7 +192,7 @@ Volume layers: ambient 0.3, action 0.6, transition 0.8
 - Object pool: max 80 particles, oldest recycled when full
 - DPR: capped at 2 for performance
 - Auto-degradation: drops below 20fps → reduces particle count
-- Particle types: HitSpark (orange/ember, gravity), FireFlame (red-orange, upward), Smoke (gray, upward, fade)
+- Particle types: HitSpark (orange/ember circles, gravity), FireFlame (red-orange, upward), Smoke (gray, upward, fade)
 
 **useCanvas.ts** — React hook for BeatingStep
 - Returns: `{ canvasRef, emit, start, stop }`
@@ -206,10 +207,13 @@ site          → title, subtitle, description (global)
 landing       → hero{title,subtitle,cta}, whatIs{title,description}, howItWorks{title,steps[]},
                  trust{line1,line2}, finalCta{headline,button}, footer{heritage}, cta, learnMore
 meta          → title, description, ogTitle, ogDescription
-ritual        → ~28 keys: step1–4 titles/subtitles, enemies.{6 types}.name/desc,
-                 invocation/sealing text, result text, payment buttons, beginButton, tapCount
+ritual        → ~40 keys: step1–4 titles/subtitles, enemies.{6 types}.name/desc,
+                 invocation/sealing text, result text, payment buttons, beginButton, tapCount,
+                 step2RageMilestone{25,50,75,100} (aria-live), step2RageFull, step3IgniteHint,
+                 privacyNote/privacyLink/privacyFull, refundPolicy, mobileHint
 pricing       → title, subtitle, free/name/seal/full {name, price, description, features[], cta}
-result        → title, paid/free titles/descriptions, share, verifying, startOver, backToHome
+result        → title, paid/free titles/descriptions, share, verifying, startOver, backToHome, certificateDescription
+about         → title, subtitle, storyTitle, storyP1–P3, missionTitle, missionText
 common        → comingSoon
 ```
 
@@ -218,8 +222,8 @@ common        → comingSoon
 ## CSS Architecture (globals.css)
 
 - **Tailwind v4 `@theme` block**: colors (ink/vermillion/gold/paper/ember/smoke), fonts (serif/body), 7 animations
-- **Component CSS classes**: `.candle*`, `.candle-flame*`, `.glow-orb*`, `.floating-particle`, `.paper-figure`, `.burning-paper-figure`, `.enemy-card`, `.enemy-silhouette`, `.sealing-*`, `.invocation-*`
-- **Keyframes**: flame-flicker-1/2, flame-glow-pulse, particle-float, particle-drift, glow-pulse-1/2/3, paper-tap-pulse, invocation-darken/glow-in/candle-scale, stampSlam, runeFlash
+- **Component CSS classes**: `.candle*`, `.candle-flame*`, `.glow-orb*`, `.floating-particle`, `.paper-figure`, `.burning-paper-figure`, `.enemy-card`, `.enemy-silhouette`, `.sealing-*`, `.invocation-*`, `.stagger-fade-in`, `.landing-fade-out`, `.skip-nav`, `.sr-only`, `.img-skeleton`
+- **Keyframes**: flame-flicker-1/2, flame-glow-pulse, particle-float, particle-drift, glow-pulse-1/2/3, paper-tap-pulse, invocation-darken/glow-in/candle-scale, stampSlam, runeFlash, paper-curl-burn, shimmer, stagger-fade-in
 - **`@layer base`**: dark theme (html, body, ::selection, scrollbar)
 - **`@media (prefers-reduced-motion: reduce)`**: single block, all components
 - **NO tailwind.config.ts** — everything through `@theme` in globals.css
@@ -239,7 +243,7 @@ common        → comingSoon
 | gold-light | #e8c46a | Hover states |
 | paper | #f5f0e8 | Text color (light on dark) |
 | paper-dark | #d8d0c4 | — |
-| paper-muted | #a89e90 | Secondary text |
+| paper-muted | #b0a698 | Secondary text |
 | ember | #ff6b35 | Particle color |
 | smoke | #8a8078 | Tertiary text (WCAG AA on #1a1a1a) |
 | shadow | #0d0d0d | Deepest dark |
@@ -264,10 +268,11 @@ common        → comingSoon
 
 | Page | Status | Route |
 |------|--------|-------|
-| Landing | **Done (Day 2)** | `/[locale]/` |
-| Ritual | **Done (Day 3)** | `/[locale]/ritual` |
+| Landing | **Done (Day 2, updated Day 13)** | `/[locale]/` |
+| Ritual | **Done (Day 3, updated Day 13)** | `/[locale]/ritual` |
 | Pricing | **Done (Day 4)** | `/[locale]/pricing` |
-| Result | **Done (Day 4)** | `/[locale]/result` |
+| Result | **Done (Day 4, updated Day 13)** | `/[locale]/result` |
+| About | **Done (Day 13)** | `/[locale]/about` |
 
 ## Environment Variables
 

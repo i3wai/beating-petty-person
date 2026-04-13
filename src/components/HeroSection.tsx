@@ -1,13 +1,26 @@
 'use client';
 
+import { useCallback } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import CandleFlame from "@/components/CandleFlame";
 import FlickerGlow from "@/components/FlickerGlow";
 import FloatingParticles from "@/components/FloatingParticles";
 
 export function HeroSection() {
   const t = useTranslations("landing.hero");
+  const tCommon = useTranslations("common");
+  const router = useRouter();
+
+  const handleBeginRitual = useCallback(() => {
+    // Add fade-out class to the entire page content
+    const main = document.querySelector('main') || document.body;
+    main.classList.add('landing-fade-out');
+    // Navigate after fade-out completes
+    setTimeout(() => {
+      router.push('/ritual');
+    }, 450);
+  }, [router]);
 
   return (
     <section className="relative flex flex-col items-center justify-center min-h-[85dvh] px-4 py-16 overflow-hidden">
@@ -32,12 +45,17 @@ export function HeroSection() {
           {t("subtitle")}
         </p>
 
-        <Link
-          href="/ritual"
-          className="inline-flex items-center px-8 py-4 bg-gold text-ink font-serif font-semibold text-lg rounded-sm hover:bg-gold-light transition-colors animate-pulse-glow focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-gold"
+        <button
+          onClick={handleBeginRitual}
+          className="inline-flex items-center px-8 py-4 bg-gold text-ink font-serif font-semibold text-lg rounded-sm hover:bg-gold-light transition-colors animate-pulse-glow focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
         >
           {t("cta")}
-        </Link>
+        </button>
+
+        {/* Mobile hint — visible only on larger screens (desktop users) */}
+        <p className="hidden sm:block mt-6 text-paper-muted/40 text-xs font-serif">
+          {tCommon("mobileHint")}
+        </p>
       </div>
     </section>
   );

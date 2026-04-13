@@ -63,3 +63,33 @@
 ### Process
 - macOS 的 zsh for loop 裡不能直接用 curl，要用 `/usr/bin/curl` 完整路徑
 - macOS grep 不支援 `-P` (Perl regex)，要用 `-o` 替代
+
+## Day 13 Lessons (2026-04-13) — Expert Review + UX Overhaul
+
+### Expert Review Process
+- 3-expert panel (Marketing/UX/Cultural) scored ritual 5.3/10 pre-fix — useful structured assessment
+- Foreground Agent calls more reliable than background TeamCreate agents for parallel code work
+- Team agents (TeamCreate + SendMessage) unreliable: went idle repeatedly, messages not delivered, shutdown stuck
+- Manual `rm -rf ~/.claude/teams/ ~/.claude/tasks/` needed when team cleanup fails
+
+### Trust Strategy
+- Fake social proof (daily counter, "數千人完成") is anti-pattern for curse ritual — destroys credibility
+- Honest heritage messaging > fake numbers: "源自正宗廣東民間傳統"
+- Privacy policy + refund guarantee ("不滿意？全額退款") are conversion tools, not legal afterthoughts
+- Stripe trust badge on result page reduces payment anxiety
+
+### UX Discoveries
+- Name input should always be visible (not just when "Custom" selected) — users want personalization regardless
+- First result paragraph must be clear text, rest blurred — immediate gratification then paywall tease
+- Result paragraph blur-[8px] for i > 0 is the right balance (too much blur = illegible tease fails)
+- FooterNote on landing page duplicated Footer text — remove component from page when Footer already shows it
+- Responsive interaction area: clamp(280px, 80vmin, 400px) better than fixed px for cross-device
+- Haptic escalation (50ms → 40ms → 30ms+20ms double) keeps physical engagement building
+
+### A11y
+- Skip nav link + aria-live milestones + focus trap in transitions = meaningful a11y, not checkbox compliance
+- Keyboard support (Enter/Space on beating area) required for mobile keyboard users too
+
+### Landing Page
+- Fade-out transition on CTA click (add class → wait 300ms → router.push) creates cinematic feel before ritual
+- Mobile hint ("Best experienced on desktop") hidden on mobile with `hidden sm:block`

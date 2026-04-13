@@ -1,6 +1,6 @@
 'use client';
 
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState, useEffect } from 'react';
 import { useRitual } from '@/components/ritual/RitualProvider';
 
 // Lazy-load step components — avoid loading Canvas code upfront
@@ -34,16 +34,37 @@ function StepLoader() {
 /**
  * Reads ritual state and renders the appropriate step component.
  * All steps are lazy-loaded to keep initial bundle small.
+ * Includes a 1-second crossfade transition between beating and burning.
  */
 export default function RitualOrchestrator() {
   const { state } = useRitual();
+  const [burningVisible, setBurningVisible] = useState(false);
+
+  // 1-second crossfade when transitioning to burning
+  useEffect(() => {
+    if (state === 'burning') {
+      const timer = setTimeout(() => setBurningVisible(true), 50);
+      return () => clearTimeout(timer);
+    } else {
+      setBurningVisible(false);
+    }
+  }, [state]);
 
   return (
     <Suspense fallback={<StepLoader />}>
       {state === 'invocation' && <InvocationTransition />}
       {state === 'select' && <EnemySelectStep />}
       {state === 'beating' && <BeatingStep />}
-      {state === 'burning' && <BurningStep />}
+      {state === 'burning' && (
+        <div
+          style={{
+            opacity: burningVisible ? 1 : 0,
+            transition: 'opacity 1s ease-in',
+          }}
+        >
+          <BurningStep />
+        </div>
+      )}
       {state === 'sealing' && <SealingTransition />}
       {state === 'result' && <ResultStep />}
     </Suspense>

@@ -6,6 +6,16 @@ import readingTime from "reading-time";
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const VALID_LOCALES = ["en", "zh-TW", "zh-Hans"];
 
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
+export interface HowToStep {
+  name: string;
+  text: string;
+}
+
 export interface PostMeta {
   title: string;
   description: string;
@@ -14,6 +24,11 @@ export interface PostMeta {
   ogImage?: string;
   slug: string;
   readingTime: string;
+  cluster: "A" | "B" | "C";
+  updatedDate?: string;
+  faqs?: FAQ[];
+  steps?: HowToStep[];
+  wordCount: number;
 }
 
 export interface PageMeta {
@@ -58,6 +73,11 @@ export function getAllPosts(locale: string): PostMeta[] {
       ogImage: data.ogImage,
       slug: file.replace(/\.mdx$/, ""),
       readingTime: stats.text,
+      cluster: data.cluster ?? "A",
+      updatedDate: data.updatedDate,
+      faqs: data.faqs,
+      steps: data.steps,
+      wordCount: content.split(/\s+/).filter(Boolean).length,
     };
   }).filter((post) => post.title && post.date)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -85,6 +105,11 @@ export function getPostBySlug(
       ogImage: data.ogImage,
       slug,
       readingTime: stats.text,
+      cluster: data.cluster ?? "A",
+      updatedDate: data.updatedDate,
+      faqs: data.faqs,
+      steps: data.steps,
+      wordCount: content.split(/\s+/).filter(Boolean).length,
     },
     content,
   };
@@ -130,4 +155,33 @@ export function getAllBlogSlugs(): { locale: string; slug: string }[] {
   }
 
   return slugs;
+}
+
+export function getPostsByCluster(locale: string, cluster: "A" | "B" | "C"): PostMeta[] {
+  validateLocale(locale);
+  return getAllPosts(locale).filter((post) => post.cluster === cluster);
+}
+
+export function getRelatedPosts(locale: string, slug: string, limit: number = 3): PostMeta[] {
+  validateLocale(locale);
+  const allPosts = getAllPosts(locale);
+  const currentPost = allPosts.find((post) => post.slug === slug);
+  if (!currentPost) return [];
+
+  return allPosts
+    .filter((post) => post.slug !== slug && post.cluster === currentPost.cluster)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, limit);
+}
+
+export function extractHeadings(content: string): { text: string; id: string }[] {
+  const headingRegex = /^## (.+)$/gm;
+  const headings: { text: string; id: string }[] = [];
+  let match;
+  while ((match = headingRegex.exec(content)) !== null) {
+    const text = match[1].replace(/[*_`[\]]/g, "").trim();
+    const id = text.toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-");
+    headings.push({ text, id });
+  }
+  return headings;
 }

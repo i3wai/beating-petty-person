@@ -12,7 +12,7 @@
     },
     "whatIs": {
       "title": "打小人是什麼？",
-      "description": "打小人，是源自廣東的百年詛咒儀式。每逢驚蟄，人們聚集在鵝頸橋下，用鞋拍打紙人，詛咒那些暗中傷害自己的小人。紙人燃盡，詛咒封印。這門手藝代代相傳，至今不絕。萬一呢？"
+      "description": "打小人，是源自廣東的百年詛咒儀式。每逢驚蟄，人們聚集在鵝頸橋下，用鞋拍打紙人，詛咒那些暗中傷害自己的小人。紙人燃盡，詛咒封印。古老傳統，在現代世界延續。萬一呢？"
     },
     "howItWorks": {
       "title": "打小人儀式流程",
@@ -36,12 +36,11 @@
     },
     "trust": {
       "line1": "源自正宗廣東民間傳統",
-      "line2": "已有數千人完成線上打小人儀式",
-      "counter": "今日已完成 {count} 次打小人儀式"
+      "line2": "三百年古老儀式，現在線上體驗。"
     },
     "atmosphere": {
       "lines": [
-        "4 分鐘前，一場打小人儀式剛剛完成。敵人的名字已被寫上紙人。",
+        "蠟燭搖曳。黑暗的氣息瀰漫在空氣中。",
         "紙人已化為灰燼。詛咒正在生效。",
         "你的小人的氣運正在逆轉。你感覺到了嗎？"
       ]
@@ -57,13 +56,19 @@
     },
     "cta": "開始打小人",
     "learnMore": "了解更多",
+    "about": {
+      "title": "關於 BeatPetty",
+      "subtitle": "將三百年香港傳統帶入數位時代。",
+      "storyTitle": "我們的故事",
+      "storyP1": "BeatPetty 誕生於香港灣仔鵝頸橋下的一個瞬間。每年驚蟄，數百人聚集在橋下，用舊鞋拍打紙人——詛咒那些傷害過自己的人。空氣中瀰漫著煙霧、咒語，和一種奇妙的希望。",
+      "storyP2": "這就是打小人——粵語「Da Siu Yan」。一個超過三百年的廣東民間傳統，已被列為香港非物質文化遺產。不是迷信。不是遊戲。是真實的人們世代信任的儀式。",
+      "storyP3": "我們創建 BeatPetty，是為了將這個儀式帶給全世界。為那些無法親身到香港的人。為那些需要邏輯無法提供的釋放的人。為那些願意問一句：萬一呢？",
+      "missionTitle": "我們的使命",
+      "missionText": "以最真實的形式保存和分享打小人傳統——黑暗、肅穆、不加掩飾的超自然體驗。我們相信文化遺產值得擁有一個尊重其根源的數位家園。"
+    },
     "faq": {
       "title": "關於詛咒儀式的常見問題",
       "items": [
-        {
-          "question": "真的可以在線詛咒別人嗎？",
-          "answer": "這是打小人的數位版本，源自香港的三百年詛咒儀式。你選擇小人類型、拍打紙人、燒成灰燼。儀式免費進行。萬一呢？"
-        },
         {
           "question": "打小人是什麼？",
           "answer": "打小人——粵語「Da Siu Yan」——是廣東的詛咒儀式，實踐者用鞋拍打紙人來詛咒敵人。起源於廣東省，在香港鵝頸橋最為著名，已被列為香港非物質文化遺產。"
@@ -78,7 +83,7 @@
         },
         {
           "question": "詛咒儀式真的有效嗎？",
-          "answer": "這是傳統中國民間習俗，不是科學過程。是否有效取決於你的信念。情感宣洩是真實的。傳統是古老的。萬一呢？"
+          "answer": "這是流傳數百年的傳統，世代相傳。詛咒是否生效，在你與儀式之間。情感宣洩是真實的。傳統是古老的。萬一呢？"
         },
         {
           "question": "可以點名詛咒特定的人嗎？",
@@ -97,7 +102,7 @@
     "step1Title": "選擇你的小人",
     "step1Subtitle": "六種小人，認清你的宿敵。",
     "step1Confirm": "確認選擇",
-    "step1CustomPlaceholder": "輸入名字...",
+    "step1CustomPlaceholder": "輸入名字以個人化你的詛咒（選填）",
     "step1CustomLabel": "輸入名字",
     "enemies": {
       "backstabber": { "name": "是非小人", "desc": "表面笑臉，背後插刀。" },
@@ -113,26 +118,47 @@
     "step2Timer": "剩餘 {seconds} 秒",
     "step2TapCount": "已打 {count} 下",
     "step2TapAria": "點擊紙人以打擊它",
+    "step2RageFull": "你的怒火已達頂峰。紙人顫抖。",
+    "step2RageMilestone25": "詛咒甦醒。怒火四分之一。",
+    "step2RageMilestone50": "詛咒漸強。已完成一半。",
+    "step2RageMilestone75": "詛咒即將完成。繼續打擊。",
+    "step2RageMilestone100": "怒火達到頂峰。紙人顫抖。",
+    "step2Chants": [
+      "打你個小人頭",
+      "打到你有氣無得透",
+      "小人遠離",
+      "惡有惡報",
+      "是非精快走",
+      "貴人近來小人走",
+      "打你打到你發瘟",
+      "神打鬼打小人打"
+    ],
     "invocationTitle": "儀式開始",
     "invocationSubtitle": "點燃蠟燭，開啟陰門。",
     "invocationButton": "進入儀式",
     "step3Title": "燒掉它",
     "step3Subtitle": "化為灰燼。",
+    "step3IgniteHint": "按住不放以點火",
+    "step3Ignite": "按住點火",
+    "step3Igniting": "點燃中...",
     "step3Burning": "火焰吞噬中...",
     "step3Complete": "已成灰燼。",
     "sealingTitle": "封印",
     "sealingSubtitle": "詛咒已成。",
     "step4Title": "結果揭示",
-    "resultFreeTitle": "小人勢力已被削弱...",
-    "resultFreeSubtitle": "...但尚未完全消除。",
-    "resultFreeDescription": "儀式已生效。紙人已毀。但封印尚未完成。",
-    "resultPaidPrompt": "完成封印儀式，確保效果持久。",
+    "resultFreeTitle": "灰燼中有密語⋯",
+    "resultFreeSubtitle": "紙人已毀。詛咒已出。",
+    "resultFreeDescription": "你的小人已被打擊、焚燒。但灰燼中低語著未來——一段關於其命運的解讀，封印於火中。",
+    "resultPaidPrompt": "解鎖完整解讀，了解更深層的影響。",
     "resultSealButton": "完成封印 — $4.99",
     "resultNameButton": "揭示詛咒解讀 — $2.99",
     "resultFullButton": "全套儀式 — $6.99",
     "resultCheckoutError": "付款功能尚未開放，請稍後再試。",
     "resultShareButton": "分享此儀式",
     "readingPreview": "詛咒已出聲——但其言語仍被封印。解鎖完整解讀。",
+    "readingPreviewBlur": "言語被封印。揭示完整解讀。",
+    "readingLoading": "解讀灰燼中⋯",
+    "resultBestValue": "最超值",
     "startOver": "重新開始",
     "beginButton": "開始儀式",
     "reading": {
@@ -340,9 +366,9 @@
     "paidSubtitle": "你的儀式已以全套力量完成。",
     "paidDescription": "封印已成。{enemyName} 已被點名詛咒。封印將持續生效。",
     "paidDescriptionNoName": "封印完成。小人的影響力已被完全消除。",
-    "freeTitle": "小人勢力已被削弱...",
-    "freeSubtitle": "...但尚未完全消除。",
-    "freeDescription": "基本儀式已完成。考慮完成封印，確保效果持久。",
+    "freeTitle": "詛咒已下。",
+    "freeSubtitle": "儀式已成。",
+    "freeDescription": "紙人已毀。詛咒已出。你的小人的命運已然啟動。",
     "verifying": "驗證儀式中...",
     "verificationFailed": "無法驗證付款。請聯絡支援。",
     "shareTitle": "我剛體驗了一個古老的中國詛咒儀式",
@@ -355,7 +381,10 @@
     "certificateType": "詛咒類型",
     "certificateSealed": "封印日期",
     "certificateExpires": "有效期限",
-    "certificateFooter": "此封印由 BeatPetty 驗證。自封印日起有效期七天。"
+    "certificateFooter": "此封印由 BeatPetty 驗證。自封印日起有效期七天。",
+    "certificateDescription": "這是一張個人化的數位護符圖片，你可以儲存和分享。七天封印代表傳統儀式的一個完整週期——如需強化詛咒，可以重新封印。",
+    "certificateSerial": "封印編號",
+    "certificateOfficial": "BeatPetty 官方封印"
   },
   "nav": {
     "blog": "咒語集",
@@ -365,9 +394,26 @@
     "title": "咒語集",
     "subtitle": "古老知識。禁忌智慧。",
     "backToBlog": "返回咒語集",
-    "noPosts": "尚無文章。咒語集等待第一個記錄。"
+    "noPosts": "尚無文章。咒語集等待第一個記錄。",
+    "clusterA": "詛咒與黑魔法",
+    "clusterB": "厄運與詛咒解除",
+    "clusterC": "全球詛咒傳統",
+    "relatedArticles": "相關咒語",
+    "faqTitle": "常見問題",
+    "tocTitle": "目錄",
+    "intro": "探索古老的詛咒儀式藝術。從禁忌智慧到暗影魔法的秘密，探索我們關於施咒、驅邪和掌握黑魔法的指南。萬一是真的呢？",
+    "bottomCtaPrompt": "準備好親自體驗了嗎？",
+    "cta": { "heading": "讀夠了？", "subheading": "親自試試免費詛咒儀式。", "button": "開始儀式" },
+    "breadcrumb": { "home": "首頁", "blog": "咒語集" }
   },
   "common": {
-    "comingSoon": "即將推出"
+    "comingSoon": "即將推出",
+    "privacyNote": "輸入的名字不會被儲存、分享或用於任何其他用途。",
+    "privacyLink": "隱私",
+    "privacyFull": "隱私聲明：您輸入的任何名字僅用於儀式之中，絕不會被儲存、分享或用於任何其他用途。",
+    "refundPolicy": "不滿意？全額退款。",
+    "mobileHint": "建議在手機直向模式下體驗",
+    "skipToRitual": "跳至儀式",
+    "aboutLink": "關於"
   }
 }

@@ -1,7 +1,6 @@
 /**
- * Unique silhouette clip-paths per enemy type.
- * Shared across EnemySelectStep, BeatingStep, and BurningStep
- * so the paper figure shape is consistent throughout the ritual.
+ * Enemy type definitions shared across ritual steps.
+ * Paper figure images are AI-generated traditional Chinese paper dolls.
  */
 
 export type EnemyCategory =
@@ -21,6 +20,20 @@ export const ENEMY_CATEGORIES: EnemyCategory[] = [
   'custom',
 ];
 
+/** AI-generated paper figure images per enemy type */
+export const PAPER_FIGURE_IMAGES: Record<EnemyCategory, string> = {
+  backstabber: '/images/paper-figures/backstabber.jpg',
+  toxicBoss: '/images/paper-figures/toxic-boss.jpg',
+  ex: '/images/paper-figures/ex.jpg',
+  energyVampire: '/images/paper-figures/energy-vampire.jpg',
+  bully: '/images/paper-figures/bully.jpg',
+  custom: '/images/paper-figures/custom.jpg',
+};
+
+/** Default fallback image */
+export const DEFAULT_IMAGE = PAPER_FIGURE_IMAGES.custom;
+
+// Legacy clip-paths kept for EnemySelectStep card silhouettes
 export const SILHOUETTE_CLIPS: Record<EnemyCategory, string> = {
   backstabber:
     'polygon(50% 0%, 75% 12%, 80% 40%, 70% 60%, 85% 100%, 15% 100%, 30% 60%, 20% 40%, 25% 12%)',

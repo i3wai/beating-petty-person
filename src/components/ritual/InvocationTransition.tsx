@@ -13,6 +13,7 @@ const INVOCATION_DURATION_MS = 3000;
 /**
  * InvocationTransition — 3-second darkening transition with candle flames.
  * This is the iOS AudioContext unlock point (requires user gesture to trigger).
+ * Includes focus trap for accessibility.
  */
 export default function InvocationTransition() {
   const t = useTranslations('ritual');
@@ -21,6 +22,8 @@ export default function InvocationTransition() {
   const reducedMotion = useReducedMotion();
   const completedRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const completeInvocation = useCallback(() => {
     if (completedRef.current) return;
@@ -28,12 +31,58 @@ export default function InvocationTransition() {
     dispatch({ type: 'INVOCATION_COMPLETE' });
   }, [dispatch]);
 
+  // Focus trap: save previous focus, trap Tab within overlay, restore on unmount
   useEffect(() => {
-    // Init audio (iOS AudioContext unlock) + play ambient + transition sound
+    previousFocusRef.current = document.activeElement as HTMLElement;
+
+    // Focus the overlay itself
+    if (overlayRef.current) {
+      overlayRef.current.focus();
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !overlayRef.current) return;
+
+      const focusable = overlayRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      // Restore focus
+      if (previousFocusRef.current && typeof previousFocusRef.current.focus === 'function') {
+        previousFocusRef.current.focus();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // Init audio (iOS AudioContext unlock) + play transition sound
     const initAudio = async () => {
       try {
         await audio.init();
-        audio.playAmbient(SOUND_IDS.AMBIENT_DRONE);
         audio.playTransition(SOUND_IDS.TRANSITION_INVOCATION);
       } catch {
         // Audio init may fail silently — ritual continues
@@ -62,16 +111,23 @@ export default function InvocationTransition() {
   }
 
   return (
-    <div className="invocation-overlay fixed inset-0 z-50 flex flex-col items-center justify-center">
+    <div
+      ref={overlayRef}
+      className="invocation-overlay fixed inset-0 z-50 flex flex-col items-center justify-center"
+      tabIndex={-1}
+      aria-label={t('invocationTitle')}
+    >
       {/* Darkening layer */}
       <div className="invocation-darken absolute inset-0 bg-shadow" />
 
       {/* Radial glow — center */}
       <div className="invocation-radial-glow absolute inset-0 pointer-events-none" />
 
-      {/* Candles */}
+      {/* Candles with visible candle body */}
       <div className="invocation-candles animate-fade-in relative z-10 mb-8">
         <CandleFlame />
+        {/* Extended candle body base — warm tapered rectangle */}
+        <div className="invocation-candle-base" aria-hidden="true" />
       </div>
 
       {/* Title */}

@@ -12,7 +12,7 @@
     },
     "whatIs": {
       "title": "What Is This Curse Ritual?",
-      "description": "打小人 — Beating the Petty Person — is a 300-year-old curse ritual born on the streets of Hong Kong. Practitioners gather beneath bridges at the start of spring, striking paper effigies to curse their enemies. For centuries, people have used this ritual to curse those who wronged them — striking paper figures, chanting, burning. The ritual is real. The tradition is alive. What if it works?"
+      "description": "打小人 — Beating the Petty Person — is a 300-year-old curse ritual born on the streets of Hong Kong. Practitioners gather beneath bridges at the start of spring, striking paper effigies to curse their enemies. For centuries, people have used this ritual to curse those who wronged them — striking paper figures, chanting, burning. An ancient tradition, alive in the modern world. What if it works?"
     },
     "howItWorks": {
       "title": "The Ritual",
@@ -36,12 +36,11 @@
     },
     "trust": {
       "line1": "Based on authentic Cantonese folk traditions",
-      "line2": "Join thousands who have completed the curse ritual",
-      "counter": "{count} rituals completed today"
+      "line2": "A 300-year-old ritual, now online."
     },
     "atmosphere": {
       "lines": [
-        "A ritual was completed 4 minutes ago. An enemy was named.",
+        "The candles flicker. A dark presence lingers.",
         "The paper effigy has been burned. The curse takes hold.",
         "Your enemy's luck is shifting. You can feel it."
       ]
@@ -57,13 +56,19 @@
     },
     "cta": "Begin the Ritual",
     "learnMore": "Learn More",
+    "about": {
+      "title": "About BeatPetty",
+      "subtitle": "Preserving a 300-year-old Hong Kong tradition for the digital age.",
+      "storyTitle": "The Story",
+      "storyP1": "BeatPetty was born from a moment beneath the Goose Neck Bridge in Hong Kong's Wan Chai district. Every spring, on Jingzhe (驚蟄), hundreds gather under the overpass to beat paper effigies with old shoes — cursing those who wronged them. The air fills with smoke, chanting, and a strange kind of hope.",
+      "storyP2": "This is 打小人 (Da Siu Yan) — \"Beating the Petty Person.\" A Cantonese folk tradition dating back over 300 years, recognized as part of Hong Kong's intangible cultural heritage. Not superstition. Not a game. A genuine ritual that real people have trusted for generations.",
+      "storyP3": "We created BeatPetty to bring this ritual to the world. For those who can't travel to Hong Kong. For those who need closure that logic can't provide. For those willing to ask: what if it works?",
+      "missionTitle": "Our Mission",
+      "missionText": "To preserve and share the 打小人 tradition in its authentic form — dark, atmospheric, and unapologetically supernatural. We believe cultural heritage deserves a digital home that respects its origins."
+    },
     "faq": {
       "title": "Questions About the Curse Ritual",
       "items": [
-        {
-          "question": "Can I really curse someone online?",
-          "answer": "This is a digital version of 打小人 (Da Siu Yan), a 300-year-old curse ritual from Hong Kong. You choose an enemy type, strike a paper effigy, and burn it to ash. The ritual is free to perform. What if it works?"
-        },
         {
           "question": "What is 打小人 (Da Siu Yan)?",
           "answer": "打小人 — literally 'beating the petty person' — is a Cantonese curse ritual where practitioners strike paper effigies to curse their enemies. Originating in Guangdong province and practiced at Hong Kong's Goose Neck Bridge, it is recognized as part of Hong Kong's intangible cultural heritage."
@@ -78,7 +83,7 @@
         },
         {
           "question": "Does the curse ritual actually work?",
-          "answer": "This is a traditional Chinese folk practice, not a scientific process. Whether it works depends on what you believe. The emotional release is real. The tradition is ancient. What if it works?"
+          "answer": "This is a centuries-old tradition practiced by millions across generations. Whether the curse takes hold is between you and the ritual. The emotional release is real. The tradition is ancient. What if it works?"
         },
         {
           "question": "Can I curse a specific person by name?",
@@ -97,14 +102,14 @@
     "step1Title": "Choose Your Enemy",
     "step1Subtitle": "Six types of petty persons. Identify yours.",
     "step1Confirm": "Confirm Selection",
-    "step1CustomPlaceholder": "Enter a name...",
+    "step1CustomPlaceholder": "Enter a name to personalize your curse (optional)",
     "step1CustomLabel": "Enter their name",
     "enemies": {
       "backstabber": { "name": "The Backstabber", "desc": "They smile to your face, plot behind your back." },
       "toxicBoss": { "name": "The Toxic Boss", "desc": "Power without wisdom. Authority without empathy." },
       "ex": { "name": "The Ex", "desc": "Some doors should stay closed. Forever." },
-      "energyVampire": { "name": "The Energy Vampire", "desc": "They drain your light and leave you hollow." },
-      "bully": { "name": "The Bully", "desc": "They feed on fear. Tonight, the table turns." },
+      "energyVampire": { "name": "The Energy Vampire", "desc": "They drain your fortune and light. Every encounter costs you." },
+      "bully": { "name": "The Bully", "desc": "They bring conflict and chaos into your life. Tonight, the table turns." },
       "custom": { "name": "Custom", "desc": "You know exactly who they are." }
     },
     "step2Title": "Beat the Petty Person",
@@ -113,26 +118,47 @@
     "step2Timer": "{seconds}s remaining",
     "step2TapCount": "{count, plural, one {# strike} other {# strikes}}",
     "step2TapAria": "Tap the paper effigy to strike it",
+    "step2RageFull": "Your fury has reached its peak. The paper figure trembles.",
+    "step2RageMilestone25": "The curse stirs. One quarter fury.",
+    "step2RageMilestone50": "The curse grows stronger. Halfway there.",
+    "step2RageMilestone75": "The curse is nearly complete. Keep striking.",
+    "step2RageMilestone100": "Peak fury achieved. The paper figure trembles.",
+    "step2Chants": [
+      "Curse your lies",
+      "Your schemes unravel",
+      "Evil returns to you",
+      "Begone, petty one",
+      "Justice strikes",
+      "No more harm",
+      "Your poison fades",
+      "The curse takes hold"
+    ],
     "invocationTitle": "The Ritual Begins",
     "invocationSubtitle": "Light the candle. Open the gate.",
     "invocationButton": "Enter the Ritual",
     "step3Title": "Burn It",
     "step3Subtitle": "Watch it turn to ash.",
+    "step3IgniteHint": "Press and hold to ignite",
+    "step3Ignite": "Hold to Ignite",
+    "step3Igniting": "Igniting...",
     "step3Burning": "The flames consume...",
     "step3Complete": "It is done.",
     "sealingTitle": "The Seal",
     "sealingSubtitle": "The curse is bound.",
     "step4Title": "The Verdict",
-    "resultFreeTitle": "The petty person's influence has been weakened...",
-    "resultFreeSubtitle": "...but not fully eradicated.",
-    "resultFreeDescription": "The ritual has taken effect. The paper effigy is destroyed. But the sealing is incomplete.",
-    "resultPaidPrompt": "Complete the Sealing Ritual to ensure lasting effect.",
+    "resultFreeTitle": "The ashes hold a message...",
+    "resultFreeSubtitle": "The paper is destroyed. The curse has been spoken.",
+    "resultFreeDescription": "Your enemy has been struck and burned. But the ashes whisper of what's to come — a reading of their fate, sealed in fire.",
+    "resultPaidPrompt": "Unlock the full reading to understand the deeper implications.",
     "resultSealButton": "Complete the Sealing — $4.99",
     "resultNameButton": "Reveal the Curse Reading — $2.99",
     "resultFullButton": "Full Power Ritual — $6.99",
     "resultCheckoutError": "Payment is not yet available. Please try again later.",
     "resultShareButton": "Share This Ritual",
     "readingPreview": "The curse has spoken — but its words remain sealed. Reveal the full reading.",
+    "readingPreviewBlur": "The words are sealed. Reveal the reading.",
+    "readingLoading": "Reading the ashes...",
+    "resultBestValue": "Best Value",
     "startOver": "Start Over",
     "beginButton": "Begin the Ritual",
     "reading": {
@@ -340,9 +366,9 @@
     "paidSubtitle": "Your ritual has been completed with full power.",
     "paidDescription": "The sealing is bound. {enemyName} has been named and cursed. The seal will hold.",
     "paidDescriptionNoName": "The sealing is complete. Your enemy's influence has been fully eradicated.",
-    "freeTitle": "The petty person's influence has been weakened...",
-    "freeSubtitle": "...but not fully eradicated.",
-    "freeDescription": "The basic ritual is complete. Consider completing the sealing to ensure lasting effect.",
+    "freeTitle": "The curse has been cast.",
+    "freeSubtitle": "The ritual is complete.",
+    "freeDescription": "The paper effigy is destroyed. The curse has been spoken. Your enemy's fate is set in motion.",
     "verifying": "Verifying your ritual...",
     "verificationFailed": "Could not verify payment. Please contact support.",
     "shareTitle": "I just experienced an ancient Chinese curse ritual",
@@ -355,7 +381,10 @@
     "certificateType": "Curse Type",
     "certificateSealed": "Sealed On",
     "certificateExpires": "Seal Expires",
-    "certificateFooter": "This seal is verified by BeatPetty. Valid for 7 days from the date of sealing."
+    "certificateFooter": "This seal is verified by BeatPetty. Valid for 7 days from the date of sealing.",
+    "certificateDescription": "A personalized digital talisman image you can save and share. The 7-day seal represents the traditional ritual cycle — renew it if the curse needs reinforcing.",
+    "certificateSerial": "Seal No.",
+    "certificateOfficial": "Official BeatPetty Seal"
   },
   "nav": {
     "blog": "The Grimoire",
@@ -365,9 +394,26 @@
     "title": "The Grimoire",
     "subtitle": "Ancient knowledge. Forbidden wisdom.",
     "backToBlog": "Back to The Grimoire",
-    "noPosts": "No posts yet. The grimoire awaits its first entry."
+    "noPosts": "No posts yet. The grimoire awaits its first entry.",
+    "clusterA": "Curses & Black Magic",
+    "clusterB": "Bad Luck & Curse Removal",
+    "clusterC": "Global Curse Traditions",
+    "relatedArticles": "Related Curses",
+    "faqTitle": "Frequently Asked Questions",
+    "tocTitle": "Table of Contents",
+    "intro": "Discover the ancient art of the curse ritual. From forbidden wisdom to the secrets of shadow magic, explore our collection of guides on casting spells, warding off evil spirits, and mastering the dark arts. What if it works?",
+    "bottomCtaPrompt": "Ready to experience it yourself?",
+    "cta": { "heading": "Done reading?", "subheading": "Try the free curse ritual yourself.", "button": "Begin the Ritual" },
+    "breadcrumb": { "home": "Home", "blog": "The Grimoire" }
   },
   "common": {
-    "comingSoon": "Coming Soon"
+    "comingSoon": "Coming Soon",
+    "privacyNote": "Names entered are not stored, shared, or used for any other purpose.",
+    "privacyLink": "Privacy",
+    "privacyFull": "Privacy: Any names you enter are used solely within the ritual and are never stored, shared, or used for any other purpose.",
+    "refundPolicy": "Not satisfied? Full refund.",
+    "mobileHint": "Best experienced in portrait mode on your phone",
+    "skipToRitual": "Skip to ritual",
+    "aboutLink": "About"
   }
 }

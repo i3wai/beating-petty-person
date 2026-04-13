@@ -1,8 +1,20 @@
+"use client";
+
+import { useCallback } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 
 export function FinalCtaSection() {
   const t = useTranslations("landing.finalCta");
+  const router = useRouter();
+
+  const handleBeginRitual = useCallback(() => {
+    const main = document.querySelector('main') || document.body;
+    main.classList.add('landing-fade-out');
+    setTimeout(() => {
+      router.push('/ritual');
+    }, 450);
+  }, [router]);
 
   return (
     <section className="relative px-4 py-20 sm:py-28">
@@ -23,12 +35,12 @@ export function FinalCtaSection() {
           {t("subtext")}
         </p>
 
-        <Link
-          href="/ritual"
-          className="inline-flex items-center px-10 py-5 bg-vermillion-dark text-paper font-serif font-semibold text-xl rounded-sm hover:bg-vermillion transition-colors animate-pulse-glow focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-vermillion"
+        <button
+          onClick={handleBeginRitual}
+          className="inline-flex items-center px-10 py-5 bg-vermillion-dark text-paper font-serif font-semibold text-xl rounded-sm hover:bg-vermillion transition-colors animate-pulse-glow focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-vermillion cursor-pointer"
         >
           {t("button")}
-        </Link>
+        </button>
       </div>
     </section>
   );

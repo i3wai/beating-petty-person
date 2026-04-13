@@ -55,6 +55,14 @@ const SOUND_SYNTH: Record<SoundId, SynthConfig> = {
     filterQ: 0.8,
     filterType: 'bandpass',
   },
+  'action-thwack': {
+    type: 'noise',
+    duration: 60,
+    gain: 0.5,
+    filterFreq: 1200,
+    filterQ: 2,
+    filterType: 'bandpass',
+  },
   'transition-invocation': {
     type: 'oscillator',
     oscType: 'sine',

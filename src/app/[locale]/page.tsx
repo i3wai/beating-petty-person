@@ -6,7 +6,7 @@ import { TrustSection } from "@/components/TrustSection";
 import { AtmosphereSection } from "@/components/AtmosphereSection";
 import { FaqSection } from "@/components/FaqSection";
 import { FinalCtaSection } from "@/components/FinalCtaSection";
-import { FooterNote } from "@/components/FooterNote";
+
 
 export default async function LandingPage({
   params,
@@ -29,7 +29,7 @@ function LandingContent() {
       <AtmosphereSection />
       <FaqSection />
       <FinalCtaSection />
-      <FooterNote />
+
     </div>
   );
 }

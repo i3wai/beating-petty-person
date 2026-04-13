@@ -7,6 +7,7 @@ import RitualOrchestrator from '@/components/ritual/RitualOrchestrator';
 /** Idle state — "Begin the Ritual" entry point */
 function IdleScreen() {
   const t = useTranslations('ritual');
+  const tCommon = useTranslations('common');
   const { dispatch } = useRitual();
 
   return (
@@ -25,6 +26,7 @@ function IdleScreen() {
       </p>
 
       <button
+        id="ritual-main-content"
         onClick={() => dispatch({ type: 'START_RITUAL' })}
         className="
           px-10 py-4 rounded-sm
@@ -43,14 +45,27 @@ function IdleScreen() {
 /**
  * Client wrapper — must be rendered INSIDE RitualProvider.
  * Renders IdleScreen or RitualOrchestrator based on state.
+ * Includes skip navigation link and semantic landmarks.
  */
 export default function RitualPageClient() {
   const { state } = useRitual();
+  const tCommon = useTranslations('common');
 
   return (
-    <div className="min-h-[100dvh]">
-      {state === 'idle' && <IdleScreen />}
-      {state !== 'idle' && <RitualOrchestrator />}
-    </div>
+    <>
+      {/* Skip navigation link */}
+      <a href="#ritual-main-content" className="skip-nav font-serif">
+        {tCommon('skipToRitual')}
+      </a>
+
+      <div className="min-h-[100dvh]" role="main" aria-label="Ritual">
+        {state === 'idle' && <IdleScreen />}
+        {state !== 'idle' && (
+          <section aria-label="Ritual progress">
+            <RitualOrchestrator />
+          </section>
+        )}
+      </div>
+    </>
   );
 }

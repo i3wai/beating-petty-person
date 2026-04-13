@@ -9,6 +9,7 @@ export const SOUND_IDS = {
   AMBIENT_WIND: 'ambient-wind',
   ACTION_BEAT: 'action-beat',
   ACTION_PAPER: 'action-paper',
+  ACTION_THWACK: 'action-thwack',
   TRANSITION_INVOCATION: 'transition-invocation',
   TRANSITION_SEALING: 'transition-sealing',
   TRANSITION_RESULT: 'transition-result',

@@ -17,7 +17,7 @@
   --color-gold-light: #e8c46a;
   --color-paper: #f5f0e8;
   --color-paper-dark: #d8d0c4;
-  --color-paper-muted: #a89e90;
+  --color-paper-muted: #b0a698;
   --color-ember: #ff6b35;
   --color-smoke: #8a8078;
   --color-shadow: #0d0d0d;
@@ -487,6 +487,44 @@
     opacity: 0.3;
   }
 
+  /* Ritual authenticity — no animation fallbacks */
+  .smoke-wisp {
+    animation: none;
+    opacity: 0.04;
+  }
+
+  .slipper-weapon {
+    animation: none;
+    opacity: 0;
+  }
+
+  .curse-chant {
+    animation: none;
+    opacity: 0;
+  }
+
+  .damage-appear {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  /* New animations: reduced motion fallbacks */
+  .ignite-hint {
+    animation: none;
+    opacity: 0.8;
+  }
+
+  .stagger-fade-in,
+  .stagger-fade-in-up {
+    animation: none;
+    opacity: 1;
+  }
+
+  .img-skeleton {
+    animation: none;
+    opacity: 0.1;
+  }
+
 }
 
 /* ============================================
@@ -540,6 +578,463 @@
 }
 
 /* ============================================
+   Ritual Authenticity — Stone, Smoke, Weapons
+   ============================================ */
+
+/* Stone brick ground — CSS-only stone texture with mortar lines */
+.stone-ground {
+  position: relative;
+  background-color: #2a2520;
+  background-image:
+    /* Horizontal mortar lines every ~50px */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 49px,
+      rgba(120, 110, 95, 0.5) 49px,
+      rgba(120, 110, 95, 0.5) 50px
+    ),
+    /* Vertical mortar lines — even rows */
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 89px,
+      rgba(120, 110, 95, 0.5) 89px,
+      rgba(120, 110, 95, 0.5) 90px
+    ),
+    /* Vertical mortar lines — odd rows, offset by half block width */
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 44px,
+      rgba(120, 110, 95, 0.45) 44px,
+      rgba(120, 110, 95, 0.45) 45px
+    ),
+    /* Subtle grain texture */
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(120, 110, 95, 0.12) 2px,
+      rgba(120, 110, 95, 0.12) 4px
+    );
+  border-radius: 4px;
+  border: 1px solid rgba(120, 110, 95, 0.25);
+}
+
+/* Vignette overlay — darkens edges of the stone ground */
+.stone-ground::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(10, 8, 6, 0.3) 100%
+  );
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Smoke wisps — rising translucent puffs */
+.smoke-wisp {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    rgba(180, 168, 155, 0.35) 0%,
+    rgba(160, 148, 135, 0.15) 50%,
+    transparent 70%
+  );
+  filter: blur(14px);
+  animation: smoke-rise var(--smoke-duration, 10s) ease-out forwards,
+             smoke-drift var(--smoke-drift-duration, 7s) ease-in-out infinite;
+}
+
+@keyframes smoke-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-350px);
+    opacity: 0;
+  }
+}
+
+@keyframes smoke-drift {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(25px);
+  }
+  75% {
+    transform: translateX(-25px);
+  }
+}
+
+/* Slipper weapon — slam attack animation */
+.slipper-weapon {
+  position: absolute;
+  pointer-events: none;
+  width: 56px;
+  height: 72px;
+  transform-origin: top center;
+  animation: slipper-slam 280ms ease-out forwards;
+}
+
+@keyframes slipper-slam {
+  0% {
+    transform: translateY(-80px) rotate(-55deg) scale(0.8);
+    opacity: 1;
+  }
+  45% {
+    transform: translateY(0) rotate(0deg) scale(1.1);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(-8px) rotate(4deg) scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-15px) rotate(-3deg) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* Curse chant — floating text that rises and fades */
+.curse-chant {
+  position: absolute;
+  pointer-events: none;
+  color: var(--color-vermillion-light);
+  font-family: var(--font-serif), serif;
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: 0 0 12px rgba(255, 112, 80, 0.6), 0 1px 4px rgba(0, 0, 0, 0.7);
+  animation: chant-float 1.4s ease-out forwards;
+}
+
+@keyframes chant-float {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+
+/* Damage marks — paper tears & scorch marks */
+.damage-mark {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Tear — triangular rip revealing dark void underneath the paper */
+.damage-tear {
+  clip-path: polygon(10% 0%, 90% 20%, 60% 100%, 0% 80%);
+  background: linear-gradient(135deg, #0f0d0b 40%, rgba(30, 25, 20, 0.8) 100%);
+  box-shadow: 0 0 2px 1px rgba(245, 240, 232, 0.3);
+}
+
+/* Wrinkle — crease line across the paper */
+.damage-wrinkle {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(200, 190, 170, 0.5), transparent);
+  border-radius: 1px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Scorch — burn mark with warm orange glow */
+.damage-scorch {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(180, 80, 20, 0.6) 0%,
+    rgba(80, 30, 5, 0.5) 40%,
+    rgba(30, 15, 5, 0.4) 70%,
+    transparent 100%
+  );
+  box-shadow: 0 0 4px 1px rgba(239, 96, 48, 0.3);
+}
+
+.damage-appear {
+  animation: damage-pop 200ms ease-out forwards;
+}
+
+@keyframes damage-pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   CSS Fire Effect — BurningStep
+   ============================================ */
+
+.fire-container {
+  position: absolute;
+  /* Position relative to paper figure, not page */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 180px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+  /* Scale with paper figure during burn */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+/* Individual flame tongue */
+.flame {
+  position: absolute;
+  bottom: 20%;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  filter: blur(3px);
+  mix-blend-mode: screen;
+}
+
+/* Core flame — bright yellow-white center */
+.flame-core {
+  width: 50px;
+  height: 100px;
+  left: calc(50% - 25px);
+  background: linear-gradient(to top,
+    rgba(255, 240, 180, 0.9) 0%,
+    rgba(255, 200, 50, 0.7) 30%,
+    rgba(255, 140, 20, 0.4) 60%,
+    transparent 100%
+  );
+  animation: flame-core-flicker 0.4s ease-in-out infinite alternate;
+}
+
+/* Outer flames — orange-red, wider */
+.flame-outer-1 {
+  width: 70px;
+  height: 130px;
+  left: calc(50% - 35px);
+  background: linear-gradient(to top,
+    rgba(255, 160, 20, 0.7) 0%,
+    rgba(230, 80, 10, 0.5) 40%,
+    rgba(180, 30, 5, 0.2) 70%,
+    transparent 100%
+  );
+  animation: flame-sway-1 0.6s ease-in-out infinite alternate;
+}
+
+.flame-outer-2 {
+  width: 60px;
+  height: 110px;
+  left: calc(50% - 30px);
+  background: linear-gradient(to top,
+    rgba(255, 120, 10, 0.6) 0%,
+    rgba(200, 50, 5, 0.4) 50%,
+    transparent 100%
+  );
+  animation: flame-sway-2 0.5s ease-in-out infinite alternate;
+}
+
+/* Side flame tongues */
+.flame-left {
+  width: 40px;
+  height: 80px;
+  left: calc(50% - 55px);
+  background: linear-gradient(to top,
+    rgba(255, 100, 10, 0.5) 0%,
+    rgba(180, 40, 5, 0.3) 50%,
+    transparent 100%
+  );
+  animation: flame-left-lean 0.7s ease-in-out infinite alternate;
+}
+
+.flame-right {
+  width: 40px;
+  height: 85px;
+  left: calc(50% + 15px);
+  background: linear-gradient(to top,
+    rgba(255, 100, 10, 0.5) 0%,
+    rgba(180, 40, 5, 0.3) 50%,
+    transparent 100%
+  );
+  animation: flame-right-lean 0.65s ease-in-out infinite alternate;
+}
+
+/* Glow underlay — warm ambient light */
+.flame-glow {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse,
+    rgba(255, 120, 20, 0.3) 0%,
+    rgba(255, 80, 10, 0.15) 40%,
+    transparent 70%
+  );
+  filter: blur(10px);
+  animation: glow-pulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes flame-core-flicker {
+  0% { transform: scaleX(1) scaleY(1) translateY(0); opacity: 0.9; }
+  50% { transform: scaleX(0.85) scaleY(1.1) translateY(-5px); opacity: 1; }
+  100% { transform: scaleX(1.1) scaleY(0.9) translateY(3px); opacity: 0.85; }
+}
+
+@keyframes flame-sway-1 {
+  0% { transform: scaleX(1) translateX(0) translateY(0); }
+  33% { transform: scaleX(0.9) translateX(-4px) translateY(-6px); }
+  66% { transform: scaleX(1.05) translateX(3px) translateY(-2px); }
+  100% { transform: scaleX(0.95) translateX(-2px) translateY(-8px); }
+}
+
+@keyframes flame-sway-2 {
+  0% { transform: scaleX(1.05) translateX(2px) translateY(-3px); }
+  50% { transform: scaleX(0.9) translateX(-3px) translateY(-7px); }
+  100% { transform: scaleX(1) translateX(1px) translateY(-5px); }
+}
+
+@keyframes flame-left-lean {
+  0% { transform: rotate(5deg) scaleY(1) translateY(0); opacity: 0.7; }
+  100% { transform: rotate(-3deg) scaleY(1.15) translateY(-8px); opacity: 0.4; }
+}
+
+@keyframes flame-right-lean {
+  0% { transform: rotate(-4deg) scaleY(1.1) translateY(-4px); opacity: 0.6; }
+  100% { transform: rotate(6deg) scaleY(0.9) translateY(-10px); opacity: 0.35; }
+}
+
+@keyframes glow-pulse {
+  0% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+  100% { opacity: 0.9; transform: translateX(-50%) scale(1.15); }
+}
+
+/* Reduced motion: fire becomes static glow */
+@media (prefers-reduced-motion: reduce) {
+  .flame, .flame-core, .flame-outer-1, .flame-outer-2,
+  .flame-left, .flame-right, .flame-glow {
+    animation: none;
+  }
+  .flame-glow { opacity: 0.5; }
+}
+
+/* ============================================
+   Ignite Hint — pulsing instruction text
+   ============================================ */
+
+.ignite-hint {
+  animation: ignite-hint-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ignite-hint-pulse {
+  0%, 100% { opacity: 0.5; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-4px); }
+}
+
+/* ============================================
+   Paper Curl / Burn Animation — BurningStep
+   ============================================ */
+
+@keyframes paper-curl-burn {
+  0% {
+    transform: scale(1) rotateX(0deg) rotateY(0deg);
+    filter: brightness(1) sepia(0);
+    border-radius: 2px;
+  }
+  20% {
+    filter: brightness(0.9) sepia(0.3) saturate(1.2);
+    border-radius: 2px 2px 8px 2px;
+  }
+  40% {
+    transform: scale(0.85) rotateX(5deg) rotateY(-3deg);
+    filter: brightness(0.7) sepia(0.5) saturate(1.3);
+    border-radius: 4px 2px 16px 4px;
+  }
+  60% {
+    transform: scale(0.65) rotateX(12deg) rotateY(-8deg);
+    filter: brightness(0.5) sepia(0.7) saturate(1.1);
+    border-radius: 8px 4px 24px 8px;
+  }
+  80% {
+    transform: scale(0.4) rotateX(20deg) rotateY(-12deg);
+    filter: brightness(0.3) sepia(0.9) saturate(0.8);
+    border-radius: 12px 8px 32px 12px;
+  }
+  100% {
+    transform: scale(0.1) rotateX(30deg) rotateY(-15deg);
+    filter: brightness(0.1) sepia(1) saturate(0.5);
+    border-radius: 50%;
+  }
+}
+
+/* ============================================
+   Staggered Entrance Animations — BeatingStep
+   ============================================ */
+
+.stagger-1 { animation-delay: 0ms; }
+.stagger-2 { animation-delay: 150ms; }
+.stagger-3 { animation-delay: 300ms; }
+.stagger-4 { animation-delay: 450ms; }
+
+.stagger-fade-in {
+  opacity: 0;
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.stagger-fade-in-up {
+  opacity: 0;
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* ============================================
+   Image Loading Skeleton — shimmer effect
+   ============================================ */
+
+.img-skeleton {
+  background: linear-gradient(
+    110deg,
+    rgba(245, 240, 232, 0.06) 0%,
+    rgba(245, 240, 232, 0.12) 40%,
+    rgba(245, 240, 232, 0.06) 60%,
+    rgba(245, 240, 232, 0.06) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================
    EnemySelectStep — Enemy Card Silhouette
    ============================================ */
 
@@ -552,6 +1047,26 @@
 .enemy-card:hover .enemy-silhouette,
 .enemy-card[aria-pressed="true"] .enemy-silhouette {
   opacity: 0.45;
+}
+
+/* ============================================
+   InvocationTransition — Candle Base
+   ============================================ */
+
+.invocation-candle-base {
+  width: 28px;
+  height: 60px;
+  margin: 0 auto;
+  background: linear-gradient(
+    to bottom,
+    rgba(245, 240, 232, 0.15) 0%,
+    rgba(245, 240, 232, 0.08) 100%
+  );
+  border-radius: 2px 2px 4px 4px;
+  clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);
+  box-shadow:
+    0 4px 12px 2px rgba(212, 168, 67, 0.08),
+    0 0 20px 4px rgba(194, 54, 22, 0.05);
 }
 
 /* ============================================
@@ -684,4 +1199,235 @@
       0 0 10px 2px rgba(212, 168, 67, 0.1),
       inset 0 0 5px 1px rgba(212, 168, 67, 0.05);
   }
+}
+
+/* ============================================
+   Seal Certificate — Ancient Artifact Style
+   ============================================ */
+
+.certificate-outer {
+  position: relative;
+  width: 100%;
+  max-width: 24rem;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 0.125rem;
+}
+
+/* Anti-counterfeit watermark — traditional cloud motif */
+.certificate-watermark {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 10c-4 0-7 3-7 6 0 2 1 4 3 5-3 0-5 2-5 5s3 6 7 6c2 0 4-1 5-3 1 2 3 3 5 3 4 0 7-3 7-6s-2-5-5-5c2-1 3-3 3-5 0-3-3-6-7-6h-6z' fill='%23d4a843' fill-opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.certificate-border-outer {
+  position: relative;
+  z-index: 1;
+  border: 2px solid rgba(212, 168, 67, 0.6);
+  border-radius: 0.125rem;
+  padding: 0.5rem;
+  background: rgba(26, 26, 26, 0.9);
+}
+
+.certificate-border-inner {
+  position: relative;
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  border-radius: 0.125rem;
+  padding: 2rem 1.5rem;
+  overflow: hidden;
+}
+
+/* Rice paper texture overlay */
+.certificate-paper {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(245, 240, 232, 0.03);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 119, 83, 0.02) 2px,
+      rgba(139, 119, 83, 0.02) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(139, 119, 83, 0.01) 3px,
+      rgba(139, 119, 83, 0.01) 6px
+    );
+  pointer-events: none;
+}
+
+.certificate-title {
+  text-align: center;
+  color: var(--color-gold);
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  margin-bottom: 1.25rem;
+}
+
+/* Seal stamp — 封 character with seal mud effect */
+.certificate-seal-stamp {
+  width: 5rem;
+  height: 5rem;
+  /* Irregular circle for hand-carved stamp feel */
+  border-radius: 48% 52% 50% 50% / 50% 48% 52% 50%;
+  border: 3px solid #c23616;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 0 0 15px rgba(194, 54, 22, 0.4),
+    inset 2px 2px 4px rgba(194, 54, 22, 0.2),
+    inset -1px -1px 3px rgba(194, 54, 22, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+  background: radial-gradient(
+    circle at 40% 40%,
+    rgba(194, 54, 22, 0.15) 0%,
+    transparent 70%
+  );
+}
+
+.certificate-seal-char {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-vermillion-dark);
+  text-shadow: 1px 1px 2px rgba(194, 54, 22, 0.3);
+}
+
+.certificate-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 168, 67, 0.3),
+    transparent
+  );
+  margin: 1rem 0;
+}
+
+.certificate-details {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.certificate-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.certificate-label {
+  font-family: var(--font-serif);
+  font-size: 0.7rem;
+  color: var(--color-paper-muted);
+  letter-spacing: 0.05em;
+}
+
+.certificate-value-name {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-paper);
+}
+
+.certificate-value-type {
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  color: var(--color-vermillion-light);
+}
+
+.certificate-value-date {
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  color: var(--color-paper);
+}
+
+.certificate-value-expiry {
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  color: var(--color-vermillion);
+}
+
+.certificate-serial {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 0.65rem;
+  color: var(--color-paper-muted);
+  opacity: 0.6;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.certificate-official {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 0.6rem;
+  color: var(--color-gold);
+  opacity: 0.4;
+  letter-spacing: 0.15em;
+}
+
+/* ============================================
+   Accessibility — Visually Hidden
+   ============================================ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================
+   Skip Navigation Link
+   ============================================ */
+
+.skip-nav {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-gold);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-weight: 600;
+  border-radius: 0 0 0.25rem 0.25rem;
+  transition: top 0.2s ease;
+}
+
+.skip-nav:focus {
+  top: 0;
+}
+
+/* ============================================
+   Landing Fade Transition
+   ============================================ */
+
+.landing-fade-out {
+  animation: landing-fade-out 0.5s ease-out forwards;
+}
+
+@keyframes landing-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
