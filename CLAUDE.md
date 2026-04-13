@@ -3,7 +3,7 @@
 Digital 打小人 website — one-person company. Global market, Chinese culture as hook.
 
 > **每個新 session 第一件事：讀 `docs/ARCHITECTURE.md`，不要全掃描 codebase。**
-> **寫或改 blog 內容時，先讀 `docs/BLOG_SEO_STANDARD.md`，按標準執行。**
+> **寫或改 blog 內容時，先讀 `docs/BLOG_SEO_STANDARD.md` 和 `docs/superpowers/specs/2026-04-12-blog-seo-architecture-design.md`，按標準和關鍵詞計劃執行。**
 > **項目 mistakes + decisions 在 `memory/MEMORY.md`。**
 
 ## Business Model
