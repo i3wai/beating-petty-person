@@ -75,9 +75,9 @@ src/
 │   │   ├── silhouettes.ts         # Shared clip-paths for 6 enemy types
 │   │   └── steps/
 │   │       ├── EnemySelectStep.tsx  # Step 1: 6-card grid + name input (always visible) + shimmer loading + sticky confirm
-│   │       ├── BeatingStep.tsx      # Step 2: Canvas HitSpark + aria-live milestones + keyboard + haptic escalation + responsive area
-│   │       ├── BurningStep.tsx      # Step 3: Canvas FireFlame/Smoke + paper dissolution + ignite hint (9s)
-│   │       └── ResultStep.tsx       # Step 4: Result (first para clear, rest blurred) + Stripe badge + payment CTAs
+│   │       ├── BeatingStep.tsx      # Step 2: Rage meter + slipper cursor + curse chants + damage marks + Canvas HitSpark + aria-live milestones + keyboard + haptic escalation + responsive area + name char-by-char
+│   │       ├── BurningStep.tsx      # Step 3: Long-press ignite + Canvas FireFlame/Smoke + CSS fire + paper dissolution + keyboard a11y (Enter/Space)
+│   │       └── ResultStep.tsx       # Step 4: Suspenseful free result + reading ceremony loading + blur preview + staggered CTAs + Best Value badge + Stripe badge + i18n share + stable reading seed
 │   │
 │   │  # Canvas Engine (Day 1 prep, Day 3 integrated)
 │   ├── canvas/
@@ -151,10 +151,10 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `BEATING_COMPLET
 |-------|----------|--------|-------|------|
 | Invocation | 3s | Candle CSS animation + dark overlay | transition-invocation (sine sweep 200→80Hz) | CSS keyframes |
 | Step 1: Select | User-paced | 6-card grid, clip-path silhouettes | action-paper (bandpass noise 120ms) | CSS + React state |
-| Step 2: Beating | 30s timer | Canvas HitSpark (8-12/burst), paper degradation, aria-live milestones, haptic escalation | action-beat (highpass noise 80ms) + ambient-drone | Canvas 2D + useCanvas hook + keyboard a11y |
-| Step 3: Burning | 9s auto | Canvas FireFlame (3/120ms) + Smoke (2/250ms), paper dissolution, ignite hint | ambient-wind | Canvas 2D (direct ParticleSystem) |
+| Step 2: Beating | Rage meter (0-100) | Canvas HitSpark (8-12/burst), slipper cursor, curse chants, paper damage marks, rage ring, aria-live milestones, haptic escalation, name char-by-char animation | action-beat + action-thwack + ambient-drone | Canvas 2D + useCanvas hook + keyboard a11y |
+| Step 3: Burning | 2s hold + 9s auto | Long-press ignite with SVG progress ring, Canvas FireFlame + Smoke, CSS fire effect, paper dissolution, smoke wisps, name on figure | ambient-drone → ambient-wind | Canvas 2D (direct ParticleSystem) + keyboard a11y (Enter/Space) |
 | Sealing | 3s | Stamp slam + rune flash CSS | transition-sealing (sine sweep 120→60Hz) | CSS keyframes |
-| Step 4: Result | User-paced | Result text + payment CTAs | transition-result (lowpass noise) | React + Stripe (Day 4) |
+| Step 4: Result | User-paced | Suspenseful free result ("ashes hold a message") + 2.5s reading ceremony loading + blurred reading preview + staggered CTAs (0.5s/2s/3.5s) + "Best Value" badge on $6.99 + Stripe trust badge + i18n share | transition-result (lowpass noise) | React + Stripe (Day 4) |
 
 ## Shared Silhouettes
 
@@ -165,6 +165,17 @@ type EnemyCategory = 'backstabber' | 'toxicBoss' | 'ex' | 'energyVampire' | 'bul
 ```
 
 BeatingStep & BurningStep select clip-path via: `SILHOUETTE_CLIPS[(enemy?.category as EnemyCategory) ?? 'custom'] ?? DEFAULT_CLIP`
+
+**EN-ZH enemy type mapping** (parallel cultural adaptation, NOT direct translation):
+
+| Code key | EN name | ZH-TW name | EN description | ZH description |
+|----------|---------|------------|----------------|----------------|
+| `backstabber` | The Backstabber | 是非小人 | "plot behind your back" | "表面笑臉，背後插刀" |
+| `toxicBoss` | The Toxic Boss | 職場小人 | "Authority without empathy" | "有權無德，以勢壓人" |
+| `ex` | The Ex | 感情小人 | "Some doors should stay closed" | "有些門，該永遠關上" |
+| `energyVampire` | The Energy Vampire | 財運小人 | "drain your fortune and light" | "吸乾你的氣運" |
+| `bully` | The Bully | 官非小人 | "bring conflict and chaos" | "以惡為樂" |
+| `custom` | Custom | 自定義 | "You know exactly who they are" | "你心知肚明是誰" |
 
 ## Audio Architecture
 

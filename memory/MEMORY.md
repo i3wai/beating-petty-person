@@ -93,3 +93,25 @@
 ### Landing Page
 - Fade-out transition on CTA click (add class → wait 300ms → router.push) creates cinematic feel before ritual
 - Mobile hint ("Best experienced on desktop") hidden on mobile with `hidden sm:block`
+
+## Day 13b Lessons (2026-04-13) — Conversion Optimization
+
+### Fact-Checking Discipline
+- NEVER make claims about content without reading the source files first
+- "缺少財運小人和官非小人" was WRONG — they exist as energyVampire→財運小人, bully→官非小人 in ZH localization
+- EN-ZH localization is NOT "replacement" — it's parallel cultural adaptation (different names, same code key)
+- Always read ALL three message files (en.json, zh-TW.json, zh-Hans.json) before making cultural claims
+
+### Conversion Findings
+- Reading seed mismatch (preview uses Date.now() at T1, checkout uses Date.now() at T2) = different readings shown vs delivered. Fix: store seed in useRef, reuse for checkout
+- AtmosphereSection "A ritual was completed 4 minutes ago" contradicts trust strategy — changed to atmospheric text without false claims
+- Free result copy "The curse has been cast" feels terminal, doesn't bridge to paid → changed to "The ashes hold a message..." to create anticipation
+- Share button in ResultStep was hardcoded English while /result page correctly used i18n — two different code paths, different quality
+- $6.99 button had lowest visual weight (bg-ink-light border) and no "Best Value" badge — added gold badge
+- 2.5s "Reading the ashes..." loading animation before blur preview adds perceived value to $2.99 product
+- EN enemy descriptions for energyVampire ("drain your light") and bully ("feed on fear") don't align with ZH concepts (財運/官非) → added "fortune" and "conflict/chaos" keywords
+
+### Process
+- TeamCreate agents unreliable for report delivery — agents go idle without sending messages
+- Direct analysis by coordinator is faster and more reliable than agent-based review panels
+- `rm -rf ~/.claude/teams/ ~/.claude/tasks/` for cleanup when team agents stall

@@ -69,6 +69,7 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 - **GSC submitted: 2026-04-12** — sitemap.xml with lastmod, hreflang
 - **Ritual Redesign completed: 2026-04-12** — $2.99 tier repositioned as "Curse Reading" (personalized modular reading), free name input in Step 1, name on paper figure, 162 unique readings (6 types × 27 combinations × 3 languages)
 - **Expert Review + UX Overhaul completed: 2026-04-13** — 3-expert panel (Marketing/UX/Cultural) scored 5.3/10 pre-fix → 39 improvements executed: removed fake counter & fake social proof, added honest heritage messaging, privacy policy, refund policy, About page (/about), keyboard accessibility, aria-live announcements, responsive interaction area (clamp), staggered entrance animations, landing page fade-out transition, Stripe trust badge on result page, haptic escalation, name always visible on paper figure, ignite hint pulsing text
+- **Conversion Optimization completed: 2026-04-13** — 8 fixes based on expert review: atmosphere false claim removed, reading seed mismatch fixed (preview=checkout), share button i18n, suspenseful free result copy ("ashes hold a message"), 2.5s reading ceremony loading, "Best Value" badge on $6.99, EN enemy descriptions aligned with ZH concepts (fortune/conflict), BurningStep keyboard accessibility
 - Phase: **Soft Launch — Stripe live, accepting payments**
 - Owner: Allen (business, content, tool setup) | Claude (design, code, SEO, tech)
 - Deploy: `npx vercel --prod --yes`
