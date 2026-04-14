@@ -233,7 +233,7 @@ Do NOT add these manually in MDX — the template handles everything.
 - `RelatedArticles` accepts `heading` prop from server component
 - `BlogCtaBlock` is a client component using `useTranslations('blog.cta')`
 - Blog post page uses `getTranslations('blog')` for FAQ heading, TOC title, etc.
-- ZH versions should be culturally adapted, NOT direct translations
+- **ZH blog 是獨立內容體系，不是 EN 的翻譯。** 同一概念可以有對應主題，但標題、內容、角度、文化引用完全獨立。見 `docs/superpowers/plans/2026-04-14-zh-blog-seo-strategy.md`
 
 ## 3-Language Workflow
 
@@ -247,11 +247,25 @@ When writing a blog article:
 
 ## Cluster Assignment
 
+### EN Blog Clusters
+
 | Cluster | Name | Topics |
 |---------|------|--------|
 | A | Curses & Black Magic | Core curse/ritual topics |
 | B | Bad Luck & Curse Removal | Luck, cleansing, protection |
 | C | Global Curse Traditions | Cultural/historical traditions |
+
+### ZH Blog Clusters (獨立架構，非 EN 翻譯)
+
+> 完整策略見 `docs/superpowers/plans/2026-04-14-zh-blog-seo-strategy.md`
+
+| Cluster | Name | Topics |
+|---------|------|--------|
+| A | 打小人核心 | 打小人方法、驚蟄打小人、咒語、鵝頸橋 |
+| B | 命理與改運 | 去霉運、犯太歲、鬼月、小人作祟 |
+| C | 詛咒文化與比較 | 全球詛咒比較、打小人歷史 |
+
+**重要**：ZH 和 EN blog 使用相同 cluster 代號 (A/B/C)，但因為 blog hub 按語言分開渲染（/en/blog vs /zh-TW/blog），代號不衝突。集群標題用 i18n key。
 
 ## Quality Checklist (Before Publishing)
 

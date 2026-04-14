@@ -7,7 +7,7 @@ interface RelatedArticlesProps {
   heading?: string;
 }
 
-export default function RelatedArticles({ posts, locale, heading = "Related Curses" }: RelatedArticlesProps) {
+export default function RelatedArticles({ posts, locale, heading }: RelatedArticlesProps) {
   if (posts.length === 0) {
     return null;
   }
@@ -24,10 +24,10 @@ export default function RelatedArticles({ posts, locale, heading = "Related Curs
             href={`/blog/${post.slug}`}
             className="group block bg-ink-light border border-ink-lighter rounded-lg p-5 transition-all duration-200 hover:border-vermillion hover:scale-[1.02] hover:shadow-lg hover:shadow-vermillion/10"
           >
-            <h3 className="text-lg font-serif font-bold text-paper group-hover:text-[#d4a017] transition-colors mb-2">
+            <h3 className="text-lg font-serif font-bold text-paper group-hover:text-gold transition-colors mb-2">
               {post.title}
             </h3>
-            <p className="text-sm text-gray-400 line-clamp-2 mb-3 leading-relaxed">
+            <p className="text-sm text-paper-muted line-clamp-2 mb-3 leading-relaxed">
               {post.description.length > 120
                 ? `${post.description.slice(0, 120)}...`
                 : post.description}

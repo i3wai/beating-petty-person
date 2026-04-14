@@ -136,7 +136,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         />
         <NextIntlClientProvider messages={messages}>
           <Header locale={locale} />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1">{children}</main>
           <Footer locale={locale} />
         </NextIntlClientProvider>
         {process.env.NEXT_PUBLIC_GA_ID && (

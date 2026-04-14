@@ -23,20 +23,23 @@ export async function POST(req: NextRequest) {
       process.env.STRIPE_WEBHOOK_SECRET!,
     );
   } catch (err) {
-    console.error('Webhook signature verification failed:', err);
+    console.error('[webhook] Signature verification failed:', err);
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
   }
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
-    console.log('Payment completed:', {
+    const logData = {
+      event: 'payment.completed',
       sessionId: session.id,
-      plan: session.metadata?.plan,
-      enemyCategory: session.metadata?.enemyCategory,
-      enemyName: session.metadata?.enemyName,
-      amount: session.amount_total,
-      currency: session.currency,
-    });
+      plan: session.metadata?.plan ?? '',
+      enemyCategory: session.metadata?.enemyCategory ?? '',
+      enemyName: session.metadata?.enemyName ?? '',
+      amount: session.amount_total ?? 0,
+      currency: session.currency ?? '',
+      email: session.customer_details?.email ?? '',
+    };
+    console.log(JSON.stringify(logData));
   }
 
   return NextResponse.json({ received: true });

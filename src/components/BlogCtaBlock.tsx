@@ -15,7 +15,7 @@ export default function BlogCtaBlock() {
         <h2 className="text-2xl font-serif font-bold text-vermillion mb-3">
           {t('heading')}
         </h2>
-        <p className="text-gray-400 mb-6 text-lg">
+        <p className="text-paper-muted mb-6 text-lg">
           {t('subheading')}
         </p>
         <Link

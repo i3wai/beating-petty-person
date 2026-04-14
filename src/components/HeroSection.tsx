@@ -12,7 +12,7 @@ export function HeroSection() {
   const router = useRouter();
 
   const handleBeginRitual = useCallback(() => {
-    const main = document.querySelector('main') || document.body;
+    const main = document.getElementById('main-content') || document.body;
     main.classList.add('landing-fade-out');
     setTimeout(() => {
       router.push('/ritual');

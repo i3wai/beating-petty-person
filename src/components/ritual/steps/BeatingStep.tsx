@@ -93,9 +93,13 @@ export default function BeatingStep() {
   // Double-dispatch guard
   const completedRef = useRef(false);
 
+  // Mount guard for setTimeout callbacks
+  const mountedRef = useRef(true);
+
   // ---- Cleanup on unmount ----
   useEffect(() => {
     return () => {
+      mountedRef.current = false;
       stop();
     };
   }, [stop]);
@@ -232,7 +236,9 @@ export default function BeatingStep() {
             return updated.length > 5 ? updated.slice(-5) : updated;
           });
           setTimeout(() => {
-            setSlippers((prev) => prev.filter((s) => s.id !== slipperId));
+            if (mountedRef.current) {
+              setSlippers((prev) => prev.filter((s) => s.id !== slipperId));
+            }
           }, 350);
         }
 
@@ -246,7 +252,9 @@ export default function BeatingStep() {
             return updated.length > 10 ? updated.slice(-10) : updated;
           });
           setTimeout(() => {
-            setChantTexts((prev) => prev.filter((c) => c.id !== chantId));
+            if (mountedRef.current) {
+              setChantTexts((prev) => prev.filter((c) => c.id !== chantId));
+            }
           }, 1600);
         }
 

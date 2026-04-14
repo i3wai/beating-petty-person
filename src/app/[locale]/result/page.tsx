@@ -65,7 +65,7 @@ function ResultContent() {
     const shareData = {
       title: t('shareTitle'),
       text: t('shareText'),
-      url: 'https://beatpetty.com',
+      url: `https://beatpetty.com/${locale}`,
     };
 
     if (navigator.share) {
@@ -75,7 +75,7 @@ function ResultContent() {
         // user cancelled
       }
     } else {
-      await navigator.clipboard.writeText('https://beatpetty.com');
+      await navigator.clipboard.writeText(`https://beatpetty.com/${locale}`);
     }
   }, [t]);
 

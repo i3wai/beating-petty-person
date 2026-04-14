@@ -432,6 +432,7 @@
     "clusterA": "诅咒与黑魔法",
     "clusterB": "厄运与诅咒解除",
     "clusterC": "全球诅咒传统",
+    "featured": "精选",
     "relatedArticles": "相关咒语",
     "faqTitle": "常见问题",
     "tocTitle": "目录",
@@ -447,6 +448,41 @@
       "blog": "咒语集"
     }
   },
+  "privacy": {
+    "title": "隐私政策",
+    "lastUpdated": "最后更新：2026 年 4 月 14 日",
+    "intro": "BeatPetty（以下简称「我们」）尊重您的隐私。本政策说明我们收集哪些信息、如何使用，以及您的权利。",
+    "infoTitle": "我们收集的信息",
+    "infoP1": "您在仪式中输入的名字仅用于仪式体验，绝不会存储在我们的服务器上。这些数据只存在于您的浏览器临时会话中，关闭页面后即消失。",
+    "infoP2": "付款处理完全由 Stripe 负责。我们无法查看、存储或访问您的信用卡号码、银行详细信息或完整付款凭证。Stripe 仅向我们提供付款成功的确认以及您选择分享的相关信息（例如您输入的名字）。",
+    "infoP3": "我们使用 Google Analytics 4 了解访客如何使用我们的网站（浏览的页面、停留时间、设备类型）。这些数据为匿名，无法识别您的个人身份。",
+    "cookiesTitle": "Cookie",
+    "cookiesP1": "我们使用极少量的 Cookie：Google Analytics 使用 Cookie 来区分访客。我们不使用广告 Cookie，也不使用分析以外的任何第三方追踪。",
+    "dataTitle": "数据分享",
+    "dataP1": "我们不会将任何个人数据出售、出租、交易或分享给第三方——绝对不会。",
+    "rightsTitle": "您的权利",
+    "rightsP1": "您可以随时通过电子邮件要求删除我们持有的任何关于您的数据",
+    "changesTitle": "政策变更",
+    "changesP1": "我们可能会不时更新本政策。变更将刊登在本页，并更新「最后更新」日期。",
+    "contactTitle": "联系我们",
+    "contactP1": "如有任何隐私相关问题，请联系"
+  },
+  "refund": {
+    "title": "退款政策",
+    "lastUpdated": "最后更新：2026 年 4 月 14 日",
+    "intro": "我们希望您感到满意。如果不满意，以下是退款方式。",
+    "guaranteeTitle": "全额退款保证",
+    "guaranteeP1": "如果您因任何原因对购买不满意，我们将全额退款——无需解释。",
+    "howTitle": "如何申请退款",
+    "howP1": "请发送电子邮件至",
+    "howP2": "并附上您结账时使用的电子邮件地址以及（如有）订单确认。我们将在 3 个工作天内处理您的退款。",
+    "processTitle": "退款处理方式",
+    "processP1": "退款通过 Stripe 退回您的原付款方式。根据您的银行或发卡机构，可能需要 5 至 10 个工作天才能显示在您的账单上。",
+    "digitalTitle": "数字内容",
+    "digitalP1": "由于我们的产品是数字体验，您不需要「退货」。只需发送电子邮件给我们，我们会处理一切。",
+    "contactTitle": "有疑问？",
+    "contactP1": "随时联系我们"
+  },
   "common": {
     "comingSoon": "即将推出",
     "privacyNote": "输入的名字不会被储存、分享或用于任何其他用途。",
@@ -455,6 +491,7 @@
     "refundPolicy": "不满意？全额退款。",
     "mobileHint": "建议在手机竖向模式下体验",
     "skipToRitual": "跳至仪式",
-    "aboutLink": "关于"
+    "aboutLink": "关于",
+    "contactEmail": "beatpettyinfo@gmail.com"
   }
 }

@@ -22,16 +22,16 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd(jsonLdItems)) }}
       />
-      <ol className="flex items-center text-sm text-gray-400">
+      <ol className="flex items-center text-sm text-paper-muted">
         {items.map((item, i) => (
           <li key={i} className="flex items-center">
-            {i > 0 && <span className="mx-2 text-gray-600">›</span>}
+            {i > 0 && <span className="mx-2 text-ink-lighter">›</span>}
             {item.href && i < items.length - 1 ? (
-              <Link href={item.href} className="hover:text-[#d4a017] transition-colors">
+              <Link href={item.href} className="hover:text-gold transition-colors">
                 {item.label}
               </Link>
             ) : (
-              <span className="text-gray-300">{item.label}</span>
+              <span className="text-paper-dark">{item.label}</span>
             )}
           </li>
         ))}

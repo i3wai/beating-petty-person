@@ -115,3 +115,24 @@
 - TeamCreate agents unreliable for report delivery — agents go idle without sending messages
 - Direct analysis by coordinator is faster and more reliable than agent-based review panels
 - `rm -rf ~/.claude/teams/ ~/.claude/tasks/` for cleanup when team agents stall
+
+## Day 14 Lessons (2026-04-14) — ZH Blog SEO Strategy
+
+### 策略決策
+- ZH blog 是獨立內容體系，不做 EN blog 的翻譯。搜索意圖、文化語境、競爭格局完全不同
+- 從 4 集群精簡為 3 集群：刪「職場與情緒」（意圖不匹配），「驚蟄」併入打小人核心
+- 「生氣怎麼辦」「發洩情緒方法」被否決：搜索意圖是心理調節，不是詛咒。流量再高也不碰
+- 太歲和鬼月是原提案漏掉的黃金機會：持續性搜索需求，文化語境完美對齊打小人
+- 第一篇寫「驚蟄打小人攻略」：低 KD、高意圖、品牌最強連結
+
+### 關鍵詞取捨原則
+- 所有內容必須服務於「詛咒儀式」品牌定位
+- 偏離定位的關鍵詞（情緒管理、職場建議）即使流量高也是噪音
+- 有限度擴展到命理（去霉運、太歲）可接受，因為同在民俗信仰體系內
+
+### ZH blog 10 篇文章排優先序
+1. ZH2 驚蟄打小人攻略 → 2. ZH1 打小人完整攻略 → 3. ZH6 犯太歲化解 → 4. ZH5 去霉運方法 → 5. ZH8 小人作祟 → 6. ZH4 鵝頸橋 → 7. ZH3 咒語 → 8. ZH7 鬼月 → 9. ZH9 詛咒比較 → 10. ZH10 歷史
+
+### 文件位置
+- 完整策略：`docs/superpowers/plans/2026-04-14-zh-blog-seo-strategy.md`
+- EN blog 架構：`docs/superpowers/specs/2026-04-12-blog-seo-architecture-design.md`

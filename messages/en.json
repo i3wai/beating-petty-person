@@ -432,6 +432,7 @@
     "clusterA": "Curses & Black Magic",
     "clusterB": "Bad Luck & Curse Removal",
     "clusterC": "Global Curse Traditions",
+    "featured": "FEATURED",
     "relatedArticles": "Related Curses",
     "faqTitle": "Frequently Asked Questions",
     "tocTitle": "Table of Contents",
@@ -447,6 +448,41 @@
       "blog": "The Grimoire"
     }
   },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: April 14, 2026",
+    "intro": "BeatPetty (\"we\", \"us\", \"our\") respects your privacy. This policy explains what information we collect, how we use it, and your rights.",
+    "infoTitle": "Information We Collect",
+    "infoP1": "Names you enter during the ritual are used solely within the ritual experience and are never stored on our servers. They exist only in your browser's temporary session and are gone when you close the page.",
+    "infoP2": "Payment processing is handled entirely by Stripe. We do not see, store, or have access to your credit card number, bank details, or full payment credentials. Stripe provides us only with a confirmation of successful payment and the metadata you chose to share (such as the name you entered).",
+    "infoP3": "We use Google Analytics 4 to understand how visitors use our site (pages visited, time spent, device type). This data is anonymous and cannot identify you personally.",
+    "cookiesTitle": "Cookies",
+    "cookiesP1": "We use minimal cookies: Google Analytics uses cookies to distinguish visitors. No advertising cookies are used. No third-party tracking beyond analytics.",
+    "dataTitle": "Data Sharing",
+    "dataP1": "We do not sell, rent, trade, or share any personal data with third parties — period.",
+    "rightsTitle": "Your Rights",
+    "rightsP1": "You can request deletion of any data we hold about you by emailing",
+    "changesTitle": "Changes to This Policy",
+    "changesP1": "We may update this policy occasionally. Changes will be posted on this page with a revised \"Last updated\" date.",
+    "contactTitle": "Contact",
+    "contactP1": "For any privacy-related questions, reach us at"
+  },
+  "refund": {
+    "title": "Refund Policy",
+    "lastUpdated": "Last updated: April 14, 2026",
+    "intro": "We want you to be satisfied. If you're not, here's how refunds work.",
+    "guaranteeTitle": "Full Refund Guarantee",
+    "guaranteeP1": "If you are unsatisfied with your purchase for any reason, we will issue a full refund — no questions asked.",
+    "howTitle": "How to Request a Refund",
+    "howP1": "Email us at",
+    "howP2": "with the email address you used during checkout and (if available) your order confirmation. We'll process your refund within 3 business days.",
+    "processTitle": "How Refunds Are Processed",
+    "processP1": "Refunds are issued through Stripe back to your original payment method. Depending on your bank or card issuer, it may take 5–10 business days to appear on your statement.",
+    "digitalTitle": "Digital Content",
+    "digitalP1": "Because our product is a digital experience, we do not require you to \"return\" anything. Simply email us and we'll take care of it.",
+    "contactTitle": "Questions?",
+    "contactP1": "Reach us anytime at"
+  },
   "common": {
     "comingSoon": "Coming Soon",
     "privacyNote": "Names entered are not stored, shared, or used for any other purpose.",
@@ -455,6 +491,7 @@
     "refundPolicy": "Not satisfied? Full refund.",
     "mobileHint": "Best experienced in portrait mode on your phone",
     "skipToRitual": "Skip to ritual",
-    "aboutLink": "About"
+    "aboutLink": "About",
+    "contactEmail": "beatpettyinfo@gmail.com"
   }
 }

@@ -432,6 +432,7 @@
     "clusterA": "詛咒與黑魔法",
     "clusterB": "厄運與詛咒解除",
     "clusterC": "全球詛咒傳統",
+    "featured": "精選",
     "relatedArticles": "相關咒語",
     "faqTitle": "常見問題",
     "tocTitle": "目錄",
@@ -447,6 +448,41 @@
       "blog": "咒語集"
     }
   },
+  "privacy": {
+    "title": "隱私政策",
+    "lastUpdated": "最後更新：2026 年 4 月 14 日",
+    "intro": "BeatPetty（以下簡稱「我們」）尊重您的隱私。本政策說明我們收集哪些資訊、如何使用，以及您的權利。",
+    "infoTitle": "我們收集的資訊",
+    "infoP1": "您在儀式中輸入的名字僅用於儀式體驗，絕不會儲存在我們的伺服器上。這些資料只存在於您的瀏覽器臨時工作階段中，關閉頁面後即消失。",
+    "infoP2": "付款處理完全由 Stripe 負責。我們無法查看、儲存或存取您的信用卡號碼、銀行詳細資訊或完整付款憑證。Stripe 僅向我們提供付款成功的確認以及您選擇分享的相關資訊（例如您輸入的名字）。",
+    "infoP3": "我們使用 Google Analytics 4 了解訪客如何使用我們的網站（瀏覽的頁面、停留時間、裝置類型）。這些資料為匿名，無法識別您的個人身分。",
+    "cookiesTitle": "Cookie",
+    "cookiesP1": "我們使用極少量的 Cookie：Google Analytics 使用 Cookie 來區分訪客。我們不使用廣告 Cookie，也不使用分析以外的任何第三方追蹤。",
+    "dataTitle": "資料分享",
+    "dataP1": "我們不會將任何個人資料出售、出租、交易或分享給第三方——絕對不會。",
+    "rightsTitle": "您的權利",
+    "rightsP1": "您可以隨時透過電子郵件要求刪除我們持有的任何關於您的資料",
+    "changesTitle": "政策變更",
+    "changesP1": "我們可能會不時更新本政策。變更將刊登在本頁，並更新「最後更新」日期。",
+    "contactTitle": "聯絡我們",
+    "contactP1": "如有任何隱私相關問題，請聯繫"
+  },
+  "refund": {
+    "title": "退款政策",
+    "lastUpdated": "最後更新：2026 年 4 月 14 日",
+    "intro": "我們希望您感到滿意。如果不滿意，以下是退款方式。",
+    "guaranteeTitle": "全額退款保證",
+    "guaranteeP1": "如果您因任何原因對購買不滿意，我們將全額退款——無需解釋。",
+    "howTitle": "如何申請退款",
+    "howP1": "請發送電子郵件至",
+    "howP2": "並附上您結帳時使用的電子郵件地址以及（如有）訂單確認。我們將在 3 個工作天內處理您的退款。",
+    "processTitle": "退款處理方式",
+    "processP1": "退款透過 Stripe 退回您的原付款方式。根據您的銀行或發卡機構，可能需要 5 至 10 個工作天才能顯示在您的帳單上。",
+    "digitalTitle": "數位內容",
+    "digitalP1": "由於我們的產品是數位體驗，您不需要「退貨」。只需發送電子郵件給我們，我們會處理一切。",
+    "contactTitle": "有疑問？",
+    "contactP1": "隨時聯繫我們"
+  },
   "common": {
     "comingSoon": "即將推出",
     "privacyNote": "輸入的名字不會被儲存、分享或用於任何其他用途。",
@@ -455,6 +491,7 @@
     "refundPolicy": "不滿意？全額退款。",
     "mobileHint": "建議在手機直向模式下體驗",
     "skipToRitual": "跳至儀式",
-    "aboutLink": "關於"
+    "aboutLink": "關於",
+    "contactEmail": "beatpettyinfo@gmail.com"
   }
 }

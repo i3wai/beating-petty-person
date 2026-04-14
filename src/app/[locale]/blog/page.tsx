@@ -65,7 +65,7 @@ export default async function BlogPage({
           >
             <article className="relative bg-ink-light border-2 border-vermillion/20 rounded-lg p-8 transition-all duration-200 hover:border-vermillion hover:shadow-lg hover:shadow-vermillion/20">
               <div className="absolute -top-3 left-6 bg-vermillion text-paper text-xs font-bold px-3 py-1 rounded-full">
-                FEATURED
+                {t("featured")}
               </div>
               <h3 className="text-2xl font-serif font-bold text-paper group-hover:text-gold transition-colors mb-3 mt-2">
                 {pillarPost.title}

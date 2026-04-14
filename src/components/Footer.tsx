@@ -21,12 +21,24 @@ export function Footer({ locale }: { locale: string }) {
             {tCommon("aboutLink")}
           </Link>
           <span className="text-ink-lighter">|</span>
-          <span>{tCommon("privacyLink")}</span>
+          <Link href="/privacy" className="hover:text-paper-muted transition-colors">
+            {tCommon("privacyLink")}
+          </Link>
           <span className="text-ink-lighter">|</span>
-          <span>{tCommon("refundPolicy")}</span>
+          <Link href="/refund" className="hover:text-paper-muted transition-colors">
+            {tCommon("refundPolicy")}
+          </Link>
         </div>
         <p className="text-paper-muted/40 text-xs mt-2 font-serif">
           {tCommon("privacyFull")}
+        </p>
+        <p className="text-paper-muted/40 text-xs mt-1 font-serif">
+          <a
+            href={`mailto:${tCommon("contactEmail")}`}
+            className="hover:text-paper-muted transition-colors"
+          >
+            {tCommon("contactEmail")}
+          </a>
         </p>
       </div>
     </footer>

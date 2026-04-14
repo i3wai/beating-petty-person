@@ -301,10 +301,10 @@ export default function ResultStep() {
                 await navigator.share({
                   title: tResult('shareTitle'),
                   text: tResult('shareText'),
-                  url: 'https://beatpetty.com',
+                  url: `https://beatpetty.com/${locale}`,
                 });
               } else {
-                await navigator.clipboard.writeText('https://beatpetty.com');
+                await navigator.clipboard.writeText(`https://beatpetty.com/${locale}`);
               }
             } catch {
               // user cancelled or clipboard unavailable
