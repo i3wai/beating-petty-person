@@ -1,10 +1,14 @@
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export function HowItWorksSection() {
   const t = useTranslations("landing.howItWorks");
 
-  const steps = [0, 1, 2] as const;
-  const stepColors = ["text-vermillion", "text-gold", "text-vermillion"];
+  const steps = [
+    { index: 0, image: "/step-choose.jpg", color: "text-vermillion" },
+    { index: 1, image: "/step-strike.jpg", color: "text-gold" },
+    { index: 2, image: "/step-burn.jpg", color: "text-vermillion" },
+  ] as const;
 
   return (
     <section className="px-4 py-16 sm:py-20">
@@ -13,32 +17,33 @@ export function HowItWorksSection() {
           {t("title")}
         </h2>
 
-        {/* Steps */}
         <div className="flex flex-col md:flex-row gap-8 md:gap-6 items-stretch">
-          {steps.map((index) => (
+          {steps.map(({ index, image, color }) => (
             <div
               key={index}
-              className="flex-1 text-center px-4 py-6 border border-ink-lighter rounded-sm"
+              className="flex-1 text-center px-4 py-6 border border-ink-lighter rounded-sm bg-ink/50"
             >
-              {/* Step number */}
-              <span
-                className={`inline-block text-4xl mb-3 ${stepColors[index]} font-serif`}
-                aria-hidden="true"
-              >
-                {t(`steps.${index}.icon`)}
-              </span>
+              {/* Step image */}
+              <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border border-ink-lighter">
+                <Image
+                  src={image}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="96px"
+                  aria-hidden="true"
+                />
+              </div>
 
-              {/* Step number indicator */}
-              <div className={`text-sm font-serif mb-2 ${stepColors[index]}`}>
+              {/* Step number */}
+              <div className={`text-sm font-serif mb-2 ${color}`}>
                 {String(index + 1).padStart(2, "0")}
               </div>
 
-              {/* Title */}
               <h3 className="text-paper text-lg font-bold font-serif mb-2">
                 {t(`steps.${index}.title`)}
               </h3>
 
-              {/* Description */}
               <p className="text-paper-muted text-sm font-serif leading-relaxed">
                 {t(`steps.${index}.description`)}
               </p>

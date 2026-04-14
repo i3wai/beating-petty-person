@@ -7,7 +7,7 @@
   "landing": {
     "hero": {
       "title": "Curse Someone With a 300-Year-Old Chinese Ritual",
-      "subtitle": "打小人 — Da Siu Yan — \"Beating the Petty Person.\" A 300-year-old Chinese curse ritual from the streets of Hong Kong. Strike a paper effigy. Curse your enemy online. Free. What if it works?",
+      "subtitle": "打小人 — Da Siu Yan — \"Beating the Petty Person.\" A 300-year-old curse ritual from Hong Kong. Free online. What if it works?",
       "cta": "Begin the Ritual"
     },
     "whatIs": {
@@ -39,11 +39,7 @@
       "line2": "A 300-year-old ritual, now online."
     },
     "atmosphere": {
-      "lines": [
-        "The candles flicker. A dark presence lingers.",
-        "The paper effigy has been burned. The curse takes hold.",
-        "Your enemy's luck is shifting. You can feel it."
-      ]
+      "line": "The candles flicker. The paper burns. Your enemy's luck is already shifting."
     },
     "finalCta": {
       "hint": "Your enemy's luck is fading...",
@@ -105,12 +101,30 @@
     "step1CustomPlaceholder": "Enter a name to personalize your curse (optional)",
     "step1CustomLabel": "Enter their name",
     "enemies": {
-      "backstabber": { "name": "The Backstabber", "desc": "They smile to your face, plot behind your back." },
-      "toxicBoss": { "name": "The Toxic Boss", "desc": "Power without wisdom. Authority without empathy." },
-      "ex": { "name": "The Ex", "desc": "Some doors should stay closed. Forever." },
-      "energyVampire": { "name": "The Energy Vampire", "desc": "They drain your fortune and light. Every encounter costs you." },
-      "bully": { "name": "The Bully", "desc": "They bring conflict and chaos into your life. Tonight, the table turns." },
-      "custom": { "name": "Custom", "desc": "You know exactly who they are." }
+      "backstabber": {
+        "name": "The Backstabber",
+        "desc": "They smile to your face, plot behind your back."
+      },
+      "toxicBoss": {
+        "name": "The Toxic Boss",
+        "desc": "Power without wisdom. Authority without empathy."
+      },
+      "ex": {
+        "name": "The Ex",
+        "desc": "Some doors should stay closed. Forever."
+      },
+      "energyVampire": {
+        "name": "The Energy Vampire",
+        "desc": "They drain your fortune and light. Every encounter costs you."
+      },
+      "bully": {
+        "name": "The Bully",
+        "desc": "They bring conflict and chaos into your life. Tonight, the table turns."
+      },
+      "custom": {
+        "name": "Custom",
+        "desc": "You know exactly who they are."
+      }
     },
     "step2Title": "Beat the Petty Person",
     "step2Subtitle": "Strike the paper effigy. Release your fury.",
@@ -334,28 +348,48 @@
       "name": "Basic Ritual",
       "price": "Free",
       "description": "Choose an enemy type. Strike the effigy. Burn it to ash.",
-      "features": ["6 enemy types", "Full beating ritual", "Burning ceremony", "Basic result"],
+      "features": [
+        "6 enemy types",
+        "Full beating ritual",
+        "Burning ceremony",
+        "Basic result"
+      ],
       "cta": "Begin Free Ritual"
     },
     "name": {
       "name": "Curse Reading",
       "price": "$2.99",
       "description": "Unlock a personalized curse interpretation. Learn exactly how the curse will affect your enemy.",
-      "features": ["Personalized curse reading", "Enemy-specific prophecy", "Name woven into the curse"],
+      "features": [
+        "Personalized curse reading",
+        "Enemy-specific prophecy",
+        "Name woven into the curse"
+      ],
       "cta": "Reveal the Curse Reading — $2.99"
     },
     "seal": {
       "name": "Sealing Ritual",
       "price": "$4.99",
       "description": "The seal ensures the curse holds. Without it, the effect may fade.",
-      "features": ["Everything in Basic", "Enhanced sealing animation", "Digital seal certificate", "Strengthened result"],
+      "features": [
+        "Everything in Basic",
+        "Enhanced sealing animation",
+        "Digital seal certificate",
+        "Strengthened result"
+      ],
       "cta": "Complete the Sealing — $4.99"
     },
     "full": {
       "name": "Full Power Ritual",
       "price": "$6.99",
       "description": "Name your enemy AND seal the curse. The most powerful ritual available.",
-      "features": ["Everything in Basic", "Name a specific person", "Enhanced sealing animation", "Digital seal certificate", "Full power result"],
+      "features": [
+        "Everything in Basic",
+        "Name a specific person",
+        "Enhanced sealing animation",
+        "Digital seal certificate",
+        "Full power result"
+      ],
       "cta": "Full Power Ritual — $6.99",
       "badge": "Best Value"
     }
@@ -403,8 +437,15 @@
     "tocTitle": "Table of Contents",
     "intro": "Discover the ancient art of the curse ritual. From forbidden wisdom to the secrets of shadow magic, explore our collection of guides on casting spells, warding off evil spirits, and mastering the dark arts. What if it works?",
     "bottomCtaPrompt": "Ready to experience it yourself?",
-    "cta": { "heading": "Done reading?", "subheading": "Try the free curse ritual yourself.", "button": "Begin the Ritual" },
-    "breadcrumb": { "home": "Home", "blog": "The Grimoire" }
+    "cta": {
+      "heading": "Done reading?",
+      "subheading": "Try the free curse ritual yourself.",
+      "button": "Begin the Ritual"
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "blog": "The Grimoire"
+    }
   },
   "common": {
     "comingSoon": "Coming Soon",

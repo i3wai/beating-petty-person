@@ -34,6 +34,9 @@
   --animate-swagger: swagger 4s ease-in-out infinite;
   --animate-float: float 6s ease-in-out infinite;
   --animate-shimmer: shimmer 2.5s ease-in-out infinite;
+  --animate-curtain-lift: curtain-lift 2s ease-out forwards;
+  --animate-candle-ignite: candle-ignite 1.2s ease-out 0.3s both;
+  --animate-hero-image-reveal: hero-image-reveal 1.5s ease-out 0.4s both;
 
   @keyframes candle-flicker {
     0%, 100% { opacity: 1; transform: scale(1); }
@@ -70,6 +73,22 @@
   @keyframes shimmer {
     0%, 100% { opacity: 0.6; }
     50% { opacity: 1; }
+  }
+
+  @keyframes curtain-lift {
+    0%, 15% { opacity: 1; }
+    100% { opacity: 0; pointer-events: none; }
+  }
+
+  @keyframes candle-ignite {
+    0% { opacity: 0; transform: translate(-50%, 0) scale(0.1); }
+    25% { opacity: 0.7; }
+    100% { opacity: 0; transform: translate(-50%, 0) scale(2.5); }
+  }
+
+  @keyframes hero-image-reveal {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
   }
 }
 
@@ -406,6 +425,23 @@
    Reduced Motion — accessibility fallback
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
+  /* Hero cinematic entrance — instant reveal */
+  .animate-curtain-lift {
+    animation: none;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .animate-candle-ignite {
+    animation: none;
+    opacity: 0;
+  }
+
+  .animate-hero-image-reveal {
+    animation: none;
+    opacity: 1;
+  }
+
   /* Candle flames: near-static, opacity only */
   .candle-flame,
   .candle-flame-outer {

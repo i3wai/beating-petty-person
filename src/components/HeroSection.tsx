@@ -3,8 +3,7 @@
 import { useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import CandleFlame from "@/components/CandleFlame";
-import FlickerGlow from "@/components/FlickerGlow";
+import Image from "next/image";
 import FloatingParticles from "@/components/FloatingParticles";
 
 export function HeroSection() {
@@ -13,47 +12,79 @@ export function HeroSection() {
   const router = useRouter();
 
   const handleBeginRitual = useCallback(() => {
-    // Add fade-out class to the entire page content
     const main = document.querySelector('main') || document.body;
     main.classList.add('landing-fade-out');
-    // Navigate after fade-out completes
     setTimeout(() => {
       router.push('/ritual');
     }, 450);
   }, [router]);
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-[85dvh] px-4 py-16 overflow-hidden">
-      {/* Background atmospheric effects */}
-      <FlickerGlow />
+    <section className="relative flex flex-col items-center justify-center min-h-[85dvh] px-4 py-16 overflow-hidden bg-ink">
+      {/* Cinematic black curtain — fades out to reveal scene */}
+      <div className="absolute inset-0 bg-ink z-[20] animate-curtain-lift pointer-events-none" />
+
+      {/* Candle ignite glow — brief warm flash before curtain lifts */}
+      <div
+        className="absolute bottom-1/4 left-1/2 w-[400px] h-[400px] rounded-full pointer-events-none z-[19] animate-candle-ignite"
+        style={{
+          background: "radial-gradient(circle, rgba(194, 54, 22, 0.5) 0%, rgba(255, 107, 53, 0.2) 30%, transparent 70%)",
+        }}
+      />
+
+      {/* Hero background — portrait for mobile, landscape for desktop */}
+      <Image
+        src="/hero-candidate-1.jpg"
+        alt=""
+        fill
+        className="object-cover object-center sm:hidden animate-hero-image-reveal"
+        priority
+        sizes="100vw"
+        aria-hidden="true"
+      />
+      <Image
+        src="/hero-v2-wide-2.jpg"
+        alt=""
+        fill
+        className="object-cover object-center hidden sm:block animate-hero-image-reveal"
+        priority
+        sizes="100vw"
+        aria-hidden="true"
+      />
+
+      {/* Dark gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/40 to-ink/10 z-[1]" />
+
+      {/* Floating embers */}
       <FloatingParticles />
 
-      {/* Radial glow behind text */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--color-vermillion-dark)_0%,_transparent_60%)] opacity-15 pointer-events-none" />
-
       <div className="relative z-10 text-center max-w-2xl mx-auto">
-        {/* Candle animation */}
-        <div className="mx-auto mb-8" aria-hidden="true">
-          <CandleFlame />
-        </div>
-
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-paper font-serif leading-tight mb-6 animate-fade-in-up">
+        <h1
+          className="text-3xl sm:text-4xl md:text-5xl font-bold text-paper font-serif leading-tight mb-6"
+          style={{ animation: 'fade-in-up 0.8s ease-out 1.5s both' }}
+        >
           <span className="text-vermillion">{t("title")}</span>
         </h1>
 
-        <p className="text-paper-muted text-base sm:text-lg mb-10 font-serif leading-relaxed animate-fade-in-up max-w-xl mx-auto" style={{ animationDelay: "0.2s" }}>
+        <p
+          className="text-paper-muted text-base sm:text-lg mb-10 font-serif leading-relaxed max-w-xl mx-auto"
+          style={{ animation: 'fade-in-up 0.8s ease-out 2.0s both' }}
+        >
           {t("subtitle")}
         </p>
 
         <button
           onClick={handleBeginRitual}
-          className="inline-flex items-center px-8 py-4 bg-gold text-ink font-serif font-semibold text-lg rounded-sm hover:bg-gold-light transition-colors animate-pulse-glow focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
+          className="inline-flex items-center px-8 py-4 bg-gold text-ink font-serif font-semibold text-lg rounded-sm hover:bg-gold-light transition-colors focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
+          style={{ animation: 'fade-in-up 0.8s ease-out 2.5s both, pulse-glow 2s ease-in-out 3.5s infinite' }}
         >
           {t("cta")}
         </button>
 
-        {/* Mobile hint — visible only on larger screens (desktop users) */}
-        <p className="hidden sm:block mt-6 text-paper-muted/40 text-xs font-serif">
+        <p
+          className="hidden sm:block mt-6 text-paper-muted/40 text-xs font-serif"
+          style={{ animation: 'fade-in-up 0.6s ease-out 2.8s both' }}
+        >
           {tCommon("mobileHint")}
         </p>
       </div>

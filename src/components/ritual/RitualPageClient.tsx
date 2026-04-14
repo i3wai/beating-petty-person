@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRitual } from '@/components/ritual/RitualProvider';
 import RitualOrchestrator from '@/components/ritual/RitualOrchestrator';
@@ -50,6 +51,15 @@ function IdleScreen() {
 export default function RitualPageClient() {
   const { state } = useRitual();
   const tCommon = useTranslations('common');
+
+  // Clear landing-fade-out class from shared layout <main> on mount
+  useEffect(() => {
+    const main = document.querySelector('main');
+    if (main) {
+      main.classList.remove('landing-fade-out');
+      main.style.opacity = '1';
+    }
+  }, []);
 
   return (
     <>

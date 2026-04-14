@@ -1,39 +1,32 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export function AtmosphereSection() {
   const t = useTranslations("landing.atmosphere");
-  const [visibleLines, setVisibleLines] = useState<number>(0);
-
-  useEffect(() => {
-    const timers = [
-      setTimeout(() => setVisibleLines(1), 600),
-      setTimeout(() => setVisibleLines(2), 1800),
-      setTimeout(() => setVisibleLines(3), 3000),
-    ];
-    return () => timers.forEach(clearTimeout);
-  }, []);
-
-  const lines = t.raw("lines") as string[];
+  const line = t("line");
 
   return (
-    <section className="px-4 py-10">
-      <div className="mx-auto max-w-lg text-center space-y-4">
-        {lines.map((line, i) => (
-          <p
-            key={i}
-            className={`text-sm font-mono tracking-wider transition-all duration-700 ${
-              i < visibleLines
-                ? "text-paper/60 translate-y-0 opacity-100"
-                : "text-paper/0 translate-y-2 opacity-0"
-            }`}
-            aria-hidden={i >= visibleLines}
-          >
-            {line}
-          </p>
-        ))}
+    <section className="relative px-4 py-20 sm:py-28 overflow-hidden">
+      {/* Background image — candles + smoke */}
+      <Image
+        src="/hero-candidate-3.jpg"
+        alt=""
+        fill
+        className="object-cover object-center"
+        sizes="100vw"
+        aria-hidden="true"
+      />
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-ink/60 z-[1]" />
+
+      {/* Content */}
+      <div className="relative z-10 mx-auto max-w-lg text-center">
+        <p className="text-paper/80 text-lg sm:text-xl font-serif italic leading-relaxed tracking-wide animate-shimmer">
+          {line}
+        </p>
       </div>
     </section>
   );
