@@ -100,8 +100,12 @@ src/
 │   └── routing.ts              # Locale definitions (en, zh-TW, zh-Hans), localePrefix: 'always'
 │
 ├── lib/
-│   └── stripe.ts               # Stripe singleton + plan config (name/seal/full)
+│   ├── stripe.ts               # Stripe singleton + plan config (name/seal/full)
+│   ├── content.ts              # PostMeta interface, blog helpers (getPostsByCluster, getRelatedPosts)
+│   ├── json-ld.ts              # JSON-LD generators (Organization, Article, FAQPage, etc.)
+│   └── curseReading.ts         # Deterministic modular curse reading generator (162 unique readings)
 │
+├── mdx-components.tsx          # MDX component registry (BlogCtaBlock, etc.)
 └── middleware.ts                # next-intl middleware (locale detection, redirect)
 
 messages/
@@ -111,8 +115,13 @@ messages/
 
 docs/
 ├── ARCHITECTURE.md             # THIS FILE
+├── BLOG_SEO_STANDARD.md        # Blog writing standard (read before writing any blog)
+├── blog-seo-en.md              # EN blog keyword/link architecture
+├── blog-seo-zh.md              # ZH blog strategy (11 posts, 3 clusters)
+├── blog-seo-expert-panel.md    # SEO expert panel discussion report
 ├── FUTURE_ROADMAP.md           # Business roadmap & analysis
-└── ritual-architecture.md      # Ritual flow technical design
+├── ritual-name-redesign.md     # Curse Reading system design ($2.99 tier)
+└── seo-chinese-keyword-research.md  # Chinese keyword research raw data
 
 memory/
 └── MEMORY.md                   # Project-specific mistakes & decisions
@@ -211,6 +220,45 @@ Volume layers: ambient 0.3, action 0.6, transition 0.8
 
 **BurningStep** — Creates ParticleSystem directly from canvasRef (not useCanvas hook) to avoid timing issues with useEffect deps
 
+## prefers-reduced-motion Degradation
+
+`useReducedMotion()` hook reads `prefers-reduced-motion: reduce` media query. Each step component checks hook, conditionally renders Canvas or CSS fallback. ParticleSystem never initializes if reduced motion is active. Same components, just skip Canvas layer.
+
+| Feature | Normal | Reduced Motion |
+|---------|--------|----------------|
+| Particle effects | Canvas 2D animation | Disabled entirely |
+| Invocation transition | 3s candle flicker | Instant state change (0s) |
+| Beating sparks | Canvas burst per tap | Simple CSS scale pulse on paper figure |
+| Burning fire | Canvas particles + dissolution | Simple CSS fade-out of paper figure (2s) |
+| Sealing stamp | 3s stamp + rune flash | Instant stamp appear |
+| Ambient audio | Plays | Still plays (not motion-related) |
+| Haptic feedback | Vibrates | Still vibrates (not motion-related) |
+
+## Performance Targets
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| FPS (beating step) | >= 30fps | Chrome DevTools Performance tab |
+| FPS (burning step) | >= 30fps | Same |
+| Particle count | <= 80 | Runtime assert |
+| Audio latency (action sounds) | < 100ms | Perceived responsiveness |
+| First interactive (step 1) | < 2s after invocation | User perception |
+| Canvas init time | < 200ms | Performance.mark |
+| Memory (total ritual) | < 50MB additional | Chrome Memory panel |
+
+Low-end Android baseline: Snapdragon 450, 2GB RAM, Android 11. If FPS drops below 20: auto-reduce particle count to 40. If below 15: disable particles, CSS-only.
+
+## Edge Cases
+
+| Case | Handling |
+|------|----------|
+| User refreshes mid-ritual | State lost (by design — ritual = one continuous session). Re-start from idle. |
+| Tab backgrounds during burning | Canvas pauses (rAF stops). Resume from same point on return. |
+| AudioContext suspended | Resume on next user tap within ritual. |
+| Screen rotation (mobile) | Canvas resize via ResizeObserver, particles adjust. No state loss. |
+| Double-tap (beating) | Debounce 100ms. Each tap = one burst of particles + one sound. |
+| Very fast tapping | Cap particle emission rate to 4 bursts/second max. |
+
 ## i18n Message Namespaces
 
 ```
@@ -290,12 +338,12 @@ common        → comingSoon
 | Var | Purpose | Status |
 |-----|---------|--------|
 | `NEXT_PUBLIC_GA_ID` | Google Analytics 4 (G-HVR1CTNSQ6) | Set |
-| `STRIPE_SECRET_KEY` | Stripe backend (null = routes return 503) | **Not set** |
+| `STRIPE_SECRET_KEY` | Stripe backend (null = routes return 503) | Set (live) |
 | `STRIPE_PUBLISHABLE_KEY` | Stripe frontend (not used — Checkout redirect) | Not set |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook verification | **Not set** |
-| `STRIPE_PRICE_ID_NAME` | Price for 打人名 $2.99 | **Not set** |
-| `STRIPE_PRICE_ID_SEAL` | Price for 封印詛咒 $4.99 | **Not set** |
-| `STRIPE_PRICE_ID_FULL` | Price for 全套 $6.99 | **Not set** |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook verification | Set (live) |
+| `STRIPE_PRICE_ID_NAME` | Price for 詛咒解讀 $2.99 | Set (live) |
+| `STRIPE_PRICE_ID_SEAL` | Price for 封印詛咒 $4.99 | Set (live) |
+| `STRIPE_PRICE_ID_FULL` | Price for 全套 $6.99 | Set (live) |
 
 ## Known Technical Debt (Post-MVP)
 
@@ -305,7 +353,9 @@ common        → comingSoon
 - PWA is manifest-only — no service worker (@serwist/next incompatible with Turbopack)
 - next-intl `t.raw()` needed for array values — easy to forget when adding new features
 
-## Lighthouse Scores (as of Day 5)
+## Lighthouse Scores (as of Day 5, 2026-04-08)
+
+> **Note**: These scores are from early development. Re-test after major changes.
 
 | Category | Score | Notes |
 |----------|-------|-------|

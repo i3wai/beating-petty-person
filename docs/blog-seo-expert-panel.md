@@ -397,4 +397,4 @@ BeatPetty 未來 12 個月內不會排上「黑魔法」(KD60, 22,200 vol)。Wik
 
 *報告整理自即時專家團隊討論，2026-04-12。*
 *三個 Opus 級 AI agent 在約 15 分鐘內辯論了 5 個關鍵議題。*
-*所有建議已納入：`docs/superpowers/specs/2026-04-12-blog-seo-architecture-design.md`*
+*所有建議已納入：`docs/blog-seo-en.md`*

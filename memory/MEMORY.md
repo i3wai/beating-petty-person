@@ -130,9 +130,9 @@
 - 偏離定位的關鍵詞（情緒管理、職場建議）即使流量高也是噪音
 - 有限度擴展到命理（去霉運、太歲）可接受，因為同在民俗信仰體系內
 
-### ZH blog 10 篇文章排優先序
-1. ZH2 驚蟄打小人攻略 → 2. ZH1 打小人完整攻略 → 3. ZH6 犯太歲化解 → 4. ZH5 去霉運方法 → 5. ZH8 小人作祟 → 6. ZH4 鵝頸橋 → 7. ZH3 咒語 → 8. ZH7 鬼月 → 9. ZH9 詛咒比較 → 10. ZH10 歷史
+### ZH blog 11 篇文章排優先序
+1. ZH2 驚蟄打小人攻略 → 2. ZH1 打小人完整攻略 → 3. ZH6 犯太歲化解 → 4. ZH5 去霉運方法 → 5. ZH8 小人作祟 → 6. ZH11 台灣打小人 → 7. ZH4 鵝頸橋 → 8. ZH3 咒語 → 9. ZH7 鬼月 → 10. ZH9 詛咒比較 → 11. ZH10 歷史
 
 ### 文件位置
-- 完整策略：`docs/superpowers/plans/2026-04-14-zh-blog-seo-strategy.md`
-- EN blog 架構：`docs/superpowers/specs/2026-04-12-blog-seo-architecture-design.md`
+- 完整策略：`docs/blog-seo-zh.md`
+- EN blog 架構：`docs/blog-seo-en.md`

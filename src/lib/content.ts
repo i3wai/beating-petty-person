@@ -180,7 +180,11 @@ export function extractHeadings(content: string): { text: string; id: string }[]
   let match;
   while ((match = headingRegex.exec(content)) !== null) {
     const text = match[1].replace(/[*_`[\]]/g, "").trim();
-    const id = text.toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-");
+    // Keep CJK characters (matching github-slugger behavior used by rehype-slug)
+    const id = text
+      .toLowerCase()
+      .replace(/[^\w\s\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff-]/g, "")
+      .replace(/\s+/g, "-");
     headings.push({ text, id });
   }
   return headings;

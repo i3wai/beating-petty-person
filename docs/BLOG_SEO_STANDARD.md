@@ -60,7 +60,7 @@ Everything else in this standard applies equally to both. The only difference is
 
 ### Before writing: check the keyword plan
 
-Every article's target keywords are defined in `docs/superpowers/specs/2026-04-12-blog-seo-architecture-design.md`. Read this file first to find the assigned keywords for the article you're writing.
+Every article's target keywords are defined in `docs/blog-seo-en.md`. Read this file first to find the assigned keywords for the article you're writing.
 
 ### Keyword placement rules
 
@@ -233,7 +233,7 @@ Do NOT add these manually in MDX — the template handles everything.
 - `RelatedArticles` accepts `heading` prop from server component
 - `BlogCtaBlock` is a client component using `useTranslations('blog.cta')`
 - Blog post page uses `getTranslations('blog')` for FAQ heading, TOC title, etc.
-- **ZH blog 是獨立內容體系，不是 EN 的翻譯。** 同一概念可以有對應主題，但標題、內容、角度、文化引用完全獨立。見 `docs/superpowers/plans/2026-04-14-zh-blog-seo-strategy.md`
+- **ZH blog 是獨立內容體系，不是 EN 的翻譯。** 同一概念可以有對應主題，但標題、內容、角度、文化引用完全獨立。見 `docs/blog-seo-zh.md`
 
 ## 3-Language Workflow
 
@@ -257,11 +257,11 @@ When writing a blog article:
 
 ### ZH Blog Clusters (獨立架構，非 EN 翻譯)
 
-> 完整策略見 `docs/superpowers/plans/2026-04-14-zh-blog-seo-strategy.md`
+> 完整策略見 `docs/blog-seo-zh.md`
 
 | Cluster | Name | Topics |
 |---------|------|--------|
-| A | 打小人核心 | 打小人方法、驚蟄打小人、咒語、鵝頸橋 |
+| A | 打小人核心 | 打小人方法、驚蟄打小人、咒語、鵝頸橋、台灣打小人 |
 | B | 命理與改運 | 去霉運、犯太歲、鬼月、小人作祟 |
 | C | 詛咒文化與比較 | 全球詛咒比較、打小人歷史 |
 
@@ -274,7 +274,7 @@ When writing a blog article:
 - [ ] Description 150-160 chars, includes keywords
 - [ ] Primary keyword in first 50 words of body, 5-7 times total
 - [ ] Each secondary keyword 2-3 times in body, spread across sections
-- [ ] Keywords match plan in `docs/superpowers/specs/2026-04-12-blog-seo-architecture-design.md`
+- [ ] Keywords match plan in `docs/blog-seo-en.md`
 - [ ] Tone matches brand: dark, authoritative, "What if it works?"
 - [ ] At least 5 H2 sections for pillar, 3 for spoke
 - [ ] FAQ section with 5+ questions in frontmatter

@@ -1,6 +1,6 @@
 # Ritual "Name Your Enemy" Flow Redesign
 
-> Date: 2026-04-12 | Status: Approved | Scope: Ritual flow + Result page + Pricing
+> Date: 2026-04-12 | Status: Implemented (2026-04-12) | Scope: Ritual flow + Result page + Pricing
 
 ## Problem
 

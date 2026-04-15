@@ -431,7 +431,7 @@ BeatPetty 有 4 個競爭對手無法複製的獨特優勢：
 
 ---
 
-## 12. 需建立/修改的檔案
+## 12. 需建立/修改的檔案（✓ 全部已完成）
 
 ### 新建檔案
 | 檔案 | 用途 |
@@ -475,20 +475,20 @@ BeatPetty 有 4 個競爭對手無法複製的獨特優勢：
 
 ---
 
-## 13. 驗證清單
+## 13. 驗證清單（✓ 全部已完成）
 
 實作完成後：
-- [ ] `npm run build` 無錯誤通過
-- [ ] 9 篇 blog 文章在正確 URL 上渲染
-- [ ] 舊 URL（/what-is、/how-it-works、/history）返回 301 到新 URL
-- [ ] JSON-LD 驗證通過（Organization、Article、FAQPage、BreadcrumbList）
-- [ ] 每篇 blog 文章都有 hreflang alternates
-- [ ] 每篇 blog 文章都有 canonical URL
-- [ ] 文章間內部連結正常（無死連結）
-- [ ] Blog Hub 按集群分組顯示文章
-- [ ] 相關文章組件顯示同集群文章
-- [ ] 麵包屑導航在 blog 文章上正確渲染
-- [ ] FAQ 區塊以正確的 H3 標題渲染
-- [ ] CTA 區塊正確渲染並連到 /ritual
-- [ ] Sitemap 包含所有新 blog URL
-- [ ] Lighthouse SEO 分數 90+
+- [x] `npm run build` 無錯誤通過
+- [x] 9 篇 blog 文章在正確 URL 上渲染
+- [x] 舊 URL（/what-is、/how-it-works、/history）返回 301 到新 URL
+- [x] JSON-LD 驗證通過（Organization、Article、FAQPage、BreadcrumbList）
+- [x] 每篇 blog 文章都有 hreflang alternates
+- [x] 每篇 blog 文章都有 canonical URL
+- [x] 文章間內部連結正常（無死連結）
+- [x] Blog Hub 按集群分組顯示文章
+- [x] 相關文章組件顯示同集群文章
+- [x] 麵包屑導航在 blog 文章上正確渲染
+- [x] FAQ 區塊以正確的 H3 標題渲染
+- [x] CTA 區塊正確渲染並連到 /ritual
+- [x] Sitemap 包含所有新 blog URL
+- [x] Lighthouse SEO 分數 90+

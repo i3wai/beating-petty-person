@@ -5,6 +5,8 @@
 **Analyst**: SEO Chinese Agent
 **Project**: BeatPetty.com — Digital 打小人 Curse Ritual
 
+> **Note (2026-04-15)**: This is the original keyword research report. The final ZH blog strategy (`docs/blog-seo-zh.md`) supersedes the "Proposed Pages" section below — standalone pages were replaced with 11 blog posts across 3 clusters. Market segmentation, competitive analysis, and cultural insights remain valid reference.
+
 ---
 
 ## Executive Summary
