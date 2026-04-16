@@ -6,13 +6,14 @@
   },
   "landing": {
     "hero": {
-      "title": "Curse Someone With a 300-Year-Old Chinese Ritual",
-      "subtitle": "打小人 — Da Siu Yan — \"Beating the Petty Person.\" A 300-year-old curse ritual from Hong Kong. Free online. What if it works?",
+      "title": "Your Enemy's Luck Ends Here",
+      "subtitle": "BeatPetty — a free online curse ritual born in Hong Kong 300 years ago. Strike a paper effigy. Burn your enemy's influence. What if it works?",
       "cta": "Begin the Ritual"
     },
     "whatIs": {
-      "title": "What Is This Curse Ritual?",
-      "description": "打小人 — Beating the Petty Person — is a 300-year-old curse ritual born on the streets of Hong Kong. Practitioners gather beneath bridges at the start of spring, striking paper effigies to curse their enemies. For centuries, people have used this ritual to curse those who wronged them — striking paper figures, chanting, burning. An ancient tradition, alive in the modern world. What if it works?"
+      "title": "An Ancient Curse, Alive Online",
+      "description": "For 300 years, people have gathered beneath Hong Kong bridges to strike paper effigies and curse their enemies. Now this ritual is online — free, dark, and waiting. Strike. Burn. Seal. What if it works?",
+      "linkText": "Learn the full history of this ritual →"
     },
     "howItWorks": {
       "title": "The Ritual",
@@ -89,10 +90,10 @@
     }
   },
   "meta": {
-    "title": "Online Curse Ritual — Free Chinese Curse | BeatPetty",
-    "description": "Curse someone with an ancient Chinese ritual. Strike a paper effigy, burn your enemy's influence. Free online curse ritual — what if it works?",
+    "title": "BeatPetty — Free Online Curse Ritual",
+    "description": "Strike a paper effigy. Burn your enemy's influence. A 300-year-old Hong Kong curse ritual, now free online. What if it works?",
     "ogTitle": "BeatPetty — Free Online Curse Ritual",
-    "ogDescription": "Curse your enemy with a 300-year-old Chinese ritual. Free online. What if it works?"
+    "ogDescription": "Your enemy's luck ends here. A free online curse ritual from Hong Kong. Strike. Burn. Seal."
   },
   "ritual": {
     "step1Title": "Choose Your Enemy",

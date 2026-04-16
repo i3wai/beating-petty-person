@@ -5,101 +5,96 @@
 
 ---
 
-## Active Task: ZH Blog SEO Full Audit & Image Generation
+## Active Task: Paid Tier Product Upgrade
 
-### Status: IN PROGRESS — images 67% complete
+### Status: PLANNING
 
-### What was done (this session)
+### Problem Statement
 
-1. **Full SEO audit of all 11 ZH blog posts** (zh-TW + zh-Hans) against `docs/BLOG_SEO_STANDARD.md`
-2. **Image gaps identified and fixed:**
-   - All 11 zh-TW articles updated with 3-4 image placeholders each (proper alt text, correct placement)
-   - All 11 zh-Hans articles synced with identical image additions
-   - Reused existing EN blog images where fitting (history-goose-neck-bridge.jpg, history-paper-burning-seal.jpg, curse-traditions-world.jpg, curse-ritual-tools.jpg)
-3. **SEO gaps fixed:**
-   - ZH5 去霉運方法: added 2 missing Wikipedia external links (神道, 風水)
-   - ZH6 犯太歲化解: added 1 missing Wikipedia external link (太歲)
-4. **14/21 new images generated via Gemini API** (see below)
-5. **Build verified:** `npm run build` passes with zero errors
-6. **Created `scripts/generate-blog-images.mjs`** for batch image generation
+All three paid tiers have delivery quality issues:
 
-### Images generated (14/21 done)
+| Tier | Price | Current Delivery | Problem |
+|------|-------|-----------------|---------|
+| Curse Reading | $2.99 | 5 paragraphs of text, assembled from JSON | No visual artifact, no ceremony, no reveal animation. Just plain text on a page. |
+| Sealing Ritual | $4.99 | CSS-styled certificate (NOT downloadable image) + 24px seal stamp | "Enhanced sealing animation" is misleading — free users see the same 3s animation. Certificate is CSS, not a savable image. |
+| Full Power | $6.99 | $2.99 + $4.99 combined | Only tier that logically works — but only because both lower tiers are included |
 
-| # | File | Size | Used in |
-|---|------|------|---------|
-| 1 | villain-paper-burning-fire.jpg | 151KB | ZH1 |
-| 2 | online-digital-ritual-screen.jpg | 154KB | ZH1 |
-| 3 | jingzhe-spring-thunder-awakening.jpg | 216KB | ZH2 |
-| 4 | curse-spell-chanting-ritual.jpg | 217KB | ZH3 |
-| 5 | paper-effigy-beating-closeup.jpg | 241KB | ZH3 |
-| 6 | elderly-woman-ritual-service.jpg | 191KB | ZH4 |
-| 7 | goose-neck-bridge-panoramic.jpg | 243KB | ZH4 |
-| 8 | bad-luck-removal-overview.jpg | 169KB | ZH5 |
-| 9 | salt-water-purification-bath.jpg | 189KB | ZH5 |
-| 10 | feng-shui-home-luck.jpg | 206KB | ZH5 |
-| 11 | taisui-temple-worship.jpg | 204KB | ZH6 |
-| 12 | zodiac-taisui-animals.jpg | 229KB | ZH6 |
-| 13 | protection-charms-red-rope.jpg | 193KB | ZH6 |
-| 14 | ghost-month-atmosphere.jpg | 181KB | ZH7 |
+### Root Causes
 
-### Outstanding: 7 images not yet generated
+1. **$2.99 reading has no ceremony** — 5 paragraphs dumped at once. No progressive reveal, no "materializing from ashes" effect. Free users already see paragraph 1 in the blur preview.
+2. **No visual artifact at $2.99** — $4.99 has a certificate. $2.99 has nothing users can save/share. Close the page = gone.
+3. **$4.99 certificate is CSS, not a real image** — Users can't download it. Not canvas-generated. No share functionality.
+4. **"Enhanced sealing animation" is false advertising** — The 3s sealing transition runs for ALL users (free included). The $4.99 tier adds nothing to the animation itself.
 
-| # | File | Used in |
-|---|------|---------|
-| 15 | zhongyuan-festival-offerings.jpg | ZH7 鬼月禁忌與化解 |
-| 16 | petty-person-signs-surrounded.jpg | ZH8 小人作祟的徵兆 |
-| 17 | villain-protection-defense.jpg | ZH8 小人作祟的徵兆 |
-| 18 | global-curse-traditions-map.jpg | ZH9 詛咒術大比較 |
-| 19 | qing-dynasty-villain-hitting.jpg | ZH10 打小人的歷史 |
-| 20 | taiwan-temple-petty-person.jpg | ZH11 台灣打小人文化 |
-| 21 | taiwan-folk-ritual-elements.jpg | ZH11 台灣打小人文化 |
+### Architecture Facts (from code review)
 
-### How to continue image generation
+- Reading generation: `src/lib/curseReading.ts` — 5 components (opening, impact, timing, weakness, closing), 3 options each = 243 combos per enemy type
+- Result page: `src/app/[locale]/result/page.tsx` — plan === 'name' shows reading, plan === 'seal' shows certificate, plan === 'full' shows both
+- Sealing transition: `src/components/ritual/SealingTransition.tsx` — runs for ALL users, 3 seconds
+- Certificate: `src/components/SealCertificate.tsx` — CSS-only, not canvas-generated, not downloadable
+- Stripe plans: `src/lib/stripe.ts` — name($2.99), seal($4.99), full($6.99)
 
-1. Ensure VPN is enabled (Gemini API blocked in Taiwan)
-2. Run: `node scripts/generate-blog-images.mjs`
-3. Script skips already-generated images, only generates the 7 remaining
-4. Images save to `public/blog/`, auto-converted to JPG 1200x630
+### Planned Improvements (Priority Order)
 
-### Per-article image count after completion
+1. **$2.99 Reading — Progressive Reveal Animation**
+   - Each paragraph "materializes from ashes" one at a time (1-2s per paragraph)
+   - Total reveal: ~10-12s instead of instant dump
+   - Fire/smoke particle effects during reveal
 
-| Article | Type | Target | Existing | New gen | Reused | Total |
-|---------|------|--------|----------|---------|--------|-------|
-| ZH1 打小人完整攻略 | Pillar | 3-4 | 2 | 2 | 0 | 4 |
-| ZH2 驚蟄打小人攻略 | Spoke | 3-4 | 2 | 1 | 0 | 3 |
-| ZH3 打小人咒語 | Spoke | 3-4 | 0 | 2 | 1 | 3 |
-| ZH4 鵝頸橋打小人 | Spoke | 3-4 | 1 | 2 | 1 | 4 |
-| ZH5 去霉運方法 | Pillar | 3-4 | 0 | 3 | 0 | 3 |
-| ZH6 犯太歲化解 | Spoke | 3-4 | 0 | 3 | 0 | 3 |
-| ZH7 鬼月禁忌與化解 | Spoke | 3-4 | 0 | 2 | 0 | 2→3 |
-| ZH8 小人作祟的徵兆 | Spoke | 3-4 | 0 | 2 | 0 | 2→3 |
-| ZH9 詛咒術大比較 | Pillar | 3-4 | 0 | 1 | 1 | 2→3 |
-| ZH10 打小人的歷史 | Spoke | 3-4 | 0 | 1 | 2 | 3 |
-| ZH11 台灣打小人文化 | Spoke | 3-4 | 0 | 2 | 0 | 2→3 |
+2. **$2.99 Reading — Curse Scroll Image (Canvas-generated)**
+   - Generate a dark parchment/scroll visual with the reading text
+   - Users can save and share (like the seal certificate but for reading)
+   - Unique rune/sigil per reading combination (visual variety beyond text)
 
-### After images are done
+3. **$4.99 Certificate — Make it a Real Downloadable Image**
+   - Convert CSS certificate to Canvas-generated PNG
+   - Add download button + share button
+   - Currently CSS-only with no save functionality
 
-1. `npm run build` — verify
-2. Deploy: `npx vercel --prod --yes`
-3. Update CLAUDE.md status section (ZH Blog Content Progress → 11/11 complete with images)
-4. Consider: submit updated sitemap to Google Search Console
+4. **Fix "Enhanced Sealing Animation" Claim**
+   - Option A: Make it real — add exclusive sealing visual for $4.99 users (e.g., stronger seal stamp, different animation)
+   - Option B: Remove the claim from pricing copy
+   - Current pricing copy says "Enhanced sealing animation" but free users see the same thing
+
+5. **$2.99 Reading Content Upgrade**
+   - Add a "prophecy" paragraph with specific details (dates, numbers, signs)
+   - More personalization beyond just {target} name replacement
+   - Enemy-type-specific imagery and language
+
+---
+
+## Previously Completed (this session)
+
+### Landing Page Keyword Cannibalization Fix — DEPLOYED
+
+1. **EN H1**: `"Curse Someone With a 300-Year-Old Chinese Ritual"` → `"Your Enemy's Luck Ends Here"` (no longer competes with B2 "How to Curse Someone")
+2. **EN WhatIs**: `"What Is This Curse Ritual?"` → `"An Ancient Curse, Alive Online"` + teaser text + link to B1 blog post (no longer competes with B1)
+3. **EN Meta**: `"Online Curse Ritual — Free Chinese Curse"` → `"BeatPetty — Free Online Curse Ritual"` (brand-first)
+4. **ZH H1**: `"打小人 — 在線正宗詛咒儀式"` → `"你的小人，氣數已盡"` (CTA-oriented, no longer competes with ZH1)
+5. **ZH WhatIs**: Removed 驚蟄/鵝頸橋 keywords, replaced with teaser + link to ZH10
+6. **ZH Meta**: Removed 鵝頸橋 keyword, brand-focused
+7. **WhatIsSection component**: Added locale-aware blog link (EN→B1, ZH→ZH10)
+8. **All changes applied to zh-TW + zh-Hans**
+9. **Deployed to production**: `npx vercel --prod --yes`
 
 ---
 
 ## Previously Completed (prior sessions)
 
 - 11/11 ZH blog posts fully written (zh-TW + zh-Hans)
+- 21/21 ZH blog images generated
+- Full SEO audit of 22 ZH blog posts
 - 6 old EN-slug ZH posts deleted, 301 redirects in `next.config.ts`
 - Build passes, deployed to Vercel production
-- 4/11 posts completed earlier: ZH1, ZH2, ZH5, ZH6
-- 7/11 posts rewritten this session: ZH3, ZH4, ZH7, ZH8, ZH9, ZH10, ZH11
+- ZH Blog SEO Strategy completed (docs/blog-seo-zh.md)
 
 ---
 
-## Notes
+## Next Steps
 
-- Gemini API (`gemini-3.1-flash-image-preview`) requires VPN from Taiwan
-- `GEMINI_API_KEY` env var is set
-- Image generation script: `scripts/generate-blog-images.mjs`
-- Each image: ~150-250KB, 1200x630, 16:9, dark fantasy style
-- All images have descriptive alt text (15-30 words) in the MDX files
+1. Implement $2.99 reading improvements (progressive reveal + scroll image)
+2. Convert $4.99 certificate to downloadable canvas image
+3. Fix "enhanced sealing animation" claim
+4. Deploy and test on real devices
+5. Submit updated sitemap to GSC
+6. Monitor GSC for indexing and click data

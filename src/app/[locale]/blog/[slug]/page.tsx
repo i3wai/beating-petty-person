@@ -35,11 +35,11 @@ export async function generateMetadata({
     keywords: post.frontmatter.keywords,
     alternates: {
       canonical: `${siteUrl}/${locale}/blog/${slug}`,
-      languages: {
-        en: `${siteUrl}/en/blog/${slug}`,
-        "zh-TW": `${siteUrl}/zh-TW/blog/${slug}`,
-        "zh-Hans": `${siteUrl}/zh-Hans/blog/${slug}`,
-      },
+      languages: Object.fromEntries(
+        (["en", "zh-TW", "zh-Hans"] as const)
+          .filter((loc) => loc !== locale && getPostBySlug(loc, slug))
+          .map((loc) => [loc, `${siteUrl}/${loc}/blog/${slug}`])
+      ),
     },
     openGraph: {
       title: post.frontmatter.title,
