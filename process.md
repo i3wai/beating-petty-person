@@ -1,69 +1,129 @@
 # BeatPetty — Current Process State
 
 > **Every new session: read this file first. Every session end: update this file.**
-> Last updated: 2026-04-15
+> Last updated: 2026-04-18
 
 ---
 
-## Active Task: Paid Tier Product Upgrade
+## Active Task: Ritual Redesign + Paid Tier Restructure
 
-### Status: PLANNING
+### Status: PLANNING (2026-04-18)
 
-### Problem Statement
+Redesigning ritual flow to match traditional Hong Kong 8-step process (八部曲) and restructuring paid tiers.
 
-All three paid tiers have delivery quality issues:
+- **Discussion doc**: `docs/ritual-redesign.md` — current discussion, options, unresolved questions
+- **Traditional reference**: `docs/ritual-process-hk.md` — correct Hong Kong 打小人 process
+- **3 unresolved questions** (need Allen's decision):
+  1. Free users' ritual ending: keep fake 封印 / direct result / 擲筊 for all?
+  2. $4.99 "new ritual" = what exactly?
+  3. Main flow includes all 8 steps or abbreviated for free?
+- **Pricing structure (Allen confirmed)**: Free / $2.99 (reading + certificate) / $4.99 (new ritual experience) / $6.99 (all combined)
+- **Current ritual gaps**: missing 4/8 steps (過火, 化解, 祈福, 擲筊), 1 step needs upgrade (祭白虎), 1 non-traditional step to remove (封印)
 
-| Tier | Price | Current Delivery | Problem |
-|------|-------|-----------------|---------|
-| Curse Reading | $2.99 | 5 paragraphs of text, assembled from JSON | No visual artifact, no ceremony, no reveal animation. Just plain text on a page. |
-| Sealing Ritual | $4.99 | CSS-styled certificate (NOT downloadable image) + 24px seal stamp | "Enhanced sealing animation" is misleading — free users see the same 3s animation. Certificate is CSS, not a savable image. |
-| Full Power | $6.99 | $2.99 + $4.99 combined | Only tier that logically works — but only because both lower tiers are included |
+### Previous Task: EN Blog Complete — ALL COMPLETE
 
-### Root Causes
+All 9 EN blog articles written, images generated, deployed to production.
 
-1. **$2.99 reading has no ceremony** — 5 paragraphs dumped at once. No progressive reveal, no "materializing from ashes" effect. Free users already see paragraph 1 in the blur preview.
-2. **No visual artifact at $2.99** — $4.99 has a certificate. $2.99 has nothing users can save/share. Close the page = gone.
-3. **$4.99 certificate is CSS, not a real image** — Users can't download it. Not canvas-generated. No share functionality.
-4. **"Enhanced sealing animation" is false advertising** — The 3s sealing transition runs for ALL users (free included). The $4.99 tier adds nothing to the animation itself.
+---
 
-### Architecture Facts (from code review)
+## Completed This Session: URL Audit + SEO Verification + Deployment (2026-04-18)
 
-- Reading generation: `src/lib/curseReading.ts` — 5 components (opening, impact, timing, weakness, closing), 3 options each = 243 combos per enemy type
-- Result page: `src/app/[locale]/result/page.tsx` — plan === 'name' shows reading, plan === 'seal' shows certificate, plan === 'full' shows both
-- Sealing transition: `src/components/ritual/SealingTransition.tsx` — runs for ALL users, 3 seconds
-- Certificate: `src/components/SealCertificate.tsx` — CSS-only, not canvas-generated, not downloadable
-- Stripe plans: `src/lib/stripe.ts` — name($2.99), seal($4.99), full($6.99)
+### EN Blog URL 404 Audit (2026-04-18)
 
-### Planned Improvements (Priority Order)
+Full URL audit of all 9 EN blog articles — 87 URLs checked (32 internal blog paths, 8 /ritual paths, 25 Wikipedia URLs, 28 image paths). 2 broken external Wikipedia links found and fixed:
 
-1. **$2.99 Reading — Progressive Reveal Animation**
-   - Each paragraph "materializes from ashes" one at a time (1-2s per paragraph)
-   - Total reveal: ~10-12s instead of instant dump
-   - Fire/smoke particle effects during reveal
+- **B7 hex-spells-curses**: `https://en.wikipedia.org/wiki/Hex_(witch)` (404) → `https://en.wikipedia.org/wiki/Hex` (200)
+- **B8 how-to-get-rid-of-bad-luck**: `https://en.wikipedia.org/wiki/Salt_in_Roman_religion` (404) → `https://en.wikipedia.org/wiki/Salt#In_religion` (200)
 
-2. **$2.99 Reading — Curse Scroll Image (Canvas-generated)**
-   - Generate a dark parchment/scroll visual with the reading text
-   - Users can save and share (like the seal certificate but for reading)
-   - Unique rune/sigil per reading combination (visual variety beyond text)
+All 87 URLs now return 200. Deployed to production.
 
-3. **$4.99 Certificate — Make it a Real Downloadable Image**
-   - Convert CSS certificate to Canvas-generated PNG
-   - Add download button + share button
-   - Currently CSS-only with no save functionality
+### EN Blog Second SEO Audit — Verification Pass (2026-04-18)
 
-4. **Fix "Enhanced Sealing Animation" Claim**
-   - Option A: Make it real — add exclusive sealing visual for $4.99 users (e.g., stronger seal stamp, different animation)
-   - Option B: Remove the claim from pricing copy
-   - Current pricing copy says "Enhanced sealing animation" but free users see the same thing
+Full re-audit of all 9 EN blog articles after first audit fixes. Result: 8/9 pass, 1 remaining issue found and fixed:
 
-5. **$2.99 Reading Content Upgrade**
-   - Add a "prophecy" paragraph with specific details (dates, numbers, signs)
-   - More personalization beyond just {target} name replacement
-   - Enemy-type-specific imagery and language
+- **B3 description**: was 142 chars (under 150 min) → fixed to 150 chars ("and now reaches your screen" wording)
+- All 9 original audit fixes verified as correctly applied
+- Zero keyword cannibalization across all 9 articles
+- All cluster linking rules satisfied
+- Deployed to production
+
+### EN Blog Full SEO Audit + Fixes (2026-04-18)
+
+Comprehensive SEO audit of all 9 EN blog articles against BLOG_SEO_STANDARD.md + blog-seo-en.md. 9 issues found and fixed:
+
+**P0 Fixes:**
+- B9: added 3 external links (Wikipedia: curse tablet, Chinese folk religion, curanderismo, nocebo effect) — was zero
+- B5: resolved "karma spell" keyword cannibalization with B8 — removed from B5 keywords, shortened karma spell section from ~230w to ~120w, added link to B8's full section
+- B8: generated 2 new pillar images (bad-luck-signs.jpg 151KB, bad-luck-four-step.jpg 152KB) — now 4/4 images
+
+**P1 Fixes:**
+- B5 title trimmed: 64→55 chars
+- B9 title trimmed: 62→53 chars
+- B3 description trimmed: ~167→~147 chars
+- B5 description trimmed: ~177→~150 chars
+- B7 description trimmed: ~189→~140 chars
+- B9 description trimmed: ~169→~140 chars
+- B3 H1 fixed: "A 300-Year Curse That Refused to Die" → "Villain Hitting — 300 Years of a Curse That Refused to Die"
+
+**P2 Fixes:**
+- B1: removed "Goose Neck Bridge Hong Kong" from keywords (B3 owns this)
+- B3: removed "Chinese folk magic" from keywords (B1 owns this)
+- B8: added "how to undo bad luck" naturally in four-step section
+- B9: added "get rid of a curse spell" naturally in intro
+
+### B8 How to Get Rid of Bad Luck — Cluster B Pillar — DEPLOYED
+
+- Full rewrite from 225w placeholder to ~3,500w Cluster B pillar
+- Keywords: how to get rid of bad luck (1,000), bad luck (3,600), how to remove bad luck (480), karma spell (720), how to undo bad luck (480), is bad luck real (480), signs of bad luck, how to reverse bad luck
+- 8 H2 + 3 H3 sections: What Is Bad Luck, Signs of Bad Luck (spiritual + observable), Why Do You Have Bad Luck (spiritual/psychological/environmental), Cleansing Rituals Across Cultures (salt/sage/egg/misogi/Ganga/Da Siu Yan), Karma Spell, How Long Does Bad Luck Last, Cleansing Methods Compared (table), Universal Four-Step Method
+- 7 FAQs: signs of bad luck, curse of bad luck, how long, is it real, reverse, why, curse vs bad luck
+- 1 comparison table: 7 cleansing methods across traditions
+- HowTo steps: 4-step universal cleansing method
+- 2 images: bad-luck-cleansing.jpg (178KB), bad-luck-karma.jpg (174KB)
+- Internal links: B9, B4, B5, B7, B2, B1, B3, /ritual (10+)
+- External links: Wikipedia (evil eye, salt in Roman religion, nocebo)
+- `<BlogCtaBlock />` + in-text CTA to /ritual
+- Deployed to production
+
+### B9 How to Remove a Curse — Cluster B Spoke — DEPLOYED
+
+- Full rewrite from 224w placeholder to ~2,300w Cluster B spoke
+- Keywords: how to remove a curse (1,300), signs of a curse (590), curse protection (480), how to tell if someone put a curse on you (210), get rid of a curse spell (210), how to break a curse (320), signs you are cursed (590)
+- 6 H2 + 2 H3 sections: Signs You Are Cursed (pattern test + what it's not), How to Tell If Someone Put a Curse on You, Curse-Breaking Rituals (salt/fire, mirror reversal, Da Siu Yan, egg cleansing), Universal Four-Step Method, Curse Protection
+- 5 FAQs: how to tell if cursed, how to break a curse, can a curse be removed, signs you are cursed, curse protection
+- HowTo steps: 4-step curse-breaking method
+- 1 image: curse-removal-ritual.jpg (181KB)
+- Internal links: B8 (pillar), B4, B6, B7, B2, B1, /ritual (10+)
+- `<BlogCtaBlock />` + in-text CTA to /ritual
+- Deployed to production
 
 ---
 
 ## Previously Completed (this session)
+
+### B5 Revenge Spells Rewrite — DEPLOYED (2026-04-18)
+
+- Full rewrite from 190w placeholder to 2,570w Cluster A spoke
+- 6 FAQs, 2 images, 8+ internal links
+- Deployed to production
+
+### B6 Voodoo Magic Curses Pillar Rewrite — DEPLOYED (2026-04-18)
+
+- Full rewrite from ~200w placeholder to ~3,500w Cluster C pillar
+- 6 FAQs, 3 images, 5 comparison tables
+- Commit: `da1fcbb`, deployed to production
+
+### B7 Hex Spells Curses Spoke Rewrite — DEPLOYED (2026-04-17)
+
+- Full rewrite from ~200w placeholder to ~2,800w Cluster A spoke
+- 6 FAQs, 2 images, 8 internal links
+- Commit: `c6484ee`
+
+### B3 + B2 Minor Fixes — DEPLOYED (2026-04-17)
+
+- B3: added 2 FAQs (cost + home practice) to hit pillar minimum of 7
+- B2: added cross-link to B4 pillar in intro paragraph
+- Same commit: `c6484ee`
 
 ### Landing Page Keyword Cannibalization Fix — DEPLOYED
 
@@ -90,11 +150,58 @@ All three paid tiers have delivery quality issues:
 
 ---
 
-## Next Steps
+## EN Blog Status (9 articles — ALL COMPLETE)
 
-1. Implement $2.99 reading improvements (progressive reveal + scroll image)
-2. Convert $4.99 certificate to downloadable canvas image
-3. Fix "enhanced sealing animation" claim
-4. Deploy and test on real devices
-5. Submit updated sitemap to GSC
-6. Monitor GSC for indexing and click data
+| # | Slug | Role | Words | FAQs | Status |
+|---|------|------|------:|-----:|--------|
+| B1 | what-is-da-siu-yan | C spoke | 4,558 | 6 | **Complete** |
+| B2 | how-to-curse-someone | A spoke | 3,807 | 8 | **Complete** |
+| B3 | history-of-villain-hitting | C spoke | 3,904 | 7 | **Complete** |
+| B4 | what-is-black-magic | A pillar | 4,556 | 8 | **Complete** |
+| B5 | revenge-spells | A spoke | 2,570 | 6 | **Complete (2026-04-18)** |
+| B6 | voodoo-magic-curses | C pillar | 3,681 | 6 | **Complete (2026-04-18)** |
+| B7 | hex-spells-curses | A spoke | 2,844 | 6 | **Complete (2026-04-17)** |
+| B8 | how-to-get-rid-of-bad-luck | B pillar | ~3,500 | 7 | **Complete (2026-04-18)** |
+| B9 | how-to-remove-a-curse | B spoke | ~2,300 | 5 | **Complete (2026-04-18)** |
+
+---
+
+## Paused Task: Paid Tier Product Upgrade
+
+### Status: SUPERSEDED by Ritual Redesign (2026-04-18)
+
+This section's original plan (progressive reveal, canvas certificate, fix false claims) has been superseded by the full ritual redesign. See `docs/ritual-redesign.md` for the new approach.
+
+---
+
+## Next Steps — Allen's Growth Roadmap (2026-04-18)
+
+Four-phase plan, strictly sequential. Don't skip ahead.
+
+### Phase 1: Ritual Redesign + Paid Tier Restructure (CURRENT)
+- Redesign ritual flow to match traditional 8-step process
+- Restructure pricing: Free / $2.99 (reading + cert) / $4.99 (new ritual) / $6.99 (all)
+- Full discussion: `docs/ritual-redesign.md`
+- **Blocked on**: Allen's decision on 3 key questions (free user ending, $4.99 content, main flow scope)
+- Traditional reference: `docs/ritual-process-hk.md`
+
+### Phase 2: Viral Share Engine (parallel with Phase 1)
+- Revise share button UX and share content
+- Goal: make something cool enough that visitors share on X and TikTok organically
+- Target both free and paid users — free users are the volume driver
+- Hacker growth: each share = free acquisition
+
+### Phase 3: Seedance 2 Video — "Wow" Factor
+- AI-generated dark ritual video (Seedance 2 API)
+- Possible uses: mainpage background animation, paid tier enhancement, shareable clip
+- **Needs tech spike first**: test cost, speed, quality before committing to placement
+- If fast+cheap enough → mainpage; if slow/expensive → paid tier only
+
+### Phase 4: Paid Acquisition (after 1-3 complete)
+- Product polished, share engine live, wow factor in place
+- Then buy ads: Meta (Instagram/TikTok audience overlap) or Google Search
+- Don't scale traffic until conversion funnel is proven
+
+### Ongoing (background)
+- Monitor GSC for indexing and click data (weekly check)
+- Consider Phase 2 blog articles when existing content establishes authority

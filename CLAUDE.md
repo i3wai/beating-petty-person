@@ -4,6 +4,7 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 
 > **每個新 session 第一件事：讀 `process.md`，掌握當前任務進度。然後讀 `docs/ARCHITECTURE.md`，不要全掃描 codebase。**
 > **寫或改 blog 內容時，先讀 `docs/BLOG_SEO_STANDARD.md` 和 `docs/blog-seo-en.md`（EN）/ `docs/blog-seo-zh.md`（ZH），按標準和關鍵詞計劃執行。**
+> **任何涉及儀式流程（ritual steps、打小人流程、儀式互動設計）的任務，先讀 `docs/ritual-process-hk.md`，以香港正宗八部曲為準。**
 > **項目 mistakes + decisions 在 `memory/MEMORY.md`。**
 > **每個 session 結束前或中斷時，更新 `process.md` 記錄進度和待辦事項。**
 
@@ -73,6 +74,8 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 - **Conversion Optimization completed: 2026-04-13** — 8 fixes based on expert review: atmosphere false claim removed, reading seed mismatch fixed (preview=checkout), share button i18n, suspenseful free result copy ("ashes hold a message"), 2.5s reading ceremony loading, "Best Value" badge on $6.99, EN enemy descriptions aligned with ZH concepts (fortune/conflict), BurningStep keyboard accessibility
 - **ZH Blog SEO Strategy completed: 2026-04-14** — 3-agent discussion (SEO/Conversion/Cultural) + Elon critique: 3 clusters (打小人核心/命理與改運/詛咒文化), 11 posts planned, rejected "生氣怎麼辦"/"發洩情緒" (intent mismatch), identified 太歲/鬼月 as missed opportunities. Strategy doc: `docs/blog-seo-zh.md`
 - **ZH Blog SEO Audit & Fix completed: 2026-04-15** — Full SEO audit of 22 ZH posts (zh-TW + zh-Hans) against BLOG_SEO_STANDARD.md. All titles expanded to 25-30 chars, descriptions to 100-130 chars. Missing cross-cluster links added (ZH7→ZH9). zh-Hans typo fixed. 21/21 images generated. Build passes.
+- **EN Blog Complete + SEO Audits: 2026-04-18** — All 9 EN articles written (B5/B6/B7/B8/B9 rewritten from placeholders). Two SEO audits passed. URL 404 audit: 87 URLs checked, 2 broken Wikipedia links fixed (B7, B8). All deployed to production.
+- **Ritual Redesign Planning: 2026-04-18** — Expert panel discussion completed. Current ritual missing 4/8 traditional steps. Pricing restructure: Free / $2.99 / $4.99 / $6.99. 3 key decisions pending Allen's input. Docs: `docs/ritual-redesign.md`, `docs/ritual-process-hk.md`
 - Phase: **Soft Launch — Stripe live, accepting payments**
 - Owner: Allen (business, content, tool setup) | Claude (design, code, SEO, tech)
 - Deploy: `npx vercel --prod --yes`
