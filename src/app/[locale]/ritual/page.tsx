@@ -1,6 +1,6 @@
+import { Suspense } from 'react';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
-import { RitualProvider } from '@/components/ritual/RitualProvider';
 import RitualPageClient from '@/components/ritual/RitualPageClient';
 
 export async function generateMetadata({
@@ -26,8 +26,14 @@ export default async function RitualPage({
   setRequestLocale(locale);
 
   return (
-    <RitualProvider>
+    <Suspense
+      fallback={
+        <div className="min-h-[80dvh] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full border-2 border-gold border-t-transparent animate-spin" />
+        </div>
+      }
+    >
       <RitualPageClient />
-    </RitualProvider>
+    </Suspense>
   );
 }

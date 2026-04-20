@@ -10,17 +10,26 @@ const InvocationTransition = lazy(
 const EnemySelectStep = lazy(
   () => import('@/components/ritual/steps/EnemySelectStep'),
 );
+const FirePassTransition = lazy(
+  () => import('@/components/ritual/FirePassTransition'),
+);
 const BeatingStep = lazy(
   () => import('@/components/ritual/steps/BeatingStep'),
 );
 const BurningStep = lazy(
   () => import('@/components/ritual/steps/BurningStep'),
 );
-const SealingTransition = lazy(
-  () => import('@/components/ritual/SealingTransition'),
+const PaywallTransition = lazy(
+  () => import('@/components/ritual/PaywallTransition'),
 );
-const ResultStep = lazy(
-  () => import('@/components/ritual/steps/ResultStep'),
+const PurificationStep = lazy(
+  () => import('@/components/ritual/steps/PurificationStep'),
+);
+const BlessingStep = lazy(
+  () => import('@/components/ritual/steps/BlessingStep'),
+);
+const DivinationStep = lazy(
+  () => import('@/components/ritual/steps/DivinationStep'),
 );
 
 function StepLoader() {
@@ -54,6 +63,7 @@ export default function RitualOrchestrator() {
     <Suspense fallback={<StepLoader />}>
       {state === 'invocation' && <InvocationTransition />}
       {state === 'select' && <EnemySelectStep />}
+      {state === 'firePass' && <FirePassTransition />}
       {state === 'beating' && <BeatingStep />}
       {state === 'burning' && (
         <div
@@ -65,8 +75,10 @@ export default function RitualOrchestrator() {
           <BurningStep />
         </div>
       )}
-      {state === 'sealing' && <SealingTransition />}
-      {state === 'result' && <ResultStep />}
+      {state === 'paywall' && <PaywallTransition />}
+      {state === 'purification' && <PurificationStep />}
+      {state === 'blessing' && <BlessingStep />}
+      {state === 'divination' && <DivinationStep />}
     </Suspense>
   );
 }

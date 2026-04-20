@@ -6,12 +6,13 @@ import { useRitual } from '@/components/ritual/RitualProvider';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import CandleFlame from '@/components/CandleFlame';
+import { PAPER_FIGURE_PNG, ENEMY_CATEGORIES } from '@/components/ritual/silhouettes';
 
 /** Total invocation animation duration in ms */
-const INVOCATION_DURATION_MS = 3000;
+const INVOCATION_DURATION_MS = 6000;
 
 /**
- * InvocationTransition — 3-second darkening transition with candle flames.
+ * InvocationTransition — 6-second darkening transition with candle flames.
  * This is the iOS AudioContext unlock point (requires user gesture to trigger).
  * Includes focus trap for accessibility.
  */
@@ -78,6 +79,14 @@ export default function InvocationTransition() {
     };
   }, []);
 
+  // Preload transparent PNG paper figures during 6s animation
+  useEffect(() => {
+    for (const cat of ENEMY_CATEGORIES) {
+      const img = new Image();
+      img.src = PAPER_FIGURE_PNG[cat];
+    }
+  }, []);
+
   useEffect(() => {
     // Init audio (iOS AudioContext unlock) + play transition sound
     const initAudio = async () => {
@@ -97,7 +106,7 @@ export default function InvocationTransition() {
       return;
     }
 
-    // Normal: complete after 3 seconds
+    // Normal: complete after 6 seconds
     timerRef.current = setTimeout(completeInvocation, INVOCATION_DURATION_MS);
 
     return () => {
@@ -126,8 +135,6 @@ export default function InvocationTransition() {
       {/* Candles with visible candle body */}
       <div className="invocation-candles animate-fade-in relative z-10 mb-8">
         <CandleFlame />
-        {/* Extended candle body base — warm tapered rectangle */}
-        <div className="invocation-candle-base" aria-hidden="true" />
       </div>
 
       {/* Title */}

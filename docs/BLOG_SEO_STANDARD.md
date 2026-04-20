@@ -102,7 +102,7 @@ Chinese users searching 「打小人」「去霉運」「犯太歲」come from f
 
 ### Before writing: check the keyword plan
 
-Every article's target keywords are defined in `docs/blog-seo-en.md` (EN) or `docs/blog-seo-zh.md` (ZH). Read the relevant file first to find the assigned keywords for the article you're writing.
+Every article's target keywords are defined in `docs/blog-seo-master.md`. Read it first to find the assigned keywords for the article you're writing.
 
 ### Entity-Based SEO (modern approach)
 
@@ -293,7 +293,7 @@ The blog post template (`src/app/[locale]/blog/[slug]/page.tsx`) generates all o
 - `RelatedArticles` accepts `heading` prop from server component
 - `BlogCtaBlock` is a client component using `useTranslations('blog.cta')`
 - Blog post page uses `getTranslations('blog')` for FAQ heading, TOC title, etc.
-- **ZH blog 是獨立內容體系，不是 EN 的翻譯。** 同一概念可以有對應主題，但標題、內容、角度、文化引用完全獨立。見 `docs/blog-seo-zh.md`
+- **ZH blog 是獨立內容體系，不是 EN 的翻譯。** 同一概念可以有對應主題，但標題、內容、角度、文化引用完全獨立。見 `docs/blog-seo-master.md`
 
 ## 3-Language Workflow
 
@@ -307,7 +307,7 @@ When writing a blog article:
 
 ## Cluster Assignment
 
-Same A/B/C codes for EN and ZH, but **ZH clusters are independent, not translations** — full plans in `docs/blog-seo-en.md` and `docs/blog-seo-zh.md`.
+Same A/B/C codes for EN and ZH, but **ZH clusters are independent, not translations** — full plans in `docs/blog-seo-master.md`.
 
 | Cluster | EN | ZH |
 |---------|----|----|
@@ -348,13 +348,13 @@ Blog hubs render per-locale (`/en/blog`, `/zh-TW/blog`), so codes don't conflict
 ### EN-specific
 - [ ] Title 50-60 chars, primary keyword first
 - [ ] Description 150-160 chars, includes keywords
-- [ ] Keywords match plan in `docs/blog-seo-en.md`
+- [ ] Keywords match plan in `docs/blog-seo-master.md` (EN)
 - [ ] Tone: Dark Grimoire — authoritative, ominous, occult vocabulary
 
 ### ZH-specific
 - [ ] Title 25-30 Chinese chars, primary keyword within first 10-15 chars
 - [ ] Description 80-100 Chinese chars, includes keywords (pixel-width safe)
-- [ ] Keywords match plan in `docs/blog-seo-zh.md`
+- [ ] Keywords match plan in `docs/blog-seo-master.md` (ZH)
 - [ ] Tone: 正統民俗 — use 科儀/煞氣/符籙 vocabulary, NOT Western occult translation tone
 - [ ] zh-TW uses Cantonese/HK cultural references; zh-Hans uses general Chinese vocabulary
 - [ ] Full-width punctuation only; half-width space between CJK and Latin characters

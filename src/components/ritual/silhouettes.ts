@@ -20,7 +20,7 @@ export const ENEMY_CATEGORIES: EnemyCategory[] = [
   'custom',
 ];
 
-/** AI-generated paper figure images per enemy type */
+/** AI-generated paper figure images per enemy type (white background — for EnemySelectStep) */
 export const PAPER_FIGURE_IMAGES: Record<EnemyCategory, string> = {
   backstabber: '/images/paper-figures/backstabber.jpg',
   toxicBoss: '/images/paper-figures/toxic-boss.jpg',
@@ -30,8 +30,19 @@ export const PAPER_FIGURE_IMAGES: Record<EnemyCategory, string> = {
   custom: '/images/paper-figures/custom.jpg',
 };
 
+/** Transparent PNG paper figures (no background — for ritual stages) */
+export const PAPER_FIGURE_PNG: Record<EnemyCategory, string> = {
+  backstabber: '/images/paper-figures/backstabber.png',
+  toxicBoss: '/images/paper-figures/toxic-boss.png',
+  ex: '/images/paper-figures/ex.png',
+  energyVampire: '/images/paper-figures/energy-vampire.png',
+  bully: '/images/paper-figures/bully.png',
+  custom: '/images/paper-figures/custom.png',
+};
+
 /** Default fallback image */
 export const DEFAULT_IMAGE = PAPER_FIGURE_IMAGES.custom;
+export const DEFAULT_IMAGE_PNG = PAPER_FIGURE_PNG.custom;
 
 // Legacy clip-paths kept for EnemySelectStep card silhouettes
 export const SILHOUETTE_CLIPS: Record<EnemyCategory, string> = {

@@ -10,9 +10,11 @@ export const SOUND_IDS = {
   ACTION_BEAT: 'action-beat',
   ACTION_PAPER: 'action-paper',
   ACTION_THWACK: 'action-thwack',
+  ACTION_DIVINATION: 'action-divination',
+  ACTION_SCATTER: 'action-scatter',
   TRANSITION_INVOCATION: 'transition-invocation',
-  TRANSITION_SEALING: 'transition-sealing',
   TRANSITION_RESULT: 'transition-result',
+  TRANSITION_BLESSING: 'transition-blessing',
 } as const;
 
 export type SoundId = (typeof SOUND_IDS)[keyof typeof SOUND_IDS];

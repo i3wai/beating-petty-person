@@ -2,8 +2,37 @@
 
 import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { useRitual } from '@/components/ritual/RitualProvider';
+import { useSearchParams } from 'next/navigation';
+import { RitualProvider, useRitual, type EnemyData, type PaymentTier } from '@/components/ritual/RitualProvider';
 import RitualOrchestrator from '@/components/ritual/RitualOrchestrator';
+
+interface ContinueState {
+  ritualState: 'purification';
+  enemy: EnemyData;
+  paymentTier: PaymentTier;
+}
+
+function getContinueState(): ContinueState | undefined {
+  try {
+    const enemyRaw = localStorage.getItem('beatpetty_enemy');
+    const paidRaw = localStorage.getItem('beatpetty_paid');
+
+    if (!enemyRaw) return undefined;
+
+    const enemy = JSON.parse(enemyRaw);
+    const paid = paidRaw ? JSON.parse(paidRaw) : null;
+
+    const tier: PaymentTier = paid?.plan === 'full' ? 'full' : 'completion';
+
+    return {
+      ritualState: 'purification',
+      enemy: { category: enemy.category || 'custom', name: enemy.name || undefined },
+      paymentTier: tier,
+    };
+  } catch {
+    return undefined;
+  }
+}
 
 /** Idle state — "Begin the Ritual" entry point */
 function IdleScreen() {
@@ -43,16 +72,32 @@ function IdleScreen() {
   );
 }
 
+function RitualIdleOrContinue() {
+  const { state } = useRitual();
+
+  return (
+    <>
+      {state === 'idle' && <IdleScreen />}
+      {state !== 'idle' && (
+        <section aria-label="Ritual progress">
+          <RitualOrchestrator />
+        </section>
+      )}
+    </>
+  );
+}
+
 /**
- * Client wrapper — must be rendered INSIDE RitualProvider.
- * Renders IdleScreen or RitualOrchestrator based on state.
- * Includes skip navigation link and semantic landmarks.
+ * Client wrapper — reads ?continue=true, sets up RitualProvider with correct initial state.
+ * RitualProvider is here (not in the server page) so we can pass initialState from localStorage.
  */
 export default function RitualPageClient() {
-  const { state } = useRitual();
+  const searchParams = useSearchParams();
+  const isContinue = searchParams.get('continue') === 'true';
   const tCommon = useTranslations('common');
 
-  // Clear landing-fade-out class from shared layout <main> on mount
+  const continueState = isContinue ? getContinueState() : undefined;
+
   useEffect(() => {
     const main = document.querySelector('main');
     if (main) {
@@ -62,20 +107,21 @@ export default function RitualPageClient() {
   }, []);
 
   return (
-    <>
+    <RitualProvider initialState={continueState}>
       {/* Skip navigation link */}
       <a href="#ritual-main-content" className="skip-nav font-serif">
         {tCommon('skipToRitual')}
       </a>
 
       <div className="min-h-[100dvh]" role="main" aria-label="Ritual">
-        {state === 'idle' && <IdleScreen />}
-        {state !== 'idle' && (
+        {continueState ? (
           <section aria-label="Ritual progress">
             <RitualOrchestrator />
           </section>
+        ) : (
+          <RitualIdleOrContinue />
         )}
       </div>
-    </>
+    </RitualProvider>
   );
 }

@@ -3,15 +3,14 @@
 Digital 打小人 website — one-person company. Global market, Chinese culture as hook.
 
 > **每個新 session 第一件事：讀 `process.md`，掌握當前任務進度。然後讀 `docs/ARCHITECTURE.md`，不要全掃描 codebase。**
-> **寫或改 blog 內容時，先讀 `docs/BLOG_SEO_STANDARD.md` 和 `docs/blog-seo-en.md`（EN）/ `docs/blog-seo-zh.md`（ZH），按標準和關鍵詞計劃執行。**
+> **寫或改 blog 內容時，先讀 `docs/BLOG_SEO_STANDARD.md`（格式標準）和 `docs/blog-seo-master.md`（策略與關鍵字），按標準和計劃執行。**
 > **任何涉及儀式流程（ritual steps、打小人流程、儀式互動設計）的任務，先讀 `docs/ritual-process-hk.md`，以香港正宗八部曲為準。**
-> **項目 mistakes + decisions 在 `memory/MEMORY.md`。**
 > **每個 session 結束前或中斷時，更新 `process.md` 記錄進度和待辦事項。**
 
 ## Business Model
 - One-time payment, NO subscription
 - Free basic ritual + paid enhancements
-- USD $2.99 (打人名) / USD $4.99 (封印詛咒) / USD $6.99 (全套)
+- USD $2.99 (詛咒解讀) / USD $4.99 (完整儀式) / USD $6.99 (全套)
 - 不靠回頭率，靠全球新用戶持續增長
 
 ## Core Strategy: 「寧可信其有」
@@ -22,13 +21,23 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 
 ## Product Design
 
-### Ritual Flow (4 steps)
-1. **選擇小人類型** — 6 種泛型（免費）/ 輸入具體名字（免費）
-2. **打小人** — 互動點擊動畫（30s）
-3. **燒掉** — 燃燒動畫 + 煙霧效果（9s）
-4. **結果揭示** — 基本結果（免費）/ 強化封印 + 證書（付費 $4.99）
+### Ritual Flow (8 steps — traditional 八部曲)
 
-詳細 timing/tech/音效見 `docs/ARCHITECTURE.md`
+**免費段（步驟 1-5「毀滅」）**:
+1. **請神** — 點燭動畫
+2. **稟告** — 選敵人+名字
+3. **過火** — 被動過場
+4. **打小人** — 互動點擊
+5. **焚化** — 長按點火+燃燒
+
+**付費段（步驟 6-8「收尾」= $4.99）**:
+6. **化解** — 點擊撒米豆
+7. **祈福** — 金光動畫
+8. **擲筊** — 互動擲筊（聖杯75%/笑杯20%/怒杯5%）
+
+**付費牆**: 步驟 5→6 之間。免費用戶看到「詛咒暫時有效」後結束。
+
+詳細 timing/tech/音效/定價見 `docs/ARCHITECTURE.md`
 
 ### 小人分類
 
@@ -37,57 +46,36 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 
 兩套完全不同的文案，不是直接翻譯。
 
-### 付費模式
-
-| 方案 | 價格 | 內容 |
-|------|------|------|
-| 免費 | $0 | 選泛型 → 打 → 燒 → 基本結果（完整體驗）|
-| A 詛咒解讀 | $2.99 | 個人化模組化詛咒解讀（162 種獨特解讀） |
-| B 封印詛咒 | $4.99 | 強化封印動畫 + 數位證書 + 強化版結果 |
-| C 全套 | $6.99 | A + B 全部 |
-
-**UX 原則**：免費 = 完整，付費 = 「加強」。付費牆在儀式結束後（沉沒成本）。不需帳號，Stripe Session ID + localStorage。
-**信任原則**：不造假數據（無假計數器/假評價），用真實文化遺產代替。明確隱私政策 + 全額退款保證。Stripe 信任標章。
-
 ### 按鈕文案
 - ❌「Upgrade」「Pay to unlock」
-- ✓「Complete the Sealing Ritual」「Reveal the Curse Reading — $2.99」
+- ✓「Complete the Ritual」「Reveal the Curse Reading — $2.99」
 
-### 新增頁面
-- `/about` — 創辦人故事 + 文化使命（3 語言）
+**UX 原則**：免費 = 完整毀滅體驗。付費牆在焚化後（情緒最高點）。不需帳號，Stripe Session ID + localStorage。
+**信任原則**：不造假數據（無假計數器/假評價），用真實文化遺產代替。明確隱私政策 + 全額退款保證。Stripe 信任標章。
 
 ## Tech Stack & Details
-→ 見 `docs/ARCHITECTURE.md`（完整目錄結構、狀態機、音頻/Canvas 架構、CSS、顏色、技術風險）
+→ 見 `docs/ARCHITECTURE.md`（完整目錄結構、狀態機、音頻/Canvas 架構、CSS、顏色、技術風險、定價）
 
-## Status
-- Project initialized: 2026-04-03
-- **Day 1 completed: 2026-04-07** — 3-language skeleton, Tailwind dark theme, GA4, beatpetty.com live
-- **Day 2 completed: 2026-04-07** — Full landing page, candle/glow/particle animations, SEO
-- **Day 3 completed: 2026-04-07** — Full ritual flow (4 steps + 2 transitions), Canvas particles, Web Audio synthesis, shared silhouettes
-- **Day 4 completed: 2026-04-07** — Stripe Checkout API, Webhook, Pricing Page, Result Page, OG image
-- **Day 5 completed: 2026-04-08** — PWA manifest+icons, Lighthouse A11y 100, SEO (robots.txt, sitemap, hreflang), contrast fixes, pricing page bug fix, OG image URL fix
-- Phase 2 SEO completed: 2026-04-08 — MDX blog system, /what-is, /how-it-works, /history pages
-- **Landing Page SEO completed: 2026-04-12** — EN meta/hero/body/FAQ optimized, ZH-TW/ZH-Hans optimized, keyword cannibalization fixed, sitemap lastmod added
-- **GSC submitted: 2026-04-12** — sitemap.xml with lastmod, hreflang
-- **Ritual Redesign completed: 2026-04-12** — $2.99 tier repositioned as "Curse Reading" (personalized modular reading), free name input in Step 1, name on paper figure, 162 unique readings (6 types × 27 combinations × 3 languages)
-- **Expert Review + UX Overhaul completed: 2026-04-13** — 3-expert panel (Marketing/UX/Cultural) scored 5.3/10 pre-fix → 39 improvements executed: removed fake counter & fake social proof, added honest heritage messaging, privacy policy, refund policy, About page (/about), keyboard accessibility, aria-live announcements, responsive interaction area (clamp), staggered entrance animations, landing page fade-out transition, Stripe trust badge on result page, haptic escalation, name always visible on paper figure, ignite hint pulsing text
-- **Conversion Optimization completed: 2026-04-13** — 8 fixes based on expert review: atmosphere false claim removed, reading seed mismatch fixed (preview=checkout), share button i18n, suspenseful free result copy ("ashes hold a message"), 2.5s reading ceremony loading, "Best Value" badge on $6.99, EN enemy descriptions aligned with ZH concepts (fortune/conflict), BurningStep keyboard accessibility
-- **ZH Blog SEO Strategy completed: 2026-04-14** — 3-agent discussion (SEO/Conversion/Cultural) + Elon critique: 3 clusters (打小人核心/命理與改運/詛咒文化), 11 posts planned, rejected "生氣怎麼辦"/"發洩情緒" (intent mismatch), identified 太歲/鬼月 as missed opportunities. Strategy doc: `docs/blog-seo-zh.md`
-- **ZH Blog SEO Audit & Fix completed: 2026-04-15** — Full SEO audit of 22 ZH posts (zh-TW + zh-Hans) against BLOG_SEO_STANDARD.md. All titles expanded to 25-30 chars, descriptions to 100-130 chars. Missing cross-cluster links added (ZH7→ZH9). zh-Hans typo fixed. 21/21 images generated. Build passes.
-- **EN Blog Complete + SEO Audits: 2026-04-18** — All 9 EN articles written (B5/B6/B7/B8/B9 rewritten from placeholders). Two SEO audits passed. URL 404 audit: 87 URLs checked, 2 broken Wikipedia links fixed (B7, B8). All deployed to production.
-- **Ritual Redesign Planning: 2026-04-18** — Expert panel discussion completed. Current ritual missing 4/8 traditional steps. Pricing restructure: Free / $2.99 / $4.99 / $6.99. 3 key decisions pending Allen's input. Docs: `docs/ritual-redesign.md`, `docs/ritual-process-hk.md`
+## Current State
+
 - Phase: **Soft Launch — Stripe live, accepting payments**
 - Owner: Allen (business, content, tool setup) | Claude (design, code, SEO, tech)
 - Deploy: `npx vercel --prod --yes`
 
-## Launch Status
+### Payment Flow (4 Paths)
 
-- [x] Stripe HK 帳號註冊
-- [x] 3 Products 建立: 打人名 $2.99, 封印詛咒 $4.99, 全套 $6.99
-- [x] Vercel env vars: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID_NAME`, `STRIPE_PRICE_ID_SEAL`, `STRIPE_PRICE_ID_FULL`
-- [x] Stripe live mode
-- [x] 實機測試 (iPhone Safari + Android Chrome)
-- [x] Google Search Console 提交 (sitemap.xml + hreflang)
+| Path | Flow | Result |
+|------|------|--------|
+| **Free** | Steps 1-5 → Paywall → "View Results" → `/result` | Blurred reading + 3 pricing buttons |
+| **$2.99** | `/result` click $2.99 → Stripe → `/result` | Full reading + guidance + cert (7-day) |
+| **$4.99** | `/result` click $4.99 → Stripe → `/result` → "Continue" → `/ritual?continue=true` → Steps 6-8 → `/completion` | Divination only, no cert |
+| **$6.99** | Same as $4.99 but reading held back until `/completion` | Divination + reading + guidance + permanent cert |
+
+**Certificate**: $2.99 = cert + 7-day | $4.99 = no cert | $6.99 = cert + permanent (no expiry)
+
+**localStorage keys**: `beatpetty_enemy`, `beatpetty_seed`, `beatpetty_reading`, `beatpetty_guidance`, `beatpetty_paid`, `beatpetty_divination`
+
+**State machine**: 10 states, 10 actions (idle → invocation → select → firePass → beating → burning → paywall → purification → blessing → divination). No `result` state — results render on separate pages (`/result`, `/completion`). No `DIVINATION_COMPLETE` — DivinationStep navigates to `/completion` directly.
 
 ## Post-Launch → Phase 2
 → 見 `docs/FUTURE_ROADMAP.md`

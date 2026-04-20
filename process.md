@@ -1,141 +1,170 @@
 # BeatPetty — Current Process State
 
 > **Every new session: read this file first. Every session end: update this file.**
-> Last updated: 2026-04-18
+> Last updated: 2026-04-20
 
 ---
 
 ## Active Task: Ritual Redesign + Paid Tier Restructure
 
-### Status: PLANNING (2026-04-18)
+### Status: STEPS 6-8 AI IMAGE ENHANCEMENT COMPLETE (2026-04-20)
 
-Redesigning ritual flow to match traditional Hong Kong 8-step process (八部曲) and restructuring paid tiers.
+Ritual redesign + payment flow restructure + steps 6-8 AI image enhancement complete. Build passes.
 
-- **Discussion doc**: `docs/ritual-redesign.md` — current discussion, options, unresolved questions
+- **Design + Implementation plan**: `docs/ritual-redesign.md` — decisions, flow design, 9-phase plan
 - **Traditional reference**: `docs/ritual-process-hk.md` — correct Hong Kong 打小人 process
-- **3 unresolved questions** (need Allen's decision):
-  1. Free users' ritual ending: keep fake 封印 / direct result / 擲筊 for all?
-  2. $4.99 "new ritual" = what exactly?
-  3. Main flow includes all 8 steps or abbreviated for free?
-- **Pricing structure (Allen confirmed)**: Free / $2.99 (reading + certificate) / $4.99 (new ritual experience) / $6.99 (all combined)
-- **Current ritual gaps**: missing 4/8 steps (過火, 化解, 祈福, 擲筊), 1 step needs upgrade (祭白虎), 1 non-traditional step to remove (封印)
+- **$2.99 Reading system (implemented)**: `docs/ritual-name-redesign.md`
 
-### Previous Task: EN Blog Complete — ALL COMPLETE
+#### Payment Flow — 4 Paths (implemented 2026-04-20):
+
+| Path | Flow | Result |
+|------|------|--------|
+| **Free** | Steps 1-5 → Paywall → "View Results" → `/result` | Blurred reading + 3 pricing buttons |
+| **$2.99** | `/result` click $2.99 → Stripe → `/result` | Full reading + guidance + cert (7-day) |
+| **$4.99** | `/result` click $4.99 → Stripe → `/result` → "Continue" → `/ritual?continue=true` → Steps 6-8 → `/completion` | Divination only, no cert |
+| **$6.99** | Same as $4.99 but reading held back until `/completion` (grand finale) | Divination + reading + guidance + permanent cert |
+
+**Key changes**: PaywallTransition saves to localStorage + navigates to `/result`. ResultStep deleted. State machine simplified (10 states, 10 actions — removed `result`, `SKIP_PAYMENT`, `DIVINATION_COMPLETE`). New `/completion` page. DivinationStep navigates to `/completion` directly. `CurseCertificate` supports `permanent` prop.
+
+#### Key Decisions (Allen + CC, 2026-04-18):
+1. **Flow split**: Steps 1-5 = free (毀滅), Steps 6-8 = $4.99 (收尾)
+2. **Free ending**: Burning (step 5) as natural endpoint. "Curse cast, but temporary"
+3. **$4.99 content**: Steps 6-8 (化解→祈福→擲筊). Seamless continuation after payment
+4. **Delete 封印**: Not traditional, false claim. Remove SealingTransition entirely
+5. **Paywall placement**: Between step 5 and step 6 (mid-ritual, highest emotional point)
+6. **過火 = passive transition** (Allen decision, 2026-04-19): Changed from interactive step to 3s passive animation between select and beating
+
+#### Pricing (updated 2026-04-19):
+| Tier | Price | Content |
+|------|-------|---------|
+| Free | $0 | Steps 1-5: 請神→稟告→過火→打小人→焚化 |
+| $2.99 | $2.99 | Curse reading (~945 combinations) + Oracle guidance (insight/resolution/prophecy) + Curse certificate (stamp: 詛) |
+| $4.99 | $4.99 | Steps 6-8: 化解→祈福→擲筊 |
+| $6.99 | $6.99 | $2.99 + $4.99 combined |
+
+#### Implementation Progress:
+- [x] **Phase 1**: State machine (11 states, 12 actions) + infrastructure + SealingTransition deleted
+- [x] **Phase 2**: FirePassTransition (passive 3s) + PurificationStep (tap scatter) + BlessingStep (gold glow) + DivinationStep (4-phase poe blocks)
+- [x] **Phase 3**: PaywallTransition (stagger animation, CTA optimization)
+- [x] **Phase 4**: BurningStep +白虎 (3s tiger intro), InvocationTransition 6s, ResultStep restructure (free temporary messaging, updated buttons, dead code cleanup)
+- [x] **Phase 5**: ~~Delete SealingTransition~~ (already done in Phase 1)
+- [x] **Phase 6**: i18n stubs (17 new keys × 3 languages)
+- [x] **Phase 7**: Audio engine (3 new sounds: action-scatter, transition-blessing, action-divination)
+- [x] **Phase 8**: CSS (divination keyframes, purification/blessing classes, reduced-motion)
+- [x] **Phase 9**: Architecture doc update
+
+### Completed This Session: Phase 4 — Upgrade Existing Components (2026-04-19)
+
+**4a: BurningStep +白虎**: Added 3s pre-burn tiger phase. Two pulsing red tiger eyes (CSS) appear at top of scene → paper figure flies up toward tiger mouth and fades (1.5s) → tiger chomp flash → ignite button appears. Total burn flow: ~14s.
+
+**4b: InvocationTransition 3s→6s**: Increased duration constant + extended transition sound (sine 200→60Hz, 1500ms→5000ms).
+
+**4c: ResultStep restructure**: Updated for free users — shows "temporary effect" messaging (`resultFreeTemporary`). Removed staggered CTA reveal. Buttons updated: "Complete the Ritual" (not "Sealing"), "Full Ritual + Reading". Standalone result page stamp changed from 封 to 成. i18n updated for all 3 languages.
+
+**Phase 3 fixes**: PurificationStep auto-complete timer no longer resets on tap. BlessingStep handleComplete wrapped in useCallback. Both now call audio.init() on mount.
+
+**Dead code cleanup**: Removed `transition-sealing` from AudioManager.ts and useAudio.ts.
+
+**Full review fixes**: P0 FirePassTransition wrong i18n key (`step3Title`→`firePassTitle`). P1 BurningStep removed unused imports (`SILHOUETTE_CLIPS`, `DEFAULT_CLIP`). P1 PurificationStep removed unused `containerRef`. P2 all 3 languages: removed dead keys (`sealingTitle`, `sealingSubtitle`, `resultFreeDescription`, `step3Instruction`), added `firePassTitle`/`firePassSubtitle`.
+
+Build passes.
+
+### Completed This Session: Ritual UI Refinements + AI Images (2026-04-19)
+
+**PaywallTransition simplified**: Removed ALL pricing buttons ($4.99/$2.99/$6.99) and Stripe badge. Now only shows title/subtitle + single "View Results" free skip button. Pricing lives on /pricing page and ResultStep only. Rationale: duplicate pricing on multiple pages felt strange.
+
+**ResultStep simplified**: Replaced 3 pricing tier buttons with single "View Results" button → triggers $2.99 curse reading checkout. Removed `resultPaidPrompt` text.
+
+**BurningStep white tiger redesigned**: Removed CSS tiger eyes + SVG silhouette + separate tiger animation phase. Replaced with AI-generated background image (`/images/white-tiger-ground.jpg`) — spectral white tiger in dark atmospheric scene, integrated into burning background. Paper figure now rises upward toward tiger via updated `paper-curl-burn` keyframes (translateY 0→-200px). Ignite button shows immediately (no tiger phase wait). Removed `tigerVisible` state and timer.
+
+**FirePassTransition upgraded**: Added paper figure image (PNG) with enemy name overlay. Replaced CSS gradient flames with AI-generated background image (`/images/fire-pass-flames.jpg`). Known minor issue: brief flash of JPG background on first load (browser cache, low priority).
+
+**Dual paper figure image sets**: New `PAPER_FIGURE_PNG` export in silhouettes.ts — transparent PNGs for ritual stages (BeatingStep, BurningStep, FirePassTransition). Original `PAPER_FIGURE_IMAGES` (JPG with white bg) kept for EnemySelectStep. Allen created 6 transparent PNGs externally (848x1264px).
+
+**PNG preloading**: InvocationTransition preloads all 6 PNG paper figures during 6s animation using `new Image()`.
+
+**BurningStep ambient sound fix**: Burn effect cleanup now stops `AMBIENT_WIND`. Previously music continued after burning step ended.
+
+**Candle stands**: Added `<div className="candle-stand" />` to all 3 candles in CandleFlame.tsx. Replaced standalone `invocation-candle-base` div with per-candle stands.
+
+**CSS updates**: Removed `.tiger-eye`, `.tiger-chomp`, related keyframes. Updated `paper-curl-burn` with translateY movement. Added `.candle-stand` class. Replaced `.invocation-candle-base` with `.candle-stand`.
+
+**i18n**: Added `viewResultButton` ("View Results" / "查看結果" / "查看结果") across 3 languages.
+
+Build passes.
+
+### Completed This Session: Landing Page 八部曲 Update (2026-04-19)
+
+**HowItWorksSection.tsx**: Complete rewrite. Replaced 3-step image-based cards with authentic 8-step 八部曲 grid using Chinese numerals (壹-捌) as visual markers + Arabic step numbers (1-8) for sequence clarity. Two-phase layout: Free/Destruction (vermillion, 5 cards) + Paid/Completion (gold, 3 cards) with atmospheric divider.
+
+**WhatIsSection.tsx**: Added dark atmospheric background image (`goose-neck-bridge-ground.jpg` + `bg-ink/70` overlay). Fixes visual drop-off from cinematic Hero to plain text. Pattern matches AtmosphereSection/FinalCtaSection.
+
+**i18n updates (3 languages)**:
+- `landing.howItWorks`: New 8-step structure with title, subtitle, freeLabel, paidLabel, dividerText, steps[8]
+- `landing.hero.subtitle` (zh-TW/zh-Hans): Removed 封印 → "燃燒成灰。正宗八部曲。"
+- `landing.whatIs.description`: "Strike. Burn. Seal." → "Strike. Burn." (removed sealing)
+- `landing.faq.items[1]` + `[2]`: Updated to reflect 5 free + 3 paid structure, removed sealing references
+
+**Visual verification**: EN desktop, EN mobile (375x812), ZH-TW desktop + mobile — all render correctly. Deployed to production.
+
+**Landing page visual rhythm**: Hero(重)→WhatIs(重)→HowItWorks(中)→Trust(輕)→Atmosphere(重)→FAQ(輕)→FinalCta(重). No more atmosphere gap between Hero and WhatIs.
+
+### Completed This Session: $2.99 Tier Enhancement (2026-04-19)
+
+**Oracle Guidance system** (`curseReading.ts`): New `generateGuidance()` function + `GuidanceFragments` type. 3 modules (insights/resolutions/prophecies) × 3 variants × 6 enemy types = 54 fragments × 3 languages. Displayed on result page as separate visual section below curse reading.
+
+**Content quality pass**: Cut 7 weakest reading variants (90→83, ~1,458→~945 combinations). Rewrote 8 weakest guidance fragments from self-help tone to oracle/prophetic tone (e.g. "Trust actions, not words" → "Let them prove their words before you carry them. The spirits do not rush."). All 3 languages updated.
+
+**Certificate moved to $2.99**: `SealCertificate` → `CurseCertificate`. Stamp character changed 封→詛. Now shown for all paid plans (`name/seal/full`). Labels updated: "SEAL CERTIFICATE"→"CURSE CERTIFICATE", "Sealed On"→"Cursed On", "Seal No."→"Curse No.". 7 i18n keys × 3 languages updated.
+
+**$2.99 tier now delivers**: Curse reading (5-part, ~945 combinations) + Oracle guidance (3-part personal insight) + Curse certificate (visual, shareable).
+
+### Completed This Session: Steps 6-8 AI Image Enhancement (2026-04-20)
+
+**Image generation**: 3 AI atmospheric backgrounds generated via Gemini API (`scripts/generate-ritual-images.mjs`, model `gemini-3.1-flash-image-preview`, 9:16 aspect, 2K):
+- `public/images/purification-ground.jpg` (3,388KB) — dark stone surface with scattered rice/beans, dim candlelight, smoke wisps
+- `public/images/blessing-gold.jpg` (3,251KB) — traditional Chinese gold ingots (元寶) with golden flames, red paper offerings, incense smoke
+- `public/images/divination-ground.jpg` (3,107KB) — dark temple floor with crescent-shaped wooden poe blocks (筊杯), candlelight, ritual atmosphere
+
+**PurificationStep (Step 6)**: Added `purification-ground.jpg` as fixed background. Background opacity increases with tap warmth (0.55→0.75). Dark overlay fades as scene warms (ink/0.5→0.35). Removed dynamic `bgColor` computed RGB style. Kept particle scatter as foreground interactive layer.
+
+**BlessingStep (Step 7)**: Added `blessing-gold.jpg` as fixed background with 1.5s fade-in animation (`blessing-bg-reveal`). Removed all CSS ingot shapes (`.blessing-ingot`, `.blessing-ingot-body`, `.blessing-ingot-top`, `.blessing-ingot-middle`, `.blessing-ingot-char`, `.blessing-ingot-bottom`) and `@keyframes ingot-fall`. Kept gold radial glow overlay + completion pulse flash on top of image.
+
+**DivinationStep (Step 8)**: Added `divination-ground.jpg` as fixed background (opacity 0.60) with `bg-ink/45` overlay. Removed old gold radial gradient placeholder. Kept interactive poe block animation as foreground.
+
+**CSS cleanup**: Removed dead classes (`.blessing-ingot*`, `@keyframes ingot-fall`). Added `.blessing-bg-reveal` + `@keyframes blessing-bg-fade-in`. Updated reduced-motion rules.
+
+Build passes.
+
+---
+
+## Previous Task: EN Blog Complete — ALL COMPLETE
 
 All 9 EN blog articles written, images generated, deployed to production.
 
 ---
 
-## Completed This Session: URL Audit + SEO Verification + Deployment (2026-04-18)
+## Previously Completed This Session
 
 ### EN Blog URL 404 Audit (2026-04-18)
 
-Full URL audit of all 9 EN blog articles — 87 URLs checked (32 internal blog paths, 8 /ritual paths, 25 Wikipedia URLs, 28 image paths). 2 broken external Wikipedia links found and fixed:
-
-- **B7 hex-spells-curses**: `https://en.wikipedia.org/wiki/Hex_(witch)` (404) → `https://en.wikipedia.org/wiki/Hex` (200)
-- **B8 how-to-get-rid-of-bad-luck**: `https://en.wikipedia.org/wiki/Salt_in_Roman_religion` (404) → `https://en.wikipedia.org/wiki/Salt#In_religion` (200)
-
-All 87 URLs now return 200. Deployed to production.
+Full URL audit of all 9 EN blog articles — 87 URLs checked. 2 broken external Wikipedia links found and fixed.
 
 ### EN Blog Second SEO Audit — Verification Pass (2026-04-18)
 
-Full re-audit of all 9 EN blog articles after first audit fixes. Result: 8/9 pass, 1 remaining issue found and fixed:
-
-- **B3 description**: was 142 chars (under 150 min) → fixed to 150 chars ("and now reaches your screen" wording)
-- All 9 original audit fixes verified as correctly applied
-- Zero keyword cannibalization across all 9 articles
-- All cluster linking rules satisfied
-- Deployed to production
+Full re-audit of all 9 EN blog articles after first audit fixes. Result: 8/9 pass, 1 remaining issue found and fixed.
 
 ### EN Blog Full SEO Audit + Fixes (2026-04-18)
 
-Comprehensive SEO audit of all 9 EN blog articles against BLOG_SEO_STANDARD.md + blog-seo-en.md. 9 issues found and fixed:
-
-**P0 Fixes:**
-- B9: added 3 external links (Wikipedia: curse tablet, Chinese folk religion, curanderismo, nocebo effect) — was zero
-- B5: resolved "karma spell" keyword cannibalization with B8 — removed from B5 keywords, shortened karma spell section from ~230w to ~120w, added link to B8's full section
-- B8: generated 2 new pillar images (bad-luck-signs.jpg 151KB, bad-luck-four-step.jpg 152KB) — now 4/4 images
-
-**P1 Fixes:**
-- B5 title trimmed: 64→55 chars
-- B9 title trimmed: 62→53 chars
-- B3 description trimmed: ~167→~147 chars
-- B5 description trimmed: ~177→~150 chars
-- B7 description trimmed: ~189→~140 chars
-- B9 description trimmed: ~169→~140 chars
-- B3 H1 fixed: "A 300-Year Curse That Refused to Die" → "Villain Hitting — 300 Years of a Curse That Refused to Die"
-
-**P2 Fixes:**
-- B1: removed "Goose Neck Bridge Hong Kong" from keywords (B3 owns this)
-- B3: removed "Chinese folk magic" from keywords (B1 owns this)
-- B8: added "how to undo bad luck" naturally in four-step section
-- B9: added "get rid of a curse spell" naturally in intro
+Comprehensive SEO audit of all 9 EN blog articles. 9 issues found and fixed across P0/P1/P2 priorities.
 
 ### B8 How to Get Rid of Bad Luck — Cluster B Pillar — DEPLOYED
 
-- Full rewrite from 225w placeholder to ~3,500w Cluster B pillar
-- Keywords: how to get rid of bad luck (1,000), bad luck (3,600), how to remove bad luck (480), karma spell (720), how to undo bad luck (480), is bad luck real (480), signs of bad luck, how to reverse bad luck
-- 8 H2 + 3 H3 sections: What Is Bad Luck, Signs of Bad Luck (spiritual + observable), Why Do You Have Bad Luck (spiritual/psychological/environmental), Cleansing Rituals Across Cultures (salt/sage/egg/misogi/Ganga/Da Siu Yan), Karma Spell, How Long Does Bad Luck Last, Cleansing Methods Compared (table), Universal Four-Step Method
-- 7 FAQs: signs of bad luck, curse of bad luck, how long, is it real, reverse, why, curse vs bad luck
-- 1 comparison table: 7 cleansing methods across traditions
-- HowTo steps: 4-step universal cleansing method
-- 2 images: bad-luck-cleansing.jpg (178KB), bad-luck-karma.jpg (174KB)
-- Internal links: B9, B4, B5, B7, B2, B1, B3, /ritual (10+)
-- External links: Wikipedia (evil eye, salt in Roman religion, nocebo)
-- `<BlogCtaBlock />` + in-text CTA to /ritual
-- Deployed to production
+Full rewrite from 225w placeholder to ~3,500w Cluster B pillar. Deployed to production.
 
 ### B9 How to Remove a Curse — Cluster B Spoke — DEPLOYED
 
-- Full rewrite from 224w placeholder to ~2,300w Cluster B spoke
-- Keywords: how to remove a curse (1,300), signs of a curse (590), curse protection (480), how to tell if someone put a curse on you (210), get rid of a curse spell (210), how to break a curse (320), signs you are cursed (590)
-- 6 H2 + 2 H3 sections: Signs You Are Cursed (pattern test + what it's not), How to Tell If Someone Put a Curse on You, Curse-Breaking Rituals (salt/fire, mirror reversal, Da Siu Yan, egg cleansing), Universal Four-Step Method, Curse Protection
-- 5 FAQs: how to tell if cursed, how to break a curse, can a curse be removed, signs you are cursed, curse protection
-- HowTo steps: 4-step curse-breaking method
-- 1 image: curse-removal-ritual.jpg (181KB)
-- Internal links: B8 (pillar), B4, B6, B7, B2, B1, /ritual (10+)
-- `<BlogCtaBlock />` + in-text CTA to /ritual
-- Deployed to production
-
----
-
-## Previously Completed (this session)
-
-### B5 Revenge Spells Rewrite — DEPLOYED (2026-04-18)
-
-- Full rewrite from 190w placeholder to 2,570w Cluster A spoke
-- 6 FAQs, 2 images, 8+ internal links
-- Deployed to production
-
-### B6 Voodoo Magic Curses Pillar Rewrite — DEPLOYED (2026-04-18)
-
-- Full rewrite from ~200w placeholder to ~3,500w Cluster C pillar
-- 6 FAQs, 3 images, 5 comparison tables
-- Commit: `da1fcbb`, deployed to production
-
-### B7 Hex Spells Curses Spoke Rewrite — DEPLOYED (2026-04-17)
-
-- Full rewrite from ~200w placeholder to ~2,800w Cluster A spoke
-- 6 FAQs, 2 images, 8 internal links
-- Commit: `c6484ee`
-
-### B3 + B2 Minor Fixes — DEPLOYED (2026-04-17)
-
-- B3: added 2 FAQs (cost + home practice) to hit pillar minimum of 7
-- B2: added cross-link to B4 pillar in intro paragraph
-- Same commit: `c6484ee`
-
-### Landing Page Keyword Cannibalization Fix — DEPLOYED
-
-1. **EN H1**: `"Curse Someone With a 300-Year-Old Chinese Ritual"` → `"Your Enemy's Luck Ends Here"` (no longer competes with B2 "How to Curse Someone")
-2. **EN WhatIs**: `"What Is This Curse Ritual?"` → `"An Ancient Curse, Alive Online"` + teaser text + link to B1 blog post (no longer competes with B1)
-3. **EN Meta**: `"Online Curse Ritual — Free Chinese Curse"` → `"BeatPetty — Free Online Curse Ritual"` (brand-first)
-4. **ZH H1**: `"打小人 — 在線正宗詛咒儀式"` → `"你的小人，氣數已盡"` (CTA-oriented, no longer competes with ZH1)
-5. **ZH WhatIs**: Removed 驚蟄/鵝頸橋 keywords, replaced with teaser + link to ZH10
-6. **ZH Meta**: Removed 鵝頸橋 keyword, brand-focused
-7. **WhatIsSection component**: Added locale-aware blog link (EN→B1, ZH→ZH10)
-8. **All changes applied to zh-TW + zh-Hans**
-9. **Deployed to production**: `npx vercel --prod --yes`
+Full rewrite from 224w placeholder to ~2,300w Cluster B spoke. Deployed to production.
 
 ---
 
@@ -146,7 +175,7 @@ Comprehensive SEO audit of all 9 EN blog articles against BLOG_SEO_STANDARD.md +
 - Full SEO audit of 22 ZH blog posts
 - 6 old EN-slug ZH posts deleted, 301 redirects in `next.config.ts`
 - Build passes, deployed to Vercel production
-- ZH Blog SEO Strategy completed (docs/blog-seo-zh.md)
+- ZH Blog SEO Strategy completed (consolidated into docs/blog-seo-master.md)
 
 ---
 
@@ -158,19 +187,11 @@ Comprehensive SEO audit of all 9 EN blog articles against BLOG_SEO_STANDARD.md +
 | B2 | how-to-curse-someone | A spoke | 3,807 | 8 | **Complete** |
 | B3 | history-of-villain-hitting | C spoke | 3,904 | 7 | **Complete** |
 | B4 | what-is-black-magic | A pillar | 4,556 | 8 | **Complete** |
-| B5 | revenge-spells | A spoke | 2,570 | 6 | **Complete (2026-04-18)** |
-| B6 | voodoo-magic-curses | C pillar | 3,681 | 6 | **Complete (2026-04-18)** |
-| B7 | hex-spells-curses | A spoke | 2,844 | 6 | **Complete (2026-04-17)** |
-| B8 | how-to-get-rid-of-bad-luck | B pillar | ~3,500 | 7 | **Complete (2026-04-18)** |
-| B9 | how-to-remove-a-curse | B spoke | ~2,300 | 5 | **Complete (2026-04-18)** |
-
----
-
-## Paused Task: Paid Tier Product Upgrade
-
-### Status: SUPERSEDED by Ritual Redesign (2026-04-18)
-
-This section's original plan (progressive reveal, canvas certificate, fix false claims) has been superseded by the full ritual redesign. See `docs/ritual-redesign.md` for the new approach.
+| B5 | revenge-spells | A spoke | 2,570 | 6 | **Complete** |
+| B6 | voodoo-magic-curses | C pillar | 3,681 | 6 | **Complete** |
+| B7 | hex-spells-curses | A spoke | 2,844 | 6 | **Complete** |
+| B8 | how-to-get-rid-of-bad-luck | B pillar | ~3,500 | 7 | **Complete** |
+| B9 | how-to-remove-a-curse | B spoke | ~2,300 | 5 | **Complete** |
 
 ---
 
@@ -180,28 +201,26 @@ Four-phase plan, strictly sequential. Don't skip ahead.
 
 ### Phase 1: Ritual Redesign + Paid Tier Restructure (CURRENT)
 - Redesign ritual flow to match traditional 8-step process
-- Restructure pricing: Free / $2.99 (reading + cert) / $4.99 (new ritual) / $6.99 (all)
+- Restructure pricing: Free / $2.99 (reading + guidance + cert) / $4.99 (ritual completion) / $6.99 (all)
 - Full discussion: `docs/ritual-redesign.md`
-- **Blocked on**: Allen's decision on 3 key questions (free user ending, $4.99 content, main flow scope)
-- Traditional reference: `docs/ritual-process-hk.md`
+- **Landing page updated** (2026-04-19): HowItWorksSection 8-step + WhatIsSection atmospheric bg + all 封印 references removed
+- **Ritual UI refinements** (2026-04-19): PaywallTransition/ResultStep simplified, AI-generated background images (tiger+flames), dual paper figure image sets (JPG+PNG), candle stands, ambient sound fix
+- **$2.99 tier enhanced** (2026-04-19): Oracle guidance system, content quality pass, certificate moved from $4.99 (Seal→Curse, 封→詛)
+- **Steps 6-8 AI image enhancement** (2026-04-20): 3 AI-generated atmospheric backgrounds (purification-ground.jpg, blessing-gold.jpg, divination-ground.jpg) integrated into PurificationStep/BlessingStep/DivinationStep. CSS ingot shapes removed from BlessingStep. Build passes.
+- **Next**: Steps 6-8 comprehensive quality review (UX/tech) before moving to Phase 2 (Viral Share Engine)
+- **Steps 6-8 quality review** (2026-04-20): UX review complete, coordinator synthesis done. Full report at `docs/step6-8-review.md`. Tech review pending (agent did not deliver). Key P0: total paid duration 8-11s vs free 60-90s, Step 7 is 3s passive nothing. Fix plan recorded, execution pending.
 
 ### Phase 2: Viral Share Engine (parallel with Phase 1)
 - Revise share button UX and share content
 - Goal: make something cool enough that visitors share on X and TikTok organically
-- Target both free and paid users — free users are the volume driver
-- Hacker growth: each share = free acquisition
 
 ### Phase 3: Seedance 2 Video — "Wow" Factor
-- AI-generated dark ritual video (Seedance 2 API)
-- Possible uses: mainpage background animation, paid tier enhancement, shareable clip
-- **Needs tech spike first**: test cost, speed, quality before committing to placement
-- If fast+cheap enough → mainpage; if slow/expensive → paid tier only
+- AI-generated dark ritual video
+- **Needs tech spike first**: test cost, speed, quality before committing
 
 ### Phase 4: Paid Acquisition (after 1-3 complete)
 - Product polished, share engine live, wow factor in place
-- Then buy ads: Meta (Instagram/TikTok audience overlap) or Google Search
-- Don't scale traffic until conversion funnel is proven
+- Then buy ads: Meta (Instagram/TikTok) or Google Search
 
 ### Ongoing (background)
 - Monitor GSC for indexing and click data (weekly check)
-- Consider Phase 2 blog articles when existing content establishes authority

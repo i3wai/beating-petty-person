@@ -8,7 +8,7 @@ import { ParticleType } from '@/components/canvas/particles';
 import { useHaptic } from '@/hooks/useHaptic';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
-import { SILHOUETTE_CLIPS, DEFAULT_CLIP, PAPER_FIGURE_IMAGES, DEFAULT_IMAGE, type EnemyCategory } from '@/components/ritual/silhouettes';
+import { SILHOUETTE_CLIPS, DEFAULT_CLIP, PAPER_FIGURE_PNG, DEFAULT_IMAGE_PNG, type EnemyCategory } from '@/components/ritual/silhouettes';
 
 type DamageType = 'tear' | 'wrinkle' | 'scorch';
 
@@ -554,9 +554,9 @@ export default function BeatingStep() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={PAPER_FIGURE_IMAGES[(enemy?.category as EnemyCategory) ?? 'custom'] ?? DEFAULT_IMAGE}
+            src={PAPER_FIGURE_PNG[(enemy?.category as EnemyCategory) ?? 'custom'] ?? DEFAULT_IMAGE_PNG}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover rounded-sm"
+            className="absolute inset-0 w-full h-full object-cover"
             draggable={false}
             style={{ opacity: rageFlash ? 0.7 : 1, pointerEvents: 'none', userSelect: 'none' }}
           />

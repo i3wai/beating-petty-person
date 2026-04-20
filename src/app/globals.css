@@ -511,18 +511,6 @@
     transform: scale(1);
   }
 
-  /* Sealing: instant stamp appear */
-  .sealing-stamp {
-    animation: none;
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .sealing-rune-circle {
-    animation: none;
-    opacity: 0.3;
-  }
-
   /* Ritual authenticity — no animation fallbacks */
   .smoke-wisp {
     animation: none;
@@ -995,36 +983,42 @@
 }
 
 /* ============================================
+   White Tiger — now rendered via AI-generated background image
+   (see /images/white-tiger-ground.jpg)
+   ============================================ */
+
+/* ============================================
    Paper Curl / Burn Animation — BurningStep
    ============================================ */
 
 @keyframes paper-curl-burn {
   0% {
-    transform: scale(1) rotateX(0deg) rotateY(0deg);
+    transform: scale(1) rotateX(0deg) rotateY(0deg) translateY(0);
     filter: brightness(1) sepia(0);
     border-radius: 2px;
   }
   20% {
+    transform: scale(0.9) rotateX(3deg) rotateY(-2deg) translateY(-20px);
     filter: brightness(0.9) sepia(0.3) saturate(1.2);
     border-radius: 2px 2px 8px 2px;
   }
   40% {
-    transform: scale(0.85) rotateX(5deg) rotateY(-3deg);
+    transform: scale(0.75) rotateX(8deg) rotateY(-5deg) translateY(-60px);
     filter: brightness(0.7) sepia(0.5) saturate(1.3);
     border-radius: 4px 2px 16px 4px;
   }
   60% {
-    transform: scale(0.65) rotateX(12deg) rotateY(-8deg);
+    transform: scale(0.55) rotateX(14deg) rotateY(-10deg) translateY(-110px);
     filter: brightness(0.5) sepia(0.7) saturate(1.1);
     border-radius: 8px 4px 24px 8px;
   }
   80% {
-    transform: scale(0.4) rotateX(20deg) rotateY(-12deg);
+    transform: scale(0.3) rotateX(22deg) rotateY(-14deg) translateY(-160px);
     filter: brightness(0.3) sepia(0.9) saturate(0.8);
     border-radius: 12px 8px 32px 12px;
   }
   100% {
-    transform: scale(0.1) rotateX(30deg) rotateY(-15deg);
+    transform: scale(0.05) rotateX(30deg) rotateY(-18deg) translateY(-200px);
     filter: brightness(0.1) sepia(1) saturate(0.5);
     border-radius: 50%;
   }
@@ -1086,23 +1080,21 @@
 }
 
 /* ============================================
-   InvocationTransition — Candle Base
+   Candle Stand — per-candle holder
    ============================================ */
 
-.invocation-candle-base {
-  width: 28px;
-  height: 60px;
-  margin: 0 auto;
+.candle-stand {
+  width: 16px;
+  height: 20px;
   background: linear-gradient(
     to bottom,
-    rgba(245, 240, 232, 0.15) 0%,
-    rgba(245, 240, 232, 0.08) 100%
+    rgba(245, 240, 232, 0.12) 0%,
+    rgba(245, 240, 232, 0.06) 100%
   );
-  border-radius: 2px 2px 4px 4px;
-  clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);
+  border-radius: 1px 1px 3px 3px;
   box-shadow:
-    0 4px 12px 2px rgba(212, 168, 67, 0.08),
-    0 0 20px 4px rgba(194, 54, 22, 0.05);
+    0 2px 6px 1px rgba(212, 168, 67, 0.06),
+    0 0 12px 2px rgba(194, 54, 22, 0.04);
 }
 
 /* ============================================
@@ -1165,80 +1157,9 @@
   }
 }
 
-/* ============================================
-   SealingTransition — Stamp Slam & Rune Flash
-   ============================================ */
-
-.sealing-overlay {
-  background-color: var(--color-ink);
-}
-
-.sealing-stamp {
-  animation: stampSlam 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.sealing-rune-circle {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 2px solid rgba(212, 168, 67, 0.3);
-  box-shadow:
-    0 0 20px 4px rgba(212, 168, 67, 0.15),
-    inset 0 0 20px 4px rgba(212, 168, 67, 0.1);
-  animation: runeFlash 3s ease-in-out forwards;
-}
-
-@keyframes stampSlam {
-  0% {
-    transform: scale(2) rotate(-8deg);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(0.9) rotate(2deg);
-    opacity: 1;
-  }
-  70% {
-    transform: scale(1.05) rotate(-1deg);
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-@keyframes runeFlash {
-  0% {
-    opacity: 0;
-    box-shadow: 0 0 0 rgba(212, 168, 67, 0);
-  }
-  30% {
-    opacity: 1;
-    box-shadow:
-      0 0 30px 8px rgba(212, 168, 67, 0.4),
-      inset 0 0 20px 4px rgba(212, 168, 67, 0.2);
-  }
-  50% {
-    opacity: 0.6;
-    box-shadow:
-      0 0 15px 4px rgba(212, 168, 67, 0.2),
-      inset 0 0 10px 2px rgba(212, 168, 67, 0.1);
-  }
-  70% {
-    opacity: 1;
-    box-shadow:
-      0 0 40px 12px rgba(212, 168, 67, 0.5),
-      inset 0 0 25px 6px rgba(212, 168, 67, 0.25);
-  }
-  100% {
-    opacity: 0.3;
-    box-shadow:
-      0 0 10px 2px rgba(212, 168, 67, 0.1),
-      inset 0 0 5px 1px rgba(212, 168, 67, 0.05);
-  }
-}
 
 /* ============================================
-   Seal Certificate — Ancient Artifact Style
+   Curse Certificate — Ancient Artifact Style
    ============================================ */
 
 .certificate-outer {
@@ -1466,4 +1387,449 @@
 @keyframes landing-fade-out {
   from { opacity: 1; }
   to { opacity: 0; }
+}
+
+/* ============================================
+   DivinationStep — 擲筊動畫
+   ============================================ */
+
+/* Poe Block (筊杯) — crescent moon shape */
+.poe-block {
+  position: relative;
+  width: 40px;
+  height: 60px;
+  transform-style: preserve-3d;
+}
+
+/* The curved face (round side visible when face-down) */
+.poe-block-face {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--color-gold) 0%,
+    var(--color-gold-dark) 100%
+  );
+  border-radius: 50% 50% 20% 20%;
+  box-shadow:
+    inset 0 -4px 8px rgba(0, 0, 0, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* The flat back (visible when face-up) */
+.poe-block-back {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--color-paper) 0%,
+    var(--color-paper-dark) 100%
+  );
+  border-radius: 50% 50% 20% 20%;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  box-shadow:
+    inset 0 -4px 8px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Poe container */
+.poe-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  height: 120px;
+}
+
+/* Individual poe wrapper for animation */
+.poe-wrapper {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* Spin animation state */
+.poe-spinning {
+  animation: poe-spin 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.poe-spinning-left {
+  animation: poe-spin-left 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.poe-spinning-right {
+  animation: poe-spin-right 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Land animation state */
+.poe-landed {
+  animation: poe-land 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Result state orientations */
+.poe-face-up {
+  transform: rotateY(0deg);
+}
+
+.poe-face-down {
+  transform: rotateY(180deg);
+}
+
+@keyframes poe-spin {
+  0% {
+    transform: translateY(0) rotateX(0) rotateY(0) rotateZ(0);
+  }
+  25% {
+    transform: translateY(-120px) rotateX(180deg) rotateY(360deg) rotateZ(90deg);
+  }
+  50% {
+    transform: translateY(-180px) rotateX(360deg) rotateY(720deg) rotateZ(180deg);
+  }
+  75% {
+    transform: translateY(-120px) rotateX(540deg) rotateY(1080deg) rotateZ(270deg);
+  }
+  100% {
+    transform: translateY(0) rotateX(720deg) rotateY(1440deg) rotateZ(360deg);
+  }
+}
+
+@keyframes poe-spin-left {
+  0% {
+    transform: translateX(0) translateY(0) rotateX(0) rotateY(0) rotateZ(0);
+  }
+  25% {
+    transform: translateX(-30px) translateY(-120px) rotateX(180deg) rotateY(360deg) rotateZ(90deg);
+  }
+  50% {
+    transform: translateX(-20px) translateY(-180px) rotateX(360deg) rotateY(720deg) rotateZ(180deg);
+  }
+  75% {
+    transform: translateX(-30px) translateY(-120px) rotateX(540deg) rotateY(1080deg) rotateZ(270deg);
+  }
+  100% {
+    transform: translateX(0) translateY(0) rotateX(720deg) rotateY(1440deg) rotateZ(360deg);
+  }
+}
+
+@keyframes poe-spin-right {
+  0% {
+    transform: translateX(0) translateY(0) rotateX(0) rotateY(0) rotateZ(0);
+  }
+  25% {
+    transform: translateX(30px) translateY(-120px) rotateX(180deg) rotateY(360deg) rotateZ(-90deg);
+  }
+  50% {
+    transform: translateX(20px) translateY(-180px) rotateX(360deg) rotateY(720deg) rotateZ(-180deg);
+  }
+  75% {
+    transform: translateX(30px) translateY(-120px) rotateX(540deg) rotateY(1080deg) rotateZ(-270deg);
+  }
+  100% {
+    transform: translateX(0) translateY(0) rotateX(720deg) rotateY(1440deg) rotateZ(-360deg);
+  }
+}
+
+@keyframes poe-land {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-20px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  70% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Result burst effects */
+.divination-result-container {
+  position: relative;
+}
+
+/* Saint result — gold burst */
+.divination-saint .divination-burst {
+  position: absolute;
+  inset: -60px;
+  background: radial-gradient(
+    circle,
+    rgba(212, 168, 67, 0.6) 0%,
+    rgba(212, 168, 67, 0.2) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  animation: divination-saint-burst 0.8s ease-out forwards;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes divination-saint-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+/* Laugh result — silver flash */
+.divination-laugh .divination-burst {
+  position: absolute;
+  inset: -60px;
+  background: radial-gradient(
+    circle,
+    rgba(160, 160, 160, 0.5) 0%,
+    rgba(160, 160, 160, 0.15) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  animation: divination-laugh-flash 0.8s ease-out forwards;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes divination-laugh-flash {
+  0%, 30% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+  70% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+}
+
+/* Anger result — red warning flash */
+.divination-anger .divination-burst {
+  position: absolute;
+  inset: -60px;
+  background: radial-gradient(
+    circle,
+    rgba(239, 96, 48, 0.5) 0%,
+    rgba(239, 96, 48, 0.15) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  animation: divination-anger-flash 1s ease-out forwards;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes divination-anger-flash {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+  40% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+}
+
+/* Result text appearance */
+.divination-result-text {
+  animation: result-text-appear 0.6s ease-out forwards;
+}
+
+@keyframes result-text-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion fallbacks for divination */
+@media (prefers-reduced-motion: reduce) {
+  .poe-spinning,
+  .poe-spinning-left,
+  .poe-spinning-right,
+  .poe-landed {
+    animation: none;
+  }
+
+  .divination-saint .divination-burst,
+  .divination-laugh .divination-burst,
+  .divination-anger .divination-burst {
+    animation: none;
+    opacity: 0.3;
+  }
+
+  .divination-result-text {
+    animation: none;
+    opacity: 1;
+  }
+
+  /* Purification: no particles */
+  .purification-particle {
+    animation: none;
+    opacity: 0;
+  }
+
+  /* Blessing: no animations */
+  .blessing-bg-reveal {
+    animation: none;
+    opacity: 0.5;
+  }
+
+  .blessing-radial-glow {
+    animation: none;
+    opacity: 0.5;
+  }
+
+  .blessing-pulse-flash {
+    animation: none;
+    opacity: 0;
+  }
+
+  .pile-pulse {
+    animation: none;
+  }
+
+  .animate-gold-flash {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   PurificationStep — 化解動畫
+   ============================================ */
+
+/* Rice pile pulse at center */
+@keyframes pile-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* Scattered rice/bean particles */
+.purification-particle {
+  animation: particle-scatter 1.5s ease-out forwards;
+  animation-delay: var(--particle-delay);
+}
+
+@keyframes particle-scatter {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+      calc(-50% + cos(var(--particle-angle)) * var(--particle-distance)),
+      calc(-50% + sin(var(--particle-angle)) * var(--particle-distance))
+    ) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* Completion gold flash */
+.animate-gold-flash {
+  animation: gold-flash 0.6s ease-out forwards;
+}
+
+@keyframes gold-flash {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   BlessingStep — 祈福進寶動畫
+   ============================================ */
+
+/* AI background image reveal */
+.blessing-bg-reveal {
+  animation: blessing-bg-fade-in 1.5s ease-out forwards;
+}
+
+@keyframes blessing-bg-fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 0.75; }
+}
+
+/* Expanding radial glow from center */
+.blessing-radial-glow {
+  animation: blessing-glow-expand 3s ease-out forwards;
+}
+
+@keyframes blessing-glow-expand {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
+/* Completion pulse flash */
+.blessing-pulse-flash {
+  animation: blessing-pulse 0.8s ease-out forwards;
+}
+
+@keyframes blessing-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
 }

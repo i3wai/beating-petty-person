@@ -7,7 +7,7 @@ import { ParticleSystem } from '@/components/canvas/ParticleSystem';
 import { ParticleType } from '@/components/canvas/particles';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
-import { SILHOUETTE_CLIPS, DEFAULT_CLIP, PAPER_FIGURE_IMAGES, DEFAULT_IMAGE, type EnemyCategory } from '@/components/ritual/silhouettes';
+import { PAPER_FIGURE_PNG, DEFAULT_IMAGE_PNG, type EnemyCategory } from '@/components/ritual/silhouettes';
 
 const BURN_DURATION_MS = 9000;
 const FLAME_INTERVAL_MS = 200;
@@ -114,6 +114,7 @@ export default function BurningStep() {
     return () => {
       if (flameIntervalRef.current) clearInterval(flameIntervalRef.current);
       if (burnRafRef.current) cancelAnimationFrame(burnRafRef.current);
+      try { audioStopAmbientRef.current(); } catch { /* ignore */ }
       psRef.current?.destroy();
       psRef.current = null;
     };
@@ -195,16 +196,15 @@ export default function BurningStep() {
       </p>
 
       <div className="relative w-[320px] h-[400px] flex items-center justify-center pointer-events-none">
-        {/* Goose Neck Bridge ground — always visible, behind everything */}
-        <div
-          className="absolute inset-0"
+        {/* Background — AI-generated scene with white tiger & ground */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/white-tiger-ground.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          draggable={false}
+          style={{ pointerEvents: 'none', userSelect: 'none', opacity: 0.75 }}
           aria-hidden="true"
-          style={{
-            backgroundImage: 'url(/images/goose-neck-bridge-ground.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: 0.6,
-          }}
         />
 
         {/* Smoke wisps — CSS-animated, staggered timing */}
@@ -266,18 +266,16 @@ export default function BurningStep() {
             ...(ignited ? {
               animation: 'paper-curl-burn 9s ease-in forwards',
             } : {}),
-            transform: ignited ? undefined : undefined,
-            opacity: ignited ? undefined : 1,
             filter: paperFilter,
-            transition: ignited ? undefined : 'transform 0.3s ease-out, opacity 0.3s ease-out',
+            transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
           }}
           aria-hidden="true"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={PAPER_FIGURE_IMAGES[(enemy?.category as EnemyCategory) ?? 'custom'] ?? DEFAULT_IMAGE}
+            src={PAPER_FIGURE_PNG[(enemy?.category as EnemyCategory) ?? 'custom'] ?? DEFAULT_IMAGE_PNG}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover rounded-sm"
+            className="absolute inset-0 w-full h-full object-cover"
             draggable={false}
             style={{ pointerEvents: 'none', userSelect: 'none' }}
           />
@@ -303,7 +301,7 @@ export default function BurningStep() {
         </p>
       )}
 
-      {/* Ignite button — only shown before ignition */}
+      {/* Ignite button — shown immediately (white tiger is always in background) */}
       {!ignited && (
         <div className="mt-4 flex flex-col items-center">
           <button

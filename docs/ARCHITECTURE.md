@@ -1,6 +1,7 @@
 # BeatPetty Architecture Map
 
 > Quick reference for Claude sessions — read this instead of scanning the whole codebase.
+> Last updated: 2026-04-20
 
 ## Tech Risks
 
@@ -10,6 +11,7 @@
 | iOS Safari audio needs user gesture | "Click to enter ritual" = AudioContext trigger |
 | Vercel free tier 100GB | External image hosting or upgrade |
 | Vercel Git auto-deploy silently cancels | Must use CLI `npx vercel --prod --yes` |
+| Paid users skip steps 6-8 (Stripe redirect) | ✅ Fixed — localStorage persistence + `/ritual?continue=true` flow |
 
 ## Tech Stack
 
@@ -36,11 +38,12 @@ src/
 │   └── [locale]/
 │       ├── layout.tsx           # Locale layout: fonts (Noto Serif TC, Crimson Text), SEO metadata, Header/Footer, GA4
 │       ├── page.tsx             # Landing page: 6 sections composition (server component)
-│       ├── about/page.tsx       # About page: founder story + cultural mission (Day 13)
-│       ├── pricing/page.tsx     # Pricing page: 4-tier cards + Stripe Checkout (Day 4)
-│       ├── result/page.tsx      # Result page: payment verification + enhanced result (Day 4)
-│       ├── ritual/page.tsx      # Ritual page wrapper (server component)
-│       └── opengraph-image.tsx  # Dynamic OG image (1200×630, dark+vermillion, Day 4)
+│       ├── about/page.tsx       # About page: founder story + cultural mission
+│       ├── pricing/page.tsx     # Pricing page: 4-tier cards + Stripe Checkout
+│       ├── result/page.tsx      # Result page: 4 views (free/reading/completion/full) + 3 pricing buttons
+│       ├── completion/page.tsx  # Completion page: divination result + full reading ($6.99 grand finale)
+│       ├── ritual/page.tsx      # Ritual page wrapper (server component) + ?continue=true support
+│       └── opengraph-image.tsx  # Dynamic OG image (1200x630, dark+vermillion)
 │
 │   └── api/
 │       ├── checkout/route.ts    # POST: create Stripe Checkout Session
@@ -52,46 +55,52 @@ src/
 │   ├── Footer.tsx               # Site footer: privacy/refund policy, About link (server)
 │   ├── LanguageSwitcher.tsx     # EN/繁/简 buttons (client)
 │   │
-│   │  # Landing Page Sections (Day 2) — all client components
-│   ├── HeroSection.tsx          # 85dvh hero: CandleFlame + FlickerGlow + FloatingParticles + title + CTA (fade-out transition)
-│   ├── WhatIsSection.tsx        # 打小人 explanation with gradient separator
-│   ├── HowItWorksSection.tsx    # 3 steps (✠⚔☢) with icons, responsive grid
+│   │  # Landing Page Sections — all client components
+│   ├── HeroSection.tsx          # 85dvh hero: CandleFlame + FlickerGlow + FloatingParticles + title + CTA
+│   ├── WhatIsSection.tsx        # 打小人 explanation with dark atmospheric bg (goose-neck-bridge-ground.jpg + overlay)
+│   ├── HowItWorksSection.tsx    # 8-step 八部曲 grid: Chinese numerals (壹-捌) + Arabic step numbers (1-8), free/paid phases
 │   ├── TrustSection.tsx         # Honest heritage messaging (no fake counters)
-│   ├── FinalCtaSection.tsx      # Bold headline + vermillion pulsing CTA (fade-out transition)
-│   ├── FooterNote.tsx           # Heritage statement (80% opacity) — NOT rendered on landing page (Footer has same text)
+│   ├── FinalCtaSection.tsx      # Bold headline + vermillion pulsing CTA
+│   ├── FooterNote.tsx           # Heritage statement — NOT rendered on landing page
 │   │
-│   │  # Atmospheric Effects (Day 2) — pure CSS animation
+│   │  # Atmospheric Effects — pure CSS animation
 │   ├── CandleFlame.tsx          # 3 candles (sm/md/lg) with flame inner/outer, wick, body
 │   ├── FlickerGlow.tsx          # 3 glow orbs: primary (center-bottom), secondary (top-right), tertiary (bottom-left)
 │   ├── FloatingParticles.tsx    # 10 particles with unique timing, dual animation (float + drift)
 │   │
-│   │  # Ritual Flow (Day 3) — client components
+│   │  # Ritual Flow — traditional 8-step (八部曲)
 │   ├── ritual/
-│   │   ├── RitualProvider.tsx      # useReducer state machine + Context (7 states)
+│   │   ├── RitualProvider.tsx      # useReducer state machine + Context (10 states, 10 actions) + initialState prop for continue flow
 │   │   ├── RitualOrchestrator.tsx  # Lazy-loads step components, renders by state
-│   │   ├── RitualPageClient.tsx    # Client wrapper: skip nav link + aria landmarks + IdleScreen + RitualOrchestrator
-│   │   ├── InvocationTransition.tsx # 3s candle-lighting transition + focus trap (CSS animation)
-│   │   ├── SealingTransition.tsx   # 3s stamp-slam + rune-flash transition
-│   │   ├── silhouettes.ts         # Shared clip-paths for 6 enemy types
+│   │   ├── RitualPageClient.tsx    # Client wrapper: reads ?continue=true, sets up RitualProvider, IdleScreen + RitualOrchestrator
+│   │   ├── InvocationTransition.tsx # Step 1: 6s candle-lighting transition + focus trap
+│   │   ├── FirePassTransition.tsx  # Step 3: Passive 3s paper-over-AI-flames animation + paper figure (PNG)
+│   │   ├── PaywallTransition.tsx   # Payment wall: saves to localStorage + navigates to /result
+│   │   ├── silhouettes.ts         # Shared clip-paths + paper figure images for 6 enemy types
 │   │   └── steps/
-│   │       ├── EnemySelectStep.tsx  # Step 1: 6-card grid + name input (always visible) + shimmer loading + sticky confirm
-│   │       ├── BeatingStep.tsx      # Step 2: Rage meter + slipper cursor + curse chants + damage marks + Canvas HitSpark + aria-live milestones + keyboard + haptic escalation + responsive area + name char-by-char
-│   │       ├── BurningStep.tsx      # Step 3: Long-press ignite + Canvas FireFlame/Smoke + CSS fire + paper dissolution + keyboard a11y (Enter/Space)
-│   │       └── ResultStep.tsx       # Step 4: Suspenseful free result + reading ceremony loading + blur preview + staggered CTAs + Best Value badge + Stripe badge + i18n share + stable reading seed
+│   │       ├── EnemySelectStep.tsx  # Step 2: 6-card grid + name input + shimmer loading + sticky confirm
+│   │       ├── BeatingStep.tsx      # Step 4: Rage meter + slipper cursor + curse chants + Canvas HitSpark + aria-live milestones + keyboard + haptic escalation + responsive area + name char-by-char
+│   │       ├── BurningStep.tsx      # Step 5: AI-generated white tiger background + long-press ignite + Canvas FireFlame/Smoke + CSS fire + paper dissolution (rises toward tiger) + keyboard a11y
+│   │       ├── PurificationStep.tsx # Step 6: AI background (purification-ground.jpg) + tap-to-scatter rice/bean CSS particles (min 3 taps, auto 3s)
+│   │       ├── BlessingStep.tsx     # Step 7: AI background (blessing-gold.jpg) + passive 3s gold radial glow + completion pulse
+│   │       └── DivinationStep.tsx   # Step 8: AI background (divination-ground.jpg) + interactive poe block throw → navigates to /completion
 │   │
-│   │  # Canvas Engine (Day 1 prep, Day 3 integrated)
+│   │  # Canvas Engine
 │   ├── canvas/
 │   │   ├── ParticleSystem.ts       # Canvas 2D engine: object pool (max 80), DPR cap 2, 20fps auto-degrade
 │   │   ├── particles.ts            # ParticleType enum + preset configs (HitSpark, FireFlame, Smoke)
 │   │   └── useCanvas.ts            # React hook: canvas ref, ResizeObserver, start/stop/emit
 │   │
-│   │  # Audio Engine (Day 3 rewrite)
+│   │  # Audio Engine — Web Audio API synthesis (no MP3 files)
 │   ├── audio/
-│   │   ├── AudioManager.ts         # Singleton: Web Audio API synthesis (7 sounds), 3 volume layers
+│   │   ├── AudioManager.ts         # Singleton: 9 sounds, 3 volume layers
 │   │   └── useAudio.ts             # React hook: init, playAction, playAmbient, stopAmbient, playTransition
+│   │
+│   │  # Shared
+│   ├── CurseCertificate.tsx        # Digital curse certificate (stamp: 詛), supports permanent mode for $6.99
 │
 ├── hooks/
-│   ├── useHaptic.ts             # Mobile vibration feedback (50ms)
+│   ├── useHaptic.ts             # Mobile vibration feedback
 │   └── useReducedMotion.ts      # prefers-reduced-motion detection
 │
 ├── i18n/
@@ -103,7 +112,7 @@ src/
 │   ├── stripe.ts               # Stripe singleton + plan config (name/seal/full)
 │   ├── content.ts              # PostMeta interface, blog helpers (getPostsByCluster, getRelatedPosts)
 │   ├── json-ld.ts              # JSON-LD generators (Organization, Article, FAQPage, etc.)
-│   └── curseReading.ts         # Deterministic modular curse reading generator (162 unique readings)
+│   └── curseReading.ts         # Deterministic modular curse reading generator (~945 combinations) + Oracle guidance (54 fragments)
 │
 ├── mdx-components.tsx          # MDX component registry (BlogCtaBlock, etc.)
 └── middleware.ts                # next-intl middleware (locale detection, redirect)
@@ -116,95 +125,161 @@ messages/
 docs/
 ├── ARCHITECTURE.md             # THIS FILE
 ├── BLOG_SEO_STANDARD.md        # Blog writing standard (read before writing any blog)
-├── blog-seo-en.md              # EN blog keyword/link architecture
-├── blog-seo-zh.md              # ZH blog strategy (11 posts, 3 clusters)
-├── blog-seo-expert-panel.md    # SEO expert panel discussion report
+├── blog-seo-master.md          # Blog SEO master strategy (EN + ZH, consolidated)
 ├── FUTURE_ROADMAP.md           # Business roadmap & analysis
-├── ritual-name-redesign.md     # Curse Reading system design ($2.99 tier)
-└── seo-chinese-keyword-research.md  # Chinese keyword research raw data
-
-memory/
-└── MEMORY.md                   # Project-specific mistakes & decisions
+├── ritual-redesign.md          # Ritual redesign decisions + 9-phase implementation plan
+├── ritual-process-hk.md        # Traditional Hong Kong 8-step process reference
+├── ritual-name-redesign.md     # Curse Reading system design ($2.99 tier, completed)
 
 public/
 ├── manifest.json               # PWA manifest (Add to Home Screen)
 ├── robots.txt                  # Search engine crawling rules
 ├── sitemap.xml                 # All locale URLs for search engines
-└── icons/
-    ├── icon-192.png            # PWA icon (封 on dark bg)
-    └── icon-512.png            # PWA icon (封 on dark bg)
+├── icons/
+│   ├── icon-192.png            # PWA icon
+│   └── icon-512.png            # PWA icon
+└── images/
+    ├── white-tiger-ground.jpg  # AI-generated: spectral white tiger, dark atmospheric scene (BurningStep bg)
+    ├── fire-pass-flames.jpg    # AI-generated: ritual flames at bottom, dark smoke above (FirePassTransition bg)
+    ├── purification-ground.jpg # AI-generated: dark stone surface, rice/beans, candlelight (PurificationStep bg)
+    ├── blessing-gold.jpg       # AI-generated: gold ingots, golden flames, red paper offerings (BlessingStep bg)
+    ├── divination-ground.jpg   # AI-generated: dark temple floor, poe blocks, candlelight (DivinationStep bg)
+    └── paper-figures/          # Dual image sets for 6 enemy types
+        ├── *.jpg               # JPG with white bg (EnemySelectStep cards)
+        └── *.png               # Transparent PNG (ritual stages: Beating, Burning, FirePass)
 ```
 
 ## Ritual State Machine
 
+10 states, 10 actions. Traditional 8-step flow split into free (1-5) and paid (6-8).
+
 ```
 idle → START_RITUAL → invocation → INVOCATION_COMPLETE → select
-select → SELECT_ENEMY → beating → BEATING_COMPLETE → burning
-burning → BURNING_COMPLETE → sealing → SEALING_COMPLETE → result
-result → RESET → idle
+select → SELECT_ENEMY → firePass → FIRE_PASS_COMPLETE → beating
+beating → BEATING_COMPLETE → burning → BURNING_COMPLETE → paywall
+paywall → [navigate to /result]                                    [free path, exits SPA]
+paywall → PAYMENT_COMPLETED → purification → PURIFICATION_COMPLETE → blessing
+blessing → BLESSING_COMPLETE → divination → [navigate to /completion]  [paid path, exits SPA]
 ```
 
-State shape (`RitualState`):
+**Continue flow** (`/ritual?continue=true`): RitualProvider initialized at `purification` state with enemy/payment data from localStorage. Steps 6-8 play normally, then navigate to `/completion`.
+
+State shape (`RitualInternalState`):
 ```typescript
 {
-  step: 'idle' | 'invocation' | 'select' | 'beating' | 'burning' | 'sealing' | 'result';
-  enemy: { category: EnemyCategory; name?: string } | null;
+  ritualState: 'idle' | 'invocation' | 'select' | 'firePass' | 'beating' | 'burning'
+             | 'paywall' | 'purification' | 'blessing' | 'divination';
+  enemy: { category: string; name?: string } | null;
+  paymentTier: 'free' | 'reading' | 'completion' | 'full';
+  divinationResult: 'saint' | 'laugh' | 'anger' | null;
 }
 ```
 
-Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `BEATING_COMPLETE`, `BURNING_COMPLETE`, `SEALING_COMPLETE`, `RESET`
+Context shape (`RitualContextShape`):
+```typescript
+{
+  state: RitualState;
+  dispatch: Dispatch<RitualAction>;
+  enemy: EnemyData | null;
+  paymentTier: PaymentTier;
+  isPaid: boolean;              // paymentTier !== 'free'
+  divinationResult: DivinationResult | null;
+}
+```
+
+Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `FIRE_PASS_COMPLETE`, `BEATING_COMPLETE`, `BURNING_COMPLETE`, `PAYMENT_COMPLETED`, `PURIFICATION_COMPLETE`, `BLESSING_COMPLETE`, `RESET`
+
+## Payment Flow — 4 Paths
+
+| Path | Flow | What User Sees |
+|------|------|----------------|
+| **Free** | Steps 1-5 → Paywall → "View Results" → `/result` | Blurred reading preview + 3 pricing buttons ($2.99/$4.99/$6.99) |
+| **$2.99 Reading** | `/result` click $2.99 → Stripe → `/result` | Full reading + guidance + certificate (7-day expiry) |
+| **$4.99 Complete** | `/result` click $4.99 → Stripe → `/result` → "Continue" → `/ritual?continue=true` → Steps 6-8 → `/completion` | Divination result only, no reading, no certificate |
+| **$6.99 Full** | Same as $4.99 but reading held back until `/completion` (grand finale) | Divination + full reading + guidance + permanent certificate |
+
+**Certificate logic**: $2.99 = cert (7-day) | $4.99 = no cert | $6.99 = cert (permanent, no expiry)
+
+**localStorage keys** (persisted across Stripe redirects):
+- `beatpetty_enemy` — `{ category, name }`
+- `beatpetty_seed` — deterministic reading seed
+- `beatpetty_reading` — generated curse reading text
+- `beatpetty_guidance` — `{ insight, resolution, prophecy }` JSON
+- `beatpetty_paid` — `{ paid, plan, enemyCategory, enemyName }` from verify-session API
+- `beatpetty_divination` — `'saint' | 'laugh' | 'anger'`
+
+**Page responsibilities**:
+- `/result` — 4 views based on payment state. Handles all Stripe checkout buttons.
+- `/ritual?continue=true` — Restores state from localStorage, starts at step 6.
+- `/completion` — Grand finale. Reads divination + reading + guidance from localStorage.
 
 ## Ritual Flow — Timing & Tech
 
 | Phase | Duration | Visual | Audio | Tech |
 |-------|----------|--------|-------|------|
-| Invocation | 3s | Candle CSS animation + dark overlay | transition-invocation (sine sweep 200→80Hz) | CSS keyframes |
-| Step 1: Select | User-paced | 6-card grid, clip-path silhouettes | action-paper (bandpass noise 120ms) | CSS + React state |
-| Step 2: Beating | Rage meter (0-100) | Canvas HitSpark (8-12/burst), slipper cursor, curse chants, paper damage marks, rage ring, aria-live milestones, haptic escalation, name char-by-char animation | action-beat + action-thwack + ambient-drone | Canvas 2D + useCanvas hook + keyboard a11y |
-| Step 3: Burning | 2s hold + 9s auto | Long-press ignite with SVG progress ring, Canvas FireFlame + Smoke, CSS fire effect, paper dissolution, smoke wisps, name on figure | ambient-drone → ambient-wind | Canvas 2D (direct ParticleSystem) + keyboard a11y (Enter/Space) |
-| Sealing | 3s | Stamp slam + rune flash CSS | transition-sealing (sine sweep 120→60Hz) | CSS keyframes |
-| Step 4: Result | User-paced | Suspenseful free result ("ashes hold a message") + 2.5s reading ceremony loading + blurred reading preview + staggered CTAs (0.5s/2s/3.5s) + "Best Value" badge on $6.99 + Stripe trust badge + i18n share | transition-result (lowpass noise) | React + Stripe (Day 4) |
+| **Step 1: Invocation** | 6s | Candle CSS animation + dark overlay | transition-invocation (sine sweep 200→60Hz 5s) | CSS keyframes |
+| **Step 2: Select** | User-paced | 6-card grid, clip-path silhouettes, name input | action-paper (bandpass noise 120ms) | CSS + React state |
+| **Step 3: Fire Pass** | 3s passive | Paper figure (PNG) sweeps L→R over AI-generated flames background, vermillion→gold glow | transition-invocation (shared) | AI background image + CSS animation, auto-advance |
+| **Step 4: Beating** | ~30s | Canvas HitSpark, slipper cursor, curse chants, rage meter, aria-live, haptic escalation | action-beat + action-thwack + ambient-drone | Canvas 2D + keyboard a11y |
+| **Step 5: Burning** | 2s hold + 9s burn ≈ 11s | AI-generated white tiger background + long-press ignite + Canvas fire + CSS fire + paper dissolution (paper rises toward tiger) | ambient-drone → ambient-wind | AI background image + Canvas 2D + CSS fire + keyboard a11y |
+| **Paywall** | User-paced | Title + subtitle + "View Results" button (saves to localStorage → navigates to /result) | — | router.push → /result |
+| **Step 6: Purification** | 2-3s | Tap-to-scatter rice/bean CSS particles (min 3 taps), scene warms cool→gold | action-scatter (highpass noise 200ms) | CSS particles + haptic 30ms |
+| **Step 7: Blessing** | 3s passive | Gold radial glow expanding + 4 ingot shapes falling | transition-blessing (sine sweep 300→600Hz 2s) | CSS animation, auto-advance |
+| **Step 8: Divination** | ~5s | 2 crescent poe blocks, CSS 3D spin (2s) → land (1s) → result burst (2s) | action-divination (bandpass 800Hz noise 150ms) | CSS 3D transforms + haptic 100ms → navigate to /completion |
+| **/result** | User-paced | Free: blurred reading + 3 pricing buttons. $2.99: reading + cert. $4.99/$6.99: "Continue" button. | — | React + Stripe + localStorage |
+| **/completion** | User-paced | $4.99: divination only. $6.99: divination + reading + guidance + permanent cert (grand finale). | — | React + localStorage |
+
+**Total timing**: Free path ~45s (steps 1-5 + paywall skip + result). Paid path: steps 1-5 + Stripe redirect → standalone result page.
+
+**Divination probabilities**: Saint (一正一反) 75% → gold burst. Laugh (兩面朝上) 20% → silver flash. Anger (兩面朝下) 5% → red flash.
+
+## Pricing & Stripe
+
+| Tier | Price | Internal key | Content |
+|------|-------|-------------|---------|
+| Free | $0 | — | Steps 1-5: 請神→稟告→過火→打小人→焚化 |
+| Reading | $2.99 | `'name'` | Curse reading (~945 combinations) + Oracle guidance (insight/resolution/prophecy) + Curse certificate (stamp: 詛) |
+| Completion | $4.99 | `'seal'` | Steps 6-8: 化解→祈福→擲筊 |
+| Full | $6.99 | `'full'` | Reading + Completion combined |
+
+`PlanType = 'name' | 'seal' | 'full'` — keys unchanged, display names updated.
+
+**Payment flow**: PaywallTransition → Stripe Checkout → redirect to `/result?session_id=...` → verify-session API → show paid content.
+
+**Important**: The `'seal'` key name is legacy (from deleted "Sealing" step) but kept for Stripe price ID compatibility. Display name is "Complete the Ritual".
 
 ## Shared Silhouettes
 
-`src/components/ritual/silhouettes.ts` — 6 enemy clip-paths used across EnemySelectStep, BeatingStep, BurningStep:
+`src/components/ritual/silhouettes.ts` — 6 enemy clip-paths (`backstabber | toxicBoss | ex | energyVampire | bully | custom`) + dual paper figure image sets:
 
-```typescript
-type EnemyCategory = 'backstabber' | 'toxicBoss' | 'ex' | 'energyVampire' | 'bully' | 'custom';
-```
-
-BeatingStep & BurningStep select clip-path via: `SILHOUETTE_CLIPS[(enemy?.category as EnemyCategory) ?? 'custom'] ?? DEFAULT_CLIP`
-
-**EN-ZH enemy type mapping** (parallel cultural adaptation, NOT direct translation):
-
-| Code key | EN name | ZH-TW name | EN description | ZH description |
-|----------|---------|------------|----------------|----------------|
-| `backstabber` | The Backstabber | 是非小人 | "plot behind your back" | "表面笑臉，背後插刀" |
-| `toxicBoss` | The Toxic Boss | 職場小人 | "Authority without empathy" | "有權無德，以勢壓人" |
-| `ex` | The Ex | 感情小人 | "Some doors should stay closed" | "有些門，該永遠關上" |
-| `energyVampire` | The Energy Vampire | 財運小人 | "drain your fortune and light" | "吸乾你的氣運" |
-| `bully` | The Bully | 官非小人 | "bring conflict and chaos" | "以惡為樂" |
-| `custom` | Custom | 自定義 | "You know exactly who they are" | "你心知肚明是誰" |
+- `PAPER_FIGURE_IMAGES` (JPG, white bg) — EnemySelectStep card display
+- `PAPER_FIGURE_PNG` (transparent PNG) — BeatingStep, BurningStep, FirePassTransition (no bg interference)
+- EN/ZH names and descriptions live in message files (en.json, zh-TW.json, zh-Hans.json) — NOT here
 
 ## Audio Architecture
 
 **AudioManager.ts** — Singleton, Web Audio API synthesis (no external MP3 files)
 
-| Sound ID | Type | Synthesis | Duration |
-|----------|------|-----------|----------|
-| ambient-drone | Ambient | 55Hz sawtooth + gain tremolo | Continuous |
-| ambient-wind | Ambient | White noise + bandpass filter 800Hz | Continuous |
-| action-beat | Action | White noise + highpass filter 2000Hz | 80ms burst |
-| action-paper | Action | White noise + bandpass filter 2000Hz | 120ms burst |
-| transition-invocation | Transition | Sine sweep 200→80Hz + lowpass | 1.5s |
-| transition-sealing | Transition | Sine sweep 120→60Hz + lowpass | 1.5s |
-| transition-result | Transition | White noise + lowpass filter 400Hz | 500ms |
+| Sound ID | Layer | Synthesis | Duration |
+|----------|-------|-----------|----------|
+| ambient-drone | Ambient | 55Hz sawtooth + lowpass 200Hz | Continuous |
+| ambient-wind | Ambient | White noise + bandpass 800Hz | Continuous |
+| action-beat | Action | White noise + highpass 2000Hz | 80ms burst |
+| action-paper | Action | White noise + bandpass 4000Hz | 120ms burst |
+| action-thwack | Action | White noise + bandpass 1200Hz | 60ms burst |
+| action-scatter | Action | White noise + highpass 3000Hz | 200ms burst |
+| action-divination | Action | White noise + bandpass 800Hz | 150ms burst |
+| transition-invocation | Transition | Sine sweep 200→60Hz | 5s |
+| transition-blessing | Transition | Sine sweep 300→600Hz | 2s |
+| transition-result | Transition | White noise + lowpass 500Hz | 1s |
 
 Volume layers: ambient 0.3, action 0.6, transition 0.8
 
 **useAudio.ts** — React hook wrapping singleton. Exports: `{ init, playAction, playAmbient, stopAmbient, playTransition, isReady }` + `SOUND_IDS`
 
 **Critical pattern**: useAudio does NOT dispose AudioManager on unmount. Singleton survives across step transitions.
+
+**Audio init**: InvocationTransition is the first component to call `audio.init()` (iOS AudioContext unlock). Subsequent steps that play audio (PurificationStep, BlessingStep) also call `audio.init()` on mount for robustness. DivinationStep uses `getAudioManager()` singleton directly.
 
 ## Canvas Architecture
 
@@ -222,31 +297,25 @@ Volume layers: ambient 0.3, action 0.6, transition 0.8
 
 ## prefers-reduced-motion Degradation
 
-`useReducedMotion()` hook reads `prefers-reduced-motion: reduce` media query. Each step component checks hook, conditionally renders Canvas or CSS fallback. ParticleSystem never initializes if reduced motion is active. Same components, just skip Canvas layer.
+Each step checks `useReducedMotion()` hook, conditionally renders fallback.
 
 | Feature | Normal | Reduced Motion |
 |---------|--------|----------------|
 | Particle effects | Canvas 2D animation | Disabled entirely |
-| Invocation transition | 3s candle flicker | Instant state change (0s) |
-| Beating sparks | Canvas burst per tap | Simple CSS scale pulse on paper figure |
-| Burning fire | Canvas particles + dissolution | Simple CSS fade-out of paper figure (2s) |
-| Sealing stamp | 3s stamp + rune flash | Instant stamp appear |
+| Invocation (step 1) | 6s candle flicker | Instant state change (return null) |
+| Fire pass (step 3) | 3s paper animation | Return null, auto-advance 200ms |
+| Beating sparks | Canvas burst per tap | Simple CSS scale pulse |
+| Burning fire + tiger | Canvas particles + AI tiger background | Skip particles, CSS fade-out 2s |
+| Purification particles | CSS rice/bean scatter | Auto-complete 200ms |
+| Blessing glow | 3s gold glow + ingots | 200ms skip |
+| Divination poe blocks | 2s spin + 1s land | 500ms spin + 100ms land |
 | Ambient audio | Plays | Still plays (not motion-related) |
 | Haptic feedback | Vibrates | Still vibrates (not motion-related) |
 
 ## Performance Targets
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| FPS (beating step) | >= 30fps | Chrome DevTools Performance tab |
-| FPS (burning step) | >= 30fps | Same |
-| Particle count | <= 80 | Runtime assert |
-| Audio latency (action sounds) | < 100ms | Perceived responsiveness |
-| First interactive (step 1) | < 2s after invocation | User perception |
-| Canvas init time | < 200ms | Performance.mark |
-| Memory (total ritual) | < 50MB additional | Chrome Memory panel |
-
-Low-end Android baseline: Snapdragon 450, 2GB RAM, Android 11. If FPS drops below 20: auto-reduce particle count to 40. If below 15: disable particles, CSS-only.
+- FPS >= 30 during beating/burning steps. Particle pool max 80, auto-degrade at <20fps.
+- Low-end Android baseline: Snapdragon 450, 2GB RAM. Below 15fps → disable particles, CSS-only.
 
 ## Edge Cases
 
@@ -254,38 +323,20 @@ Low-end Android baseline: Snapdragon 450, 2GB RAM, Android 11. If FPS drops belo
 |------|----------|
 | User refreshes mid-ritual | State lost (by design — ritual = one continuous session). Re-start from idle. |
 | Tab backgrounds during burning | Canvas pauses (rAF stops). Resume from same point on return. |
-| AudioContext suspended | Resume on next user tap within ritual. |
-| Screen rotation (mobile) | Canvas resize via ResizeObserver, particles adjust. No state loss. |
-| Double-tap (beating) | Debounce 100ms. Each tap = one burst of particles + one sound. |
-| Very fast tapping | Cap particle emission rate to 4 bursts/second max. |
+| Stripe redirect loses ritual state | Paid users land on standalone /result page. `?continue=true` flow restores state from localStorage to reach steps 6-8. |
+| DivinationStep double-dispatch | `completedRef` prevents duplicate navigation to /completion |
+| Beating double-tap / fast tapping | Debounce 100ms, cap 4 bursts/second max. |
 
-## i18n Message Namespaces
+## i18n
 
-```
-site          → title, subtitle, description (global)
-landing       → hero{title,subtitle,cta}, whatIs{title,description}, howItWorks{title,steps[]},
-                 trust{line1,line2}, finalCta{headline,button}, footer{heritage}, cta, learnMore
-meta          → title, description, ogTitle, ogDescription
-ritual        → ~40 keys: step1–4 titles/subtitles, enemies.{6 types}.name/desc,
-                 invocation/sealing text, result text, payment buttons, beginButton, tapCount,
-                 step2RageMilestone{25,50,75,100} (aria-live), step2RageFull, step3IgniteHint,
-                 privacyNote/privacyLink/privacyFull, refundPolicy, mobileHint
-pricing       → title, subtitle, free/name/seal/full {name, price, description, features[], cta}
-result        → title, paid/free titles/descriptions, share, verifying, startOver, backToHome, certificateDescription
-about         → title, subtitle, storyTitle, storyP1–P3, missionTitle, missionText
-common        → comingSoon
-```
-
-**Key**: EN and ZH are NOT direct translations — completely different copy with same meaning.
+`messages/{en,zh-TW,zh-Hans}.json` — EN and ZH are NOT direct translations, completely different copy with same meaning. Namespaces: `site`, `landing`, `meta`, `ritual` (~60 keys), `pricing`, `result`, `about`, `common`. Use `t.raw()` for array values (not `t()`).
 
 ## CSS Architecture (globals.css)
 
-- **Tailwind v4 `@theme` block**: colors (ink/vermillion/gold/paper/ember/smoke), fonts (serif/body), 7 animations
-- **Component CSS classes**: `.candle*`, `.candle-flame*`, `.glow-orb*`, `.floating-particle`, `.paper-figure`, `.burning-paper-figure`, `.enemy-card`, `.enemy-silhouette`, `.sealing-*`, `.invocation-*`, `.stagger-fade-in`, `.landing-fade-out`, `.skip-nav`, `.sr-only`, `.img-skeleton`
-- **Keyframes**: flame-flicker-1/2, flame-glow-pulse, particle-float, particle-drift, glow-pulse-1/2/3, paper-tap-pulse, invocation-darken/glow-in/candle-scale, stampSlam, runeFlash, paper-curl-burn, shimmer, stagger-fade-in
-- **`@layer base`**: dark theme (html, body, ::selection, scrollbar)
-- **`@media (prefers-reduced-motion: reduce)`**: single block, all components
+- **Tailwind v4 `@theme` block**: colors (ink/vermillion/gold/paper/ember/smoke), fonts (serif/body), animations
 - **NO tailwind.config.ts** — everything through `@theme` in globals.css
+- Component classes: candle, glow, particle, enemy-card, poe-block, purification, blessing, divination — all in globals.css
+- **`@media (prefers-reduced-motion: reduce)`**: single block covering all components
 
 ## Color Palette
 
@@ -297,7 +348,7 @@ common        → comingSoon
 | vermillion | #ef6030 | Primary accent (text, titles, flames) — WCAG AA on #1a1a1a |
 | vermillion-dark | #c23616 | CTA button backgrounds (contrasts with text-paper) |
 | vermillion-light | #ff7050 | Button hover states, glow effects |
-| gold | #d4a843 | Secondary accent (buttons, icons) |
+| gold | #d4a843 | Secondary accent (buttons, icons, divination) |
 | gold-dark | #b8922e | — |
 | gold-light | #e8c46a | Hover states |
 | paper | #f5f0e8 | Text color (light on dark) |
@@ -307,14 +358,6 @@ common        → comingSoon
 | smoke | #8a8078 | Tertiary text (WCAG AA on #1a1a1a) |
 | shadow | #0d0d0d | Deepest dark |
 
-## Component Types
-
-| Pattern | Server | Client |
-|---------|--------|--------|
-| `async function` + `getTranslations()` | Layout, Page, Footer | — |
-| `'use client'` + `useTranslations()` | — | All sections, Header, ritual steps, transitions |
-| `'use client'` + no translations | — | CandleFlame, FlickerGlow, FloatingParticles |
-
 ## Deployment
 
 - **Primary**: `npx vercel --prod --yes` (CLI direct deploy)
@@ -322,16 +365,6 @@ common        → comingSoon
 - **Always verify**: `curl -s https://beatpetty.com/en | grep "keyword"` after deploy
 - **Branch**: `master` (not `main`)
 - **Remote**: `https://github.com/i3wai/beating-petty-person.git`
-
-## Page Status
-
-| Page | Status | Route |
-|------|--------|-------|
-| Landing | **Done (Day 2, updated Day 13)** | `/[locale]/` |
-| Ritual | **Done (Day 3, updated Day 13)** | `/[locale]/ritual` |
-| Pricing | **Done (Day 4)** | `/[locale]/pricing` |
-| Result | **Done (Day 4, updated Day 13)** | `/[locale]/result` |
-| About | **Done (Day 13)** | `/[locale]/about` |
 
 ## Environment Variables
 
@@ -341,25 +374,15 @@ common        → comingSoon
 | `STRIPE_SECRET_KEY` | Stripe backend (null = routes return 503) | Set (live) |
 | `STRIPE_PUBLISHABLE_KEY` | Stripe frontend (not used — Checkout redirect) | Not set |
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook verification | Set (live) |
-| `STRIPE_PRICE_ID_NAME` | Price for 詛咒解讀 $2.99 | Set (live) |
-| `STRIPE_PRICE_ID_SEAL` | Price for 封印詛咒 $4.99 | Set (live) |
-| `STRIPE_PRICE_ID_FULL` | Price for 全套 $6.99 | Set (live) |
+| `STRIPE_PRICE_ID_NAME` | Price for Curse Reading $2.99 | Set (live) |
+| `STRIPE_PRICE_ID_SEAL` | Price for Complete the Ritual $4.99 | Set (live) |
+| `STRIPE_PRICE_ID_FULL` | Price for Full Ritual + Reading $6.99 | Set (live) |
 
-## Known Technical Debt (Post-MVP)
+## Known Technical Debt
 
-- OG image alt text is English-only (opengraph-image.tsx alt export overrides layout metadata)
-- Web Audio synthesis is functional but crude — Phase 2 can upgrade to recorded samples
-- No error boundary around Canvas — if context fails, particles silently skip
+- **Paid users never reach steps 6-8**: Stripe redirect loses ritual state. Need localStorage persistence or inline payment.
+- **`'seal'` plan key name is legacy** (from deleted "Sealing" step) but kept for Stripe price ID compatibility.
+- **FirePassTransition PNG background flash**: Brief flash on first load. Low priority — Allen said ignore.
+- OG image alt text is English-only
 - PWA is manifest-only — no service worker (@serwist/next incompatible with Turbopack)
-- next-intl `t.raw()` needed for array values — easy to forget when adding new features
-
-## Lighthouse Scores (as of Day 5, 2026-04-08)
-
-> **Note**: These scores are from early development. Re-test after major changes.
-
-| Category | Score | Notes |
-|----------|-------|-------|
-| Performance | 67 | Google Fonts render-blocking; CDN improves FCP/LCP |
-| Accessibility | 100 | WCAG AA contrast on all elements |
-| Best Practices | 100 | — |
-| SEO | 92+ | 100 on production (localhost canonical false positive) |
+- No error boundary around Canvas — if context fails, particles silently skip

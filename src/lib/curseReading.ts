@@ -8,6 +8,18 @@ export interface ReadingFragments {
   closings: string[];
 }
 
+export interface GuidanceFragments {
+  insights: string[];
+  resolutions: string[];
+  prophecies: string[];
+}
+
+export interface GuidanceResult {
+  insight: string;
+  resolution: string;
+  prophecy: string;
+}
+
 function hashSeed(seed: string): number {
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
@@ -41,6 +53,23 @@ export function generateReading(
     .replace(/\{target\}/g, targetName);
 
   return `${opening}\n\n${impact}\n\n${timing}\n\n${weakness}\n\n${closing}`;
+}
+
+export function generateGuidance(
+  fragments: GuidanceFragments,
+  targetName: string,
+  seed: string,
+): GuidanceResult {
+  const hash = hashSeed(seed);
+
+  return {
+    insight: pickFragment(fragments.insights, hash, 41)
+      .replace(/\{target\}/g, targetName),
+    resolution: pickFragment(fragments.resolutions, hash, 53)
+      .replace(/\{target\}/g, targetName),
+    prophecy: pickFragment(fragments.prophecies, hash, 67)
+      .replace(/\{target\}/g, targetName),
+  };
 }
 
 export function resolveTarget(

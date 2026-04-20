@@ -21,6 +21,7 @@ export default function CandleFlame({ className = '' }: CandleFlameProps) {
         </div>
         <div className="candle-wick" />
         <div className="candle-body" />
+        <div className="candle-stand" />
       </div>
 
       {/* Candle 2 — large, center */}
@@ -31,6 +32,7 @@ export default function CandleFlame({ className = '' }: CandleFlameProps) {
         </div>
         <div className="candle-wick" />
         <div className="candle-body" />
+        <div className="candle-stand" />
       </div>
 
       {/* Candle 3 — medium, right */}
@@ -41,6 +43,7 @@ export default function CandleFlame({ className = '' }: CandleFlameProps) {
         </div>
         <div className="candle-wick" />
         <div className="candle-body" />
+        <div className="candle-stand" />
       </div>
     </div>
   );

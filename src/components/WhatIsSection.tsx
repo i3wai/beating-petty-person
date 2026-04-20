@@ -1,8 +1,9 @@
 'use client';
 
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { useLocale } from "next-intl";
+import Link from "next/link";
+import Image from "next/image";
 
 const BLOG_LINKS: Record<string, string> = {
   en: "/en/blog/what-is-da-siu-yan",
@@ -15,8 +16,22 @@ export function WhatIsSection() {
   const locale = useLocale();
 
   return (
-    <section className="px-4 py-16 sm:py-20">
-      <div className="mx-auto max-w-2xl">
+    <section className="relative px-4 py-16 sm:py-20 overflow-hidden">
+      {/* Background image — ritual ground scene */}
+      <Image
+        src="/images/goose-neck-bridge-ground.jpg"
+        alt=""
+        fill
+        className="object-cover object-center"
+        sizes="100vw"
+        aria-hidden="true"
+      />
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-ink/70 z-[1]" />
+
+      {/* Content */}
+      <div className="relative z-10 mx-auto max-w-2xl">
         {/* Decorative top divider */}
         <div className="flex items-center gap-4 mb-8">
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-ink-lighter to-transparent" />

@@ -11,12 +11,12 @@ const PLAN_CONFIG: Record<PlanType, { priceId: string; amount: number; name: str
   seal: {
     priceId: process.env.STRIPE_PRICE_ID_SEAL ?? '',
     amount: 499,
-    name: 'Complete the Sealing Ritual',
+    name: 'Complete the Ritual',
   },
   full: {
     priceId: process.env.STRIPE_PRICE_ID_FULL ?? '',
     amount: 699,
-    name: 'Full Power Ritual',
+    name: 'Full Ritual + Reading',
   },
 };
 

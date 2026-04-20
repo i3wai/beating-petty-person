@@ -12,14 +12,19 @@ import {
 
 export type RitualState =
   | 'idle'
-  | 'invocation'
-  | 'select'
-  | 'beating'
-  | 'burning'
-  | 'sealing'
-  | 'result';
+  | 'invocation'      // Step 1: 請神
+  | 'select'          // Step 2: 稟告
+  | 'firePass'        // Step 3: 過火
+  | 'beating'         // Step 4: 打小人
+  | 'burning'         // Step 5: 祭白虎/焚化
+  | 'paywall'         // 付費轉場
+  | 'purification'    // Step 6: 化解
+  | 'blessing'        // Step 7: 祈福/進寶
+  | 'divination';     // Step 8: 擲筊
 
-export type PaymentTier = 'free' | 'named' | 'sealed' | 'full';
+export type PaymentTier = 'free' | 'reading' | 'completion' | 'full';
+
+export type DivinationResult = 'saint' | 'laugh' | 'anger';
 
 export interface EnemyData {
   category: string;
@@ -32,6 +37,7 @@ export interface RitualContextShape {
   enemy: EnemyData | null;
   paymentTier: PaymentTier;
   isPaid: boolean;
+  divinationResult: DivinationResult | null;
 }
 
 // --- Action Types ---
@@ -40,9 +46,12 @@ export type RitualAction =
   | { type: 'START_RITUAL' }
   | { type: 'INVOCATION_COMPLETE' }
   | { type: 'SELECT_ENEMY'; payload: EnemyData }
+  | { type: 'FIRE_PASS_COMPLETE' }
   | { type: 'BEATING_COMPLETE' }
   | { type: 'BURNING_COMPLETE' }
-  | { type: 'SEALING_COMPLETE' }
+  | { type: 'PAYMENT_COMPLETED'; payload: { tier: PaymentTier } }
+  | { type: 'PURIFICATION_COMPLETE' }
+  | { type: 'BLESSING_COMPLETE' }
   | { type: 'RESET' };
 
 // --- Internal State ---
@@ -51,12 +60,14 @@ interface RitualInternalState {
   ritualState: RitualState;
   enemy: EnemyData | null;
   paymentTier: PaymentTier;
+  divinationResult: DivinationResult | null;
 }
 
-const initialState: RitualInternalState = {
+const defaultState: RitualInternalState = {
   ritualState: 'idle',
   enemy: null,
   paymentTier: 'free',
+  divinationResult: null,
 };
 
 // --- Reducer ---
@@ -68,7 +79,7 @@ function ritualReducer(
   switch (action.type) {
     case 'START_RITUAL':
       return state.ritualState === 'idle'
-        ? { ...state, ritualState: 'invocation' }
+        ? { ...defaultState, ritualState: 'invocation' }
         : state;
 
     case 'INVOCATION_COMPLETE':
@@ -80,9 +91,14 @@ function ritualReducer(
       return state.ritualState === 'select'
         ? {
             ...state,
-            ritualState: 'beating',
+            ritualState: 'firePass',
             enemy: action.payload,
           }
+        : state;
+
+    case 'FIRE_PASS_COMPLETE':
+      return state.ritualState === 'firePass'
+        ? { ...state, ritualState: 'beating' }
         : state;
 
     case 'BEATING_COMPLETE':
@@ -92,16 +108,30 @@ function ritualReducer(
 
     case 'BURNING_COMPLETE':
       return state.ritualState === 'burning'
-        ? { ...state, ritualState: 'sealing' }
+        ? { ...state, ritualState: 'paywall' }
         : state;
 
-    case 'SEALING_COMPLETE':
-      return state.ritualState === 'sealing'
-        ? { ...state, ritualState: 'result' }
+    case 'PAYMENT_COMPLETED':
+      return state.ritualState === 'paywall'
+        ? {
+            ...state,
+            ritualState: 'purification',
+            paymentTier: action.payload.tier,
+          }
+        : state;
+
+    case 'PURIFICATION_COMPLETE':
+      return state.ritualState === 'purification'
+        ? { ...state, ritualState: 'blessing' }
+        : state;
+
+    case 'BLESSING_COMPLETE':
+      return state.ritualState === 'blessing'
+        ? { ...state, ritualState: 'divination' }
         : state;
 
     case 'RESET':
-      return initialState;
+      return defaultState;
 
     default:
       return state;
@@ -112,8 +142,16 @@ function ritualReducer(
 
 const RitualContext = createContext<RitualContextShape | null>(null);
 
-export function RitualProvider({ children }: { children: ReactNode }) {
-  const [internal, dispatch] = useReducer(ritualReducer, initialState);
+interface RitualProviderProps {
+  children: ReactNode;
+  initialState?: Partial<RitualInternalState>;
+}
+
+export function RitualProvider({ children, initialState: overrideState }: RitualProviderProps) {
+  const mergedInitial = overrideState
+    ? { ...defaultState, ...overrideState }
+    : defaultState;
+  const [internal, dispatch] = useReducer(ritualReducer, mergedInitial);
 
   const contextValue: RitualContextShape = {
     state: internal.ritualState,
@@ -121,6 +159,7 @@ export function RitualProvider({ children }: { children: ReactNode }) {
     enemy: internal.enemy,
     paymentTier: internal.paymentTier,
     isPaid: internal.paymentTier !== 'free',
+    divinationResult: internal.divinationResult,
   };
 
   return (

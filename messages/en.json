@@ -12,26 +12,47 @@
     },
     "whatIs": {
       "title": "An Ancient Curse, Alive Online",
-      "description": "For 300 years, people have gathered beneath Hong Kong bridges to strike paper effigies and curse their enemies. Now this ritual is online — free, dark, and waiting. Strike. Burn. Seal. What if it works?",
+      "description": "For 300 years, people have gathered beneath Hong Kong bridges to strike paper effigies and curse their enemies. Now this ritual is online — free, dark, and waiting. Strike. Burn. What if it works?",
       "linkText": "Learn the full history of this ritual →"
     },
     "howItWorks": {
-      "title": "The Ritual",
+      "title": "The Eightfold Ritual",
+      "subtitle": "The authentic 八部曲 — eight steps performed for centuries at Hong Kong's Goose Neck Bridge.",
+      "freeLabel": "Free — Destruction",
+      "paidLabel": "Premium — Completion",
+      "dividerText": "The curse is cast — but without proper closing, it may fade...",
       "steps": [
         {
-          "icon": "✠",
-          "title": "Choose Your Enemy",
-          "description": "Six types of petty persons. Identify your enemy."
+          "title": "Invocation",
+          "description": "Light the candle. Call upon the spirits to witness."
         },
         {
-          "icon": "⚔",
-          "title": "Strike",
-          "description": "Beat the paper effigy. Each strike carries your curse."
+          "title": "Declaration",
+          "description": "Name your enemy. Write their name on the paper effigy."
         },
         {
-          "icon": "☢",
-          "title": "Burn & Seal",
-          "description": "Burn the paper effigy to ash. The curse is sealed."
+          "title": "Fire Pass",
+          "description": "Pass the paper over flames to cleanse and purify."
+        },
+        {
+          "title": "Beating",
+          "description": "Strike the paper effigy. Each blow carries your curse."
+        },
+        {
+          "title": "White Tiger Burning",
+          "description": "Feed the effigy to the White Tiger. Burn to ash."
+        },
+        {
+          "title": "Purification",
+          "description": "Scatter rice and beans. Dispel all remnants of evil."
+        },
+        {
+          "title": "Blessing",
+          "description": "Burn gold ingots. Pray for good fortune."
+        },
+        {
+          "title": "Divination",
+          "description": "Cast the moon blocks. Confirm the ritual is complete."
         }
       ]
     },
@@ -72,11 +93,11 @@
         },
         {
           "question": "Is the curse ritual free?",
-          "answer": "The basic curse ritual is completely free. Choose an enemy, strike the paper effigy, burn it, and receive your result. Optional enhancements — naming a specific enemy or sealing the curse — are available for a small fee."
+          "answer": "The basic curse ritual is completely free — five of the eight traditional steps: invocation, declaration, fire pass, beating, and burning. Optional enhancements — the personalized curse reading or the completion ritual (purification, blessing, divination) — are available for a small fee."
         },
         {
           "question": "What happens during the curse ritual?",
-          "answer": "You choose your enemy from six types of petty persons. Then you strike a paper effigy for 30 seconds — each hit carries your curse. Finally, the effigy is burned to ash. The entire ritual takes about one minute."
+          "answer": "The ritual follows the traditional 八部曲 (eightfold ritual) practiced at Hong Kong's Goose Neck Bridge. You invoke the spirits, name your enemy, pass the paper over fire, strike the effigy, and burn it to ash. The full experience adds purification, blessing, and a final divination with moon blocks — about two minutes total."
         },
         {
           "question": "Does the curse ritual actually work?",
@@ -93,7 +114,7 @@
     "title": "BeatPetty — Free Online Curse Ritual",
     "description": "Strike a paper effigy. Burn your enemy's influence. A 300-year-old Hong Kong curse ritual, now free online. What if it works?",
     "ogTitle": "BeatPetty — Free Online Curse Ritual",
-    "ogDescription": "Your enemy's luck ends here. A free online curse ritual from Hong Kong. Strike. Burn. Seal."
+    "ogDescription": "Your enemy's luck ends here. A free online curse ritual from Hong Kong. Strike. Burn."
   },
   "ritual": {
     "step1Title": "Choose Your Enemy",
@@ -158,20 +179,18 @@
     "step3Igniting": "Igniting...",
     "step3Burning": "The flames consume...",
     "step3Complete": "It is done.",
-    "sealingTitle": "The Seal",
-    "sealingSubtitle": "The curse is bound.",
     "step4Title": "The Verdict",
     "resultFreeTitle": "The ashes hold a message...",
     "resultFreeSubtitle": "The paper is destroyed. The curse has been spoken.",
-    "resultFreeDescription": "Your enemy has been struck and burned. But the ashes whisper of what's to come — a reading of their fate, sealed in fire.",
     "resultPaidPrompt": "Unlock the full reading to understand the deeper implications.",
-    "resultSealButton": "Complete the Sealing — $4.99",
+    "resultSealButton": "Complete the Ritual — $4.99",
     "resultNameButton": "Reveal the Curse Reading — $2.99",
-    "resultFullButton": "Full Power Ritual — $6.99",
+    "resultFullButton": "Full Ritual + Reading — $6.99",
+    "viewResultButton": "View Results",
     "resultCheckoutError": "Payment is not yet available. Please try again later.",
     "resultShareButton": "Share This Ritual",
-    "readingPreview": "The curse has spoken — but its words remain sealed. Reveal the full reading.",
-    "readingPreviewBlur": "The words are sealed. Reveal the reading.",
+    "readingPreview": "The curse has spoken — but its words remain hidden in the ashes. Reveal the full reading.",
+    "readingPreviewBlur": "The words are hidden in the ashes. Reveal the reading.",
     "readingLoading": "Reading the ashes...",
     "resultBestValue": "Best Value",
     "startOver": "Start Over",
@@ -186,8 +205,7 @@
         ],
         "impacts": [
           "Their deceptions will turn against them. By the next moon, those they betrayed will see the truth.",
-          "Every lie they speak will cost them an ally. The curse feeds on their greatest weakness — their tongue.",
-          "The bonds of trust they fractured will never heal in their favor. Isolation awaits."
+          "Every lie they speak will cost them an ally. The curse feeds on their greatest weakness — their tongue."
         ],
         "timings": [
           "The first signs will appear within three days. A sudden change in their demeanor. A crack in their composure.",
@@ -213,13 +231,11 @@
         ],
         "impacts": [
           "Those they crushed will rise. Their influence will crumble from within.",
-          "The fear they planted in others will bloom in their own chest. Sleep will not come easily.",
-          "Their commands will lose their weight. Subordinates will see through the illusion of strength."
+          "The fear they planted in others will bloom in their own chest. Sleep will not come easily."
         ],
         "timings": [
           "Within five days, their authority will be questioned by someone they never expected.",
-          "The curse works from the bottom up. Subordinates first, then peers, then superiors. Full effect in ten days.",
-          "Watch for a shift this week. A meeting that doesn't go their way. A decision that gets overturned."
+          "The curse works from the bottom up. Subordinates first, then peers, then superiors. Full effect in ten days."
         ],
         "weaknesses": [
           "Their power is borrowed, not earned. The curse dissolves the illusion that holds it together.",
@@ -267,7 +283,6 @@
         ],
         "impacts": [
           "The energy they stole will sour in their possession. What nourished them will poison them.",
-          "Their presence will repel instead of attract. The rooms they enter will grow cold.",
           "The void they carry will consume them from within. They will drain themselves dry."
         ],
         "timings": [
@@ -283,7 +298,7 @@
         "closings": [
           "The cord is cut. {target} feeds on nothing now.",
           "The parasite has been named. The host is free.",
-          "The ritual is sealed. Their hunger will be their ruin."
+          "The ritual is complete. Their hunger will be their ruin."
         ]
       },
       "bully": {
@@ -309,15 +324,13 @@
         ],
         "closings": [
           "The table has turned. {target} just doesn't know it yet.",
-          "The ritual does not forget. Neither do the broken.",
-          "What goes around has come around. The circle is complete."
+          "The ritual does not forget. Neither do the broken."
         ]
       },
       "custom": {
         "openings": [
           "The curse has been aimed. {target} — you know exactly who they are. So does the ritual now.",
-          "The name {target} has been spoken into the fire. It cannot be unspoken.",
-          "The ritual accepts your target. {target} has been marked."
+          "The name {target} has been spoken into the fire. It cannot be unspoken."
         ],
         "impacts": [
           "Their plans will unravel. Their certainties will become questions. Their ground will shift beneath their feet.",
@@ -330,7 +343,6 @@
           "The effects will be subtle at first. A coincidence here, a setback there. Then they compound."
         ],
         "weaknesses": [
-          "Everyone has a weakness. The ritual has identified {target}'s. You may not see it yet — but the curse does.",
           "Their vulnerability is the thing they protect most carefully. The curse goes straight for it.",
           "Their blind spot is the gap between how they see themselves and how the world sees them. The curse widens that gap."
         ],
@@ -338,6 +350,133 @@
           "You named them. The ritual heard. What happens next is between them and the curse.",
           "The paper has burned. The ash has scattered. The curse is loose.",
           "This is between you, {target}, and the ancient ones. The ritual is done."
+        ]
+      }
+    },
+    "firePassTitle": "Purification by Fire",
+    "firePassSubtitle": "The paper passes through the sacred flames",
+    "step6Title": "Dispelling the Darkness",
+    "step6Subtitle": "Scatter the remaining darkness",
+    "step6Instruction": "Shake to scatter rice and beans, dispelling the evil",
+    "step7Title": "Blessings & Fortune",
+    "step7Subtitle": "May fortune find its way to you",
+    "step8Title": "Divine Confirmation",
+    "step8Subtitle": "Ask the gods to confirm the ritual",
+    "step8Button": "Cast the Blocks",
+    "divination": {
+      "saint": "The ritual is complete. The curse holds.",
+      "laugh": "The gods are silent. The outcome is uncertain.",
+      "anger": "The ritual has been disrupted. Try again."
+    },
+    "paywallTitle": "The curse is cast... but incomplete",
+    "paywallSubtitle": "The enemy is destroyed, but lingering dark energy remains. Complete the closing ritual to purify, bless, and divine the outcome.",
+    "paywallCompleteButton": "Complete the Ritual — $4.99",
+    "paywallFreeButton": "View Results",
+    "paywallReadingButton": "Reveal the Curse Reading — $2.99",
+    "paywallFullButton": "Full Ritual + Reading — $6.99",
+    "resultFreeTemporary": "The curse has been cast, but without the closing ritual, its power may not last.",
+    "guidance": {
+      "title": "The Oracle Speaks",
+      "backstabber": {
+        "insights": [
+          "This one did not appear by chance. The ritual has revealed a pattern: you see the best in people, and some exploit that gift.",
+          "The betrayal was not about you. But your instinct to trust without verifying — that is what the spirits marked.",
+          "There is a door inside you that stays unlocked. This person walked through it. The ritual asks: who else has the key?"
+        ],
+        "resolutions": [
+          "The ritual reveals a pattern in your trust. Next time, let them prove their words before you carry them. The spirits do not rush — neither should your faith.",
+          "The oracle speaks: before you open the next door, look through the keyhole first. Not everyone who knocks should be let in.",
+          "Close the door, then lock it. Not everyone deserves a second chance to prove they didn't deserve the first."
+        ],
+        "prophecies": [
+          "After this ritual, your instincts will sharpen. The next betrayer will be visible before they strike.",
+          "The wound this person left will become a scar, and that scar will become armor. You are not weakened — you are being forged.",
+          "The people who remain after this ritual are the ones forged in the same fire. The rest were never rooted — they were just passing through."
+        ]
+      },
+      "toxicBoss": {
+        "insights": [
+          "Their power over you is partly borrowed — you handed it to them through doubt. The ritual has seen this.",
+          "You have been waiting for permission that was never theirs to give. The spirits recognize your restraint as strength misapplied.",
+          "The authority they hold is real. But the authority they hold over your peace — that was always yours to revoke."
+        ],
+        "resolutions": [
+          "Your value is not determined by someone who cannot see it. The ritual advises: know your exit, even if you never use it.",
+          "Do not fight them on their terms. Fight by becoming impossible to replace, then leaving.",
+          "The curse weakens them. You strengthen yourself. Both can be true at once."
+        ],
+        "prophecies": [
+          "A professional shift approaches. Within one cycle, the ground beneath them will shift — and you will already be standing elsewhere.",
+          "What you endured here will become the standard by which you measure every future opportunity. You will not settle again.",
+          "The ledger is not balanced yet. But the ritual has added your name to the other side of the scale. What was taken from you will return — not as a gift, but as something earned."
+        ]
+      },
+      "ex": {
+        "insights": [
+          "What you are holding onto is not them — it is who you were when you were with them. The ritual sees the difference.",
+          "The door they closed was never the problem. It is the window you keep opening that lets the cold in.",
+          "This person occupies a space in your story that was never meant to be permanent. The spirits confirm: the chapter ended long ago."
+        ],
+        "resolutions": [
+          "Close every door. Not out of anger — out of clarity. Some windows exist to show you what not to return to.",
+          "The ritual advises: do not seek closure from the one who opened the wound. Seek it from within.",
+          "Redirect the energy. What you have spent remembering them, spend on remembering yourself."
+        ],
+        "prophecies": [
+          "When you stop looking back, you will notice someone has been waiting for you to face forward.",
+          "The version of you that survives this will be unrecognizable — in the best possible way.",
+          "The ritual foresees: the next time you think of this person, you will feel nothing. That day is closer than you think."
+        ]
+      },
+      "energyVampire": {
+        "insights": [
+          "Your energy is a resource more precious than money. This person has been spending it freely — and you let them.",
+          "The ritual has identified the drain: it is not dramatic. It is constant, quiet, and invisible — until you are empty.",
+          "Some people do not steal your light. They simply never refill what they consume. The spirits call this a slow theft."
+        ],
+        "resolutions": [
+          "Protect your mornings. The first hour of your day belongs to you alone — no messages, no demands, no exceptions.",
+          "The ritual has marked the drain. When you leave someone's presence and feel hollow, that emptiness is not yours — it is what they left behind. Recognize it. Do not carry it.",
+          "You do not owe access to everyone who asks. The ritual draws a line in the ash — cross it only for those who replenish what they take."
+        ],
+        "prophecies": [
+          "The cord between you and this person is dissolving. By the next moon, you will feel lighter without knowing why.",
+          "Your energy will return — not slowly, but suddenly. One morning you will wake up and recognize yourself again.",
+          "The universe compensates those who learn to protect themselves. What you preserve now will multiply."
+        ]
+      },
+      "bully": {
+        "insights": [
+          "Their aggression is not strength — it is fear wearing a loud voice. The ritual has seen through it.",
+          "The conflict they bring is not random. It is a mirror reflecting something they refuse to face in themselves.",
+          "You did not attract this person. But you have been absorbing their chaos as if it belonged to you. It does not."
+        ],
+        "resolutions": [
+          "Do not fight on their terms. Silence and distance are weapons they have no defense against.",
+          "The ritual advises: protect your peace like a fortress. Let them rage outside the walls.",
+          "Their words are loud. Your silence is louder. The ritual advises: let them build their case against themselves. You simply step aside and watch."
+        ],
+        "prophecies": [
+          "Their power peaks now. From here, it is all erosion. Watch it happen without lifting a finger.",
+          "Peace is approaching your life. Not the absence of conflict — the presence of clarity.",
+          "The universe does not ignore cruelty indefinitely. What they built through fear will not survive the shift that is coming."
+        ]
+      },
+      "custom": {
+        "insights": [
+          "This person was not sent to destroy you. They were sent to reveal something you needed to see about yourself.",
+          "The ritual does not judge your choice. But the spirits note: the intensity of your feelings toward them is a signal, not a sentence.",
+          "Whatever this person represents in your life, the ritual has marked it. You now have a choice: carry it, or set it down."
+        ],
+        "resolutions": [
+          "Trust what you felt during the ritual. Your instincts are more accurate than your doubts.",
+          "The ritual advises: whatever you do next, do not do nothing. Inaction is the only path the curse cannot protect you from.",
+          "Face what this person represents, not the person themselves. The real battle was never with them."
+        ],
+        "prophecies": [
+          "After this ritual, you will move through the world differently. Not louder — more certain.",
+          "The forge does not ask permission. What you survive here will reshape you — not gently, but permanently. You will not recognize the person you become. That is the gift.",
+          "The oracle speaks: you are on the edge of something new. This person was the last obstacle before the door opens."
         ]
       }
     }
@@ -369,38 +508,38 @@
       "cta": "Reveal the Curse Reading — $2.99"
     },
     "seal": {
-      "name": "Sealing Ritual",
+      "name": "Complete the Ritual",
       "price": "$4.99",
-      "description": "The seal ensures the curse holds. Without it, the effect may fade.",
+      "description": "The final three steps: purify the dark energy, receive a blessing, and divine the outcome with moon blocks.",
       "features": [
-        "Everything in Basic",
-        "Enhanced sealing animation",
-        "Digital seal certificate",
-        "Strengthened result"
+        "Everything in Free",
+        "Purification — scatter rice and beans",
+        "Blessing — golden fortune light",
+        "Divination — moon block oracle"
       ],
-      "cta": "Complete the Sealing — $4.99"
+      "cta": "Complete the Ritual — $4.99"
     },
     "full": {
-      "name": "Full Power Ritual",
+      "name": "Full Ritual + Reading",
       "price": "$6.99",
-      "description": "Name your enemy AND seal the curse. The most powerful ritual available.",
+      "description": "The complete experience: personalized curse reading AND the full eight-step ritual closing.",
       "features": [
-        "Everything in Basic",
-        "Name a specific person",
-        "Enhanced sealing animation",
-        "Digital seal certificate",
-        "Full power result"
+        "Everything in Free",
+        "Personalized curse reading",
+        "Oracle guidance (insight, guidance, prophecy)",
+        "Purification, blessing, and divination",
+        "Digital curse certificate"
       ],
-      "cta": "Full Power Ritual — $6.99",
+      "cta": "Full Ritual + Reading — $6.99",
       "badge": "Best Value"
     }
   },
   "result": {
     "title": "The Ritual is Complete",
-    "paidTitle": "The Curse is Sealed",
+    "paidTitle": "The Ritual is Complete",
     "paidSubtitle": "Your ritual has been completed with full power.",
-    "paidDescription": "The sealing is bound. {enemyName} has been named and cursed. The seal will hold.",
-    "paidDescriptionNoName": "The sealing is complete. Your enemy's influence has been fully eradicated.",
+    "paidDescription": "The eightfold ritual is complete. {enemyName} has been named and cursed through every step. The curse will hold.",
+    "paidDescriptionNoName": "The eightfold ritual is complete. Your enemy's influence has been fully eradicated.",
     "freeTitle": "The curse has been cast.",
     "freeSubtitle": "The ritual is complete.",
     "freeDescription": "The paper effigy is destroyed. The curse has been spoken. Your enemy's fate is set in motion.",
@@ -411,15 +550,46 @@
     "startOver": "Start Over",
     "backToHome": "Back to Home",
     "readingTitle": "The Curse Reading",
-    "certificateTitle": "SEAL CERTIFICATE",
+    "certificateTitle": "CURSE CERTIFICATE",
     "certificateTarget": "Target",
     "certificateType": "Curse Type",
-    "certificateSealed": "Sealed On",
-    "certificateExpires": "Seal Expires",
-    "certificateFooter": "This seal is verified by BeatPetty. Valid for 7 days from the date of sealing.",
-    "certificateDescription": "A personalized digital talisman image you can save and share. The 7-day seal represents the traditional ritual cycle — renew it if the curse needs reinforcing.",
-    "certificateSerial": "Seal No.",
-    "certificateOfficial": "Official BeatPetty Seal"
+    "certificateSealed": "Cursed On",
+    "certificateExpires": "Curse Expires",
+    "certificateFooter": "This curse is verified by BeatPetty. Valid for 7 days from the date of the ritual.",
+    "certificateDescription": "A personalized digital curse certificate. The 7-day cycle follows the traditional ritual period — the curse holds for one full lunar phase.",
+    "certificateSerial": "Curse No.",
+    "certificateOfficial": "Official BeatPetty Curse",
+    "guidanceTitle": "The Oracle Speaks",
+    "guidanceInsight": "Insight",
+    "guidanceResolution": "Guidance",
+    "guidanceProphecy": "Prophecy",
+    "continueTitle": "The Ritual Awaits",
+    "continueDescriptionSeal": "Complete the final three steps — purification, blessing, and divination — to properly close the ritual.",
+    "continueDescriptionFull": "Your full curse reading awaits at the grand finale. Complete the closing steps to reveal everything.",
+    "continueButton": "Continue the Ritual"
+  },
+  "completion": {
+    "title": "The Ritual is Complete",
+    "subtitle": "The eightfold ritual is complete. The curse holds.",
+    "readingTitle": "The Curse Reading",
+    "divinationTitle": "The Oracle Has Spoken",
+    "shareTitle": "I just experienced an ancient Chinese curse ritual",
+    "shareText": "BeatPetty — The 300-year-old curse ritual from Hong Kong",
+    "startOver": "Start Over",
+    "backToHome": "Back to Home",
+    "certificateTitle": "CURSE CERTIFICATE",
+    "certificateTarget": "Target",
+    "certificateType": "Curse Type",
+    "certificateSealed": "Cursed On",
+    "certificateExpires": "Curse Expires",
+    "certificateEternal": "This curse is eternal",
+    "certificateDescription": "A personalized digital curse certificate. Sealed with eternal power — this curse will never fade.",
+    "certificateSerial": "Curse No.",
+    "certificateOfficial": "Official BeatPetty Curse",
+    "guidanceTitle": "The Oracle Speaks",
+    "guidanceInsight": "Insight",
+    "guidanceResolution": "Guidance",
+    "guidanceProphecy": "Prophecy"
   },
   "nav": {
     "blog": "The Spellbook",

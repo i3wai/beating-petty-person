@@ -2,9 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 
-interface SealCertificateProps {
+interface CurseCertificateProps {
   enemyName?: string;
   enemyCategory?: string;
+  permanent?: boolean;
 }
 
 function getLunarDateString(date: Date): string {
@@ -29,8 +30,8 @@ function generateSerial(date: Date, name?: string): string {
   return `BP-${y}${m}${d}-${suffix}`;
 }
 
-export default function SealCertificate({ enemyName, enemyCategory }: SealCertificateProps) {
-  const t = useTranslations('result');
+export default function CurseCertificate({ enemyName, enemyCategory, permanent }: CurseCertificateProps) {
+  const t = useTranslations(permanent ? 'completion' : 'result');
 
   const today = new Date();
   const expiry = new Date(today);
@@ -58,10 +59,10 @@ export default function SealCertificate({ enemyName, enemyCategory }: SealCertif
             {t('certificateTitle')}
           </h3>
 
-          {/* Seal stamp — 封 character with seal mud effect */}
+          {/* Seal stamp — 詛 character with seal mud effect */}
           <div className="flex justify-center mb-5">
             <div className="certificate-seal-stamp">
-              <span className="certificate-seal-char">封</span>
+              <span className="certificate-seal-char">詛</span>
             </div>
           </div>
 
@@ -106,7 +107,7 @@ export default function SealCertificate({ enemyName, enemyCategory }: SealCertif
                 {t('certificateExpires')}
               </span>
               <span className="certificate-value-expiry">
-                {formatDate(expiry)}
+                {permanent ? t('certificateEternal') : formatDate(expiry)}
               </span>
             </div>
           </div>
