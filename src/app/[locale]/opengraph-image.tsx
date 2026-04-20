@@ -122,7 +122,7 @@ export default async function OGImage() {
             marginTop: 16,
           }}
         >
-          Strike. Burn. Seal. What if it works?
+          Strike. Burn. What if it works?
         </div>
 
         {/* URL */}
