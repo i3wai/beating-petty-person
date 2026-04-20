@@ -81,9 +81,9 @@ src/
 │   │       ├── EnemySelectStep.tsx  # Step 2: 6-card grid + name input + shimmer loading + sticky confirm
 │   │       ├── BeatingStep.tsx      # Step 4: Rage meter + slipper cursor + curse chants + Canvas HitSpark + aria-live milestones + keyboard + haptic escalation + responsive area + name char-by-char
 │   │       ├── BurningStep.tsx      # Step 5: AI-generated white tiger background + long-press ignite + Canvas FireFlame/Smoke + CSS fire + paper dissolution (rises toward tiger) + keyboard a11y
-│   │       ├── PurificationStep.tsx # Step 6: AI background (purification-ground.jpg) + tap-to-scatter rice/bean CSS particles (min 3 taps, auto 3s)
-│   │       ├── BlessingStep.tsx     # Step 7: AI background (blessing-gold.jpg) + passive 3s gold radial glow + completion pulse
-│   │       └── DivinationStep.tsx   # Step 8: AI background (divination-ground.jpg) + interactive poe block throw → navigates to /completion
+│   │       ├── PurificationStep.tsx # Step 6: AI bg + tap-to-scatter (min 7 taps, auto 10s) + warmth ring + enemy cleanse text
+│   │       ├── BlessingStep.tsx     # Step 7: 7.5s cinematic (AI bg + slow zoom + 18 gold sparks + enemy seal) + ambient drone
+│   │       └── DivinationStep.tsx   # Step 8: AI bg + poe blocks + result sounds/images + continue button → /completion
 │   │
 │   │  # Canvas Engine
 │   ├── canvas/
@@ -93,7 +93,7 @@ src/
 │   │
 │   │  # Audio Engine — Web Audio API synthesis (no MP3 files)
 │   ├── audio/
-│   │   ├── AudioManager.ts         # Singleton: 9 sounds, 3 volume layers
+│   │   ├── AudioManager.ts         # Singleton: 12 sounds, 3 volume layers
 │   │   └── useAudio.ts             # React hook: init, playAction, playAmbient, stopAmbient, playTransition
 │   │
 │   │  # Shared
@@ -127,7 +127,7 @@ docs/
 ├── BLOG_SEO_STANDARD.md        # Blog writing standard (read before writing any blog)
 ├── blog-seo-master.md          # Blog SEO master strategy (EN + ZH, consolidated)
 ├── FUTURE_ROADMAP.md           # Business roadmap & analysis
-├── ritual-redesign.md          # Ritual redesign decisions + 9-phase implementation plan
+├── ritual-redesign.md          # Ritual redesign decisions + implementation plan (COMPLETE)
 ├── ritual-process-hk.md        # Traditional Hong Kong 8-step process reference
 ├── ritual-name-redesign.md     # Curse Reading system design ($2.99 tier, completed)
 
@@ -144,6 +144,9 @@ public/
     ├── purification-ground.jpg # AI-generated: dark stone surface, rice/beans, candlelight (PurificationStep bg)
     ├── blessing-gold.jpg       # AI-generated: gold ingots, golden flames, red paper offerings (BlessingStep bg)
     ├── divination-ground.jpg   # AI-generated: dark temple floor, poe blocks, candlelight (DivinationStep bg)
+    ├── result-saint.jpg        # AI-generated: golden temple light, red lanterns (saint result reveal)
+    ├── result-laugh.jpg        # AI-generated: thick incense smoke, ambiguous (laugh result reveal)
+    ├── result-anger.jpg        # AI-generated: broken incense, extinguished candles (anger result reveal)
     └── paper-figures/          # Dual image sets for 6 enemy types
         ├── *.jpg               # JPG with white bg (EnemySelectStep cards)
         └── *.png               # Transparent PNG (ritual stages: Beating, Burning, FirePass)
@@ -223,13 +226,13 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `FIRE_PASS_COMPL
 | **Step 4: Beating** | ~30s | Canvas HitSpark, slipper cursor, curse chants, rage meter, aria-live, haptic escalation | action-beat + action-thwack + ambient-drone | Canvas 2D + keyboard a11y |
 | **Step 5: Burning** | 2s hold + 9s burn ≈ 11s | AI-generated white tiger background + long-press ignite + Canvas fire + CSS fire + paper dissolution (paper rises toward tiger) | ambient-drone → ambient-wind | AI background image + Canvas 2D + CSS fire + keyboard a11y |
 | **Paywall** | User-paced | Title + subtitle + "View Results" button (saves to localStorage → navigates to /result) | — | router.push → /result |
-| **Step 6: Purification** | 2-3s | Tap-to-scatter rice/bean CSS particles (min 3 taps), scene warms cool→gold | action-scatter (highpass noise 200ms) | CSS particles + haptic 30ms |
-| **Step 7: Blessing** | 3s passive | Gold radial glow expanding + 4 ingot shapes falling | transition-blessing (sine sweep 300→600Hz 2s) | CSS animation, auto-advance |
-| **Step 8: Divination** | ~5s | 2 crescent poe blocks, CSS 3D spin (2s) → land (1s) → result burst (2s) | action-divination (bandpass 800Hz noise 150ms) | CSS 3D transforms + haptic 100ms → navigate to /completion |
+| **Step 6: Purification** | 2-10s | AI bg + tap-to-scatter (min 7 taps), atmospheric warmth ring, enemy cleanse text | action-scatter (highpass noise 200ms) | CSS particles + haptic 30ms, auto 10s |
+| **Step 7: Blessing** | 7.5s cinematic | AI bg + slow zoom (1.0→1.15) + 18 rising gold sparks + enemy seal reveal at 5s + pulse flash | ambient-drone + transition-blessing (sine 300→600Hz 2s) | CSS animation, auto-advance |
+| **Step 8: Divination** | ~5s + user-paced | AI bg + poe blocks spin (2s) → land (1s) → result image reveal + result-specific sound + continue button (1.5s) + 8s auto-nav | action-divination + result-saint/laugh/anger (per result) | CSS 3D transforms + haptic 100ms → /completion |
 | **/result** | User-paced | Free: blurred reading + 3 pricing buttons. $2.99: reading + cert. $4.99/$6.99: "Continue" button. | — | React + Stripe + localStorage |
 | **/completion** | User-paced | $4.99: divination only. $6.99: divination + reading + guidance + permanent cert (grand finale). | — | React + localStorage |
 
-**Total timing**: Free path ~45s (steps 1-5 + paywall skip + result). Paid path: steps 1-5 + Stripe redirect → standalone result page.
+**Total timing**: Free path ~45s (steps 1-5 + paywall skip + result). Paid path ($4.99/$6.99): steps 1-5 (~45s) + Stripe redirect → /result → Steps 6-8 (~22-30s) → /completion.
 
 **Divination probabilities**: Saint (一正一反) 75% → gold burst. Laugh (兩面朝上) 20% → silver flash. Anger (兩面朝下) 5% → red flash.
 
@@ -271,6 +274,9 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `FIRE_PASS_COMPL
 | action-divination | Action | White noise + bandpass 800Hz | 150ms burst |
 | transition-invocation | Transition | Sine sweep 200→60Hz | 5s |
 | transition-blessing | Transition | Sine sweep 300→600Hz | 2s |
+| result-saint | Transition | Sine 180→120Hz | 1.5s |
+| result-laugh | Transition | Noise + bandpass 2000Hz | 80ms |
+| result-anger | Transition | Noise + lowpass 200Hz (Q=3) | 250ms |
 | transition-result | Transition | White noise + lowpass 500Hz | 1s |
 
 Volume layers: ambient 0.3, action 0.6, transition 0.8
@@ -306,9 +312,9 @@ Each step checks `useReducedMotion()` hook, conditionally renders fallback.
 | Fire pass (step 3) | 3s paper animation | Return null, auto-advance 200ms |
 | Beating sparks | Canvas burst per tap | Simple CSS scale pulse |
 | Burning fire + tiger | Canvas particles + AI tiger background | Skip particles, CSS fade-out 2s |
-| Purification particles | CSS rice/bean scatter | Auto-complete 200ms |
-| Blessing glow | 3s gold glow + ingots | 200ms skip |
-| Divination poe blocks | 2s spin + 1s land | 500ms spin + 100ms land |
+| Purification particles | CSS rice/bean scatter | 4s static bg + text + enemy cleanse |
+| Blessing glow | 7.5s cinematic zoom + sparks + seal | 4s static bg + text |
+| Divination poe blocks | 2s spin + 1s land + result image + sound | 500ms spin + 100ms land |
 | Ambient audio | Plays | Still plays (not motion-related) |
 | Haptic feedback | Vibrates | Still vibrates (not motion-related) |
 
@@ -380,9 +386,8 @@ Each step checks `useReducedMotion()` hook, conditionally renders fallback.
 
 ## Known Technical Debt
 
-- **Paid users never reach steps 6-8**: Stripe redirect loses ritual state. Need localStorage persistence or inline payment.
 - **`'seal'` plan key name is legacy** (from deleted "Sealing" step) but kept for Stripe price ID compatibility.
-- **FirePassTransition PNG background flash**: Brief flash on first load. Low priority — Allen said ignore.
+- **FirePassTransition PNG background flash**: Brief flash on first load. Low priority.
 - OG image alt text is English-only
 - PWA is manifest-only — no service worker (@serwist/next incompatible with Turbopack)
 - No error boundary around Canvas — if context fails, particles silently skip
