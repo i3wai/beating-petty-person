@@ -103,6 +103,30 @@ const SOUND_SYNTH: Record<SoundId, SynthConfig> = {
     duration: 2000,
     gain: 0.3,
   },
+  'result-saint': {
+    type: 'oscillator',
+    oscType: 'sine',
+    frequency: 180,
+    frequencyEnd: 120,
+    duration: 1500,
+    gain: 0.35,
+  },
+  'result-laugh': {
+    type: 'noise',
+    duration: 80,
+    gain: 0.3,
+    filterFreq: 2000,
+    filterQ: 1,
+    filterType: 'bandpass',
+  },
+  'result-anger': {
+    type: 'noise',
+    duration: 250,
+    gain: 0.45,
+    filterFreq: 200,
+    filterQ: 3,
+    filterType: 'lowpass',
+  },
 };
 
 const VOLUME = {

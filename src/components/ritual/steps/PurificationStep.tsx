@@ -7,8 +7,8 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useHaptic } from '@/hooks/useHaptic';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
 
-const AUTO_COMPLETE_MS = 3000;
-const MIN_TAPS_TO_COMPLETE = 3;
+const AUTO_COMPLETE_MS = 10000;
+const MIN_TAPS_TO_COMPLETE = 7;
 const HAPTIC_DURATION = 30;
 
 // Particle colors for rice (white/beige) and beans (brown)
@@ -32,7 +32,7 @@ interface ParticleProps {
 
 export default function PurificationStep() {
   const t = useTranslations('ritual');
-  const { dispatch } = useRitual();
+  const { dispatch, enemy } = useRitual();
   const reducedMotion = useReducedMotion();
   const { vibrate } = useHaptic();
   const audio = useAudio();
@@ -41,6 +41,9 @@ export default function PurificationStep() {
   const [tapCount, setTapCount] = useState(0);
   const [particles, setParticles] = useState<ParticleProps[]>([]);
   const [sceneWarmth, setSceneWarmth] = useState(0); // 0 = cool gray, 1 = warm
+  const [showEnemyCleanse, setShowEnemyCleanse] = useState(false);
+
+  const enemyName = enemy?.name || (enemy?.category ? t(`enemies.${enemy.category}.name` as Parameters<typeof t>[0]) : '');
   const handleComplete = useCallback(() => {
     if (completedRef.current) return;
     completedRef.current = true;
@@ -52,22 +55,26 @@ export default function PurificationStep() {
     audio.init().catch(() => {});
   }, [audio]);
 
-  // Auto-complete timer — runs once on mount, not reset by taps
+  // Auto-complete timer — starts after first tap, not on mount
   useEffect(() => {
     if (completedRef.current) return;
 
     if (reducedMotion) {
-      const timer = setTimeout(() => {
-        handleComplete();
-      }, 200);
-      return () => clearTimeout(timer);
+      // Reduced motion: show static content for 4s then complete
+      if (tapCount === 0) {
+        const timer = setTimeout(() => handleComplete(), 4000);
+        return () => clearTimeout(timer);
+      }
+      return;
     }
+
+    if (tapCount === 0) return;
 
     const timer = setTimeout(() => {
       handleComplete();
     }, AUTO_COMPLETE_MS);
     return () => clearTimeout(timer);
-  }, [reducedMotion, handleComplete]);
+  }, [tapCount, reducedMotion, handleComplete]);
 
   // Warm up the scene based on tap count
   useEffect(() => {
@@ -190,11 +197,17 @@ export default function PurificationStep() {
           ))}
         </div>
 
-        {/* Tap count indicator */}
+        {/* Atmospheric warmth ring — fills as scene warms */}
         {!reducedMotion && tapCount > 0 && (
-          <span className="absolute -top-8 text-gold font-serif text-sm">
-            {tapCount}/{MIN_TAPS_TO_COMPLETE}
-          </span>
+          <div
+            className="absolute inset-[-6px] rounded-full pointer-events-none"
+            style={{
+              background: `conic-gradient(rgba(212, 168, 67, ${sceneWarmth * 0.6}) ${sceneWarmth * 360}deg, transparent ${sceneWarmth * 360}deg)`,
+              filter: `blur(4px)`,
+              transition: 'background 0.5s ease-out',
+            }}
+            aria-hidden="true"
+          />
         )}
       </button>
 
@@ -229,6 +242,13 @@ export default function PurificationStep() {
           }}
           aria-hidden="true"
         />
+      )}
+
+      {/* Enemy cleanse text on completion */}
+      {completedRef.current && enemyName && (
+        <p className="mt-6 text-sm text-gold/80 font-serif text-center z-10 animate-fade-in">
+          {t('step6EnemyCleanse', { target: enemyName })}
+        </p>
       )}
 
       <p className="mt-8 text-xs text-paper-muted/50 font-serif italic animate-fade-in-up z-10">

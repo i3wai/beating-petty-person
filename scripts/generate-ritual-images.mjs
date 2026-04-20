@@ -16,6 +16,19 @@ const images = [
     file: "public/images/divination-ground.jpg",
     prompt: `A dark atmospheric temple floor: two crescent-shaped wooden poe blocks (筊杯) lying on weathered stone ground. Dim candlelight flickers from nearby, casting soft warm shadows. A thin trail of incense smoke drifts across the scene. The ground has subtle ritual markings. Mysterious, sacred, and ancient Chinese temple atmosphere. Deep shadows with warm golden candle highlights on the wooden blocks. No people, no text, no watermarks. Photorealistic, moody, cinematic composition.`,
   },
+  // Divination result images — temple sacred atmosphere
+  {
+    file: "public/images/result-saint.jpg",
+    prompt: `Inside an ancient Chinese temple at the decisive moment of divine approval: a beam of brilliant golden light pours down from the temple ceiling directly onto the stone altar floor, illuminating swirling incense smoke that transforms into golden particles rising upward. Red paper lanterns glow warmly on both sides. The atmosphere is triumphant, sacred, and awe-inspiring — as if the gods themselves have answered. Rich gold and deep crimson tones against darkness. Dramatic chiaroscuro lighting. No people, no text, no watermarks. Photorealistic, cinematic, vertical composition.`,
+  },
+  {
+    file: "public/images/result-laugh.jpg",
+    prompt: `Inside an ancient Chinese temple shrouded in mystery: thick incense smoke fills the air, creating an ethereal fog that obscures the temple altar and candle flames. The atmosphere is ambiguous and uncertain — the deities are present but withholding their answer. Faint candlelight flickers through the smoke creating soft warm highlights. Muted amber and gray tones dominate. Mysterious, suspenseful, otherworldly mood. No people, no text, no watermarks. Photorealistic, cinematic fog and mist, vertical composition.`,
+  },
+  {
+    file: "public/images/result-anger.jpg",
+    prompt: `Inside an ancient Chinese temple at a moment of divine displeasure: a red incense stick has broken in half, its ember glowing bright orange-red against the dark stone floor. The candles on the altar have been blown out, leaving only thin trails of smoke rising into darkness. One red paper lantern swings ominously. The atmosphere is foreboding and tense — crimson red and deep black tones with a single point of orange ember light. Ominous, heavy, ritualistic mood. No people, no text, no watermarks. Photorealistic, cinematic low-key lighting, vertical composition.`,
+  },
 ];
 
 for (const img of images) {

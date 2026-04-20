@@ -15,6 +15,9 @@ export const SOUND_IDS = {
   TRANSITION_INVOCATION: 'transition-invocation',
   TRANSITION_RESULT: 'transition-result',
   TRANSITION_BLESSING: 'transition-blessing',
+  RESULT_SAINT: 'result-saint',
+  RESULT_LAUGH: 'result-laugh',
+  RESULT_ANGER: 'result-anger',
 } as const;
 
 export type SoundId = (typeof SOUND_IDS)[keyof typeof SOUND_IDS];

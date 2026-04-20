@@ -7,9 +7,9 @@
 
 ## Active Task: Ritual Redesign + Paid Tier Restructure
 
-### Status: STEPS 6-8 AI IMAGE ENHANCEMENT COMPLETE (2026-04-20)
+### Status: STEPS 6-8 QUALITY FIX COMPLETE (2026-04-20)
 
-Ritual redesign + payment flow restructure + steps 6-8 AI image enhancement complete. Build passes.
+Ritual redesign + payment flow restructure + steps 6-8 quality fix complete. Build passes.
 
 - **Design + Implementation plan**: `docs/ritual-redesign.md` — decisions, flow design, 9-phase plan
 - **Traditional reference**: `docs/ritual-process-hk.md` — correct Hong Kong 打小人 process
@@ -136,6 +136,58 @@ Build passes.
 
 Build passes.
 
+### Completed This Session: Steps 6-8 Quality Fix (2026-04-20)
+
+**Fixes based on `docs/step6-8-review.md` action items. Total paid duration: 8-11s → 20-25s.**
+
+**i18n rewrite (all 3 languages)**: Steps 6-8 titles, subtitles, instructions rewritten from greeting-card tone to dark-cinematic tone. EN: "Blessings & Fortune" → "Receive the Blessing", "May fortune find its way to you" → "Fortune descends upon the cursed ground". Added `divination.spinning`, `divination.landing`, `step7EnemySealed` keys (3 languages). Anger result reframed: "ritual disrupted, try again" → "deity demands more reverence / 神明另有旨意".
+
+**Step 6 (PurificationStep)**: `AUTO_COMPLETE_MS` 3s→10s, `MIN_TAPS_TO_COMPLETE` 3→7. Removed gamey "3/3" counter. Replaced with atmospheric conic-gradient warmth ring that fills as taps increase. Existing particle scatter and background warmth effects unchanged.
+
+**Step 7 (BlessingStep)**: Complete cinematic redesign. Duration 3s→7.5s. 3-phase sequence: (1) 0-3s dark reveal with slow zoom on bg image (scale 1.0→1.15), (2) 3-5s title/subtitle fade in + 18 rising gold spark particles (CSS-only, staggered delays, infinite loop), (3) 5-7.5s enemy name seal reveal ("The curse upon {target} is sealed") + gold pulse flash. No tap interaction — 祈福 is receiving, not doing. Added `.blessing-zoom`, `.blessing-spark`/`@keyframes blessing-rise`, `.blessing-enemy-reveal` CSS. Updated reduced-motion rules.
+
+**Step 8 (DivinationStep)**: Replaced hardcoded "..." with `t('divination.spinning')` / `t('divination.landing')` i18n strings. Meaningful per-phase text: "The blocks fall through the air..." / "Reading the divine answer...".
+
+Build passes.
+
+### Completed This Session: Steps 6-8 Deep Audit Fix (2026-04-20)
+
+**Full audit of all 3 paid steps — code, CSS, i18n, cultural accuracy, audio, edge cases. 9 issues fixed.**
+
+**P0-1: Enemy name fallback bug**: BlessingStep `enemy?.name || enemy?.category` displayed internal ID ("toxicBoss") when no custom name entered. Fixed to use i18n display name via `t('enemies.${category}.name')`.
+
+**P0-2: DivinationStep anger text contradiction**: Text "ritual continues" but auto-navigates to completion. Fixed all 3 languages: "deity has spoken differently / 神明另有回應。儀式已記錄。"
+
+**P0-3: BlessingStep overlay dead transition**: CSS `transition-opacity` on overlay with no state change. Fixed to fade from opacity 1→0.5 when enemy name reveals.
+
+**P1-1: No transitions between paid steps**: RitualOrchestrator had crossfade only for burning step. Added `paidStepVisible` state with 500ms opacity fade for purification→blessing→divination.
+
+**P1-2: Cultural accuracy regression (zh-TW/zh-Hans)**: "掃除殘穢" (Japanese-influenced) → "化解凶煞" (authentic Cantonese). "承接福報" → "祈福進寶" (authentic Taoist). "福報降臨，金光護體" → "元寶焚化，金光引貴人" (describes actual ritual action). "驅散殘留的陰氣" → "化解殘留的煞氣" (correct terminology).
+
+**P1-3: No ambient audio in paid steps**: Free steps had ambient drone throughout. Paid steps were silent. Added ambient drone playback in BlessingStep with cleanup on unmount.
+
+**P1-4: PurificationStep timer started on mount**: Auto-complete timer penalized slow readers. Changed to start on first tap (tapCount > 0) instead of on mount.
+
+**P1-5: Step 8 cast button too bright**: `bg-gold text-ink` was standard CTA. Changed to `bg-gold/20 text-gold border border-gold/30` — semi-transparent dark style matching ritual aesthetic.
+
+**P1-6: BlessingStep gold sparks animate after completion**: Infinite loop particles continued after step completed. Added `completedRef.current ? 'opacity-0' : 'opacity-100'` with 500ms fade-out.
+
+Build passes.
+
+### Completed This Session: Steps 6-8 Deep Audit P2 Fixes (2026-04-20)
+
+**4 critical upgrades that were previously misclassified as "polish". These determine whether $4.99 feels justified.**
+
+**Reduced motion fix**: Paid reduced motion was 1.3s of plain text ($3.84/sec). Now: Step 6 = 4s static bg+text+enemy cleanse, Step 7 = 4s static bg+text, Step 8 = ~3.6s. Total ~11.6s with real visual content. Removed `completedRef.current` early-exit that skipped all content.
+
+**Divination result sounds**: All 3 results had visual bursts but zero audio difference. Added 3 new synthesized sounds to AudioManager: `result-saint` (low bell, sine 180→120Hz, 1.5s), `result-laugh` (light tap, noise 80ms bandpass), `result-anger` (deep drum, noise 250ms lowpass 200Hz). Played via `playTransition` on result reveal.
+
+**Continue button after divination**: Previously auto-navigated at 2s with no user agency at the ritual climax. Now: result sound plays immediately, Continue button fades in at 1.5s, 8s auto-navigate as safety net. User controls when to leave the sacred moment. New i18n key `divination.continue` (3 languages).
+
+**Step 6 enemy name callback**: Step 6 was impersonal — zero connection to the cursed target. Now shows "{target} 的煞氣正在消散" / "The darkness around {target} disperses" on completion. Uses same i18n display name fix from P0-1. New i18n key `step6EnemyCleanse` (3 languages).
+
+Build passes.
+
 ---
 
 ## Previous Task: EN Blog Complete — ALL COMPLETE
@@ -199,16 +251,15 @@ Full rewrite from 224w placeholder to ~2,300w Cluster B spoke. Deployed to produ
 
 Four-phase plan, strictly sequential. Don't skip ahead.
 
-### Phase 1: Ritual Redesign + Paid Tier Restructure (CURRENT)
+### Phase 1: Ritual Redesign + Paid Tier Restructure (COMPLETE)
 - Redesign ritual flow to match traditional 8-step process
 - Restructure pricing: Free / $2.99 (reading + guidance + cert) / $4.99 (ritual completion) / $6.99 (all)
 - Full discussion: `docs/ritual-redesign.md`
 - **Landing page updated** (2026-04-19): HowItWorksSection 8-step + WhatIsSection atmospheric bg + all 封印 references removed
 - **Ritual UI refinements** (2026-04-19): PaywallTransition/ResultStep simplified, AI-generated background images (tiger+flames), dual paper figure image sets (JPG+PNG), candle stands, ambient sound fix
 - **$2.99 tier enhanced** (2026-04-19): Oracle guidance system, content quality pass, certificate moved from $4.99 (Seal→Curse, 封→詛)
-- **Steps 6-8 AI image enhancement** (2026-04-20): 3 AI-generated atmospheric backgrounds (purification-ground.jpg, blessing-gold.jpg, divination-ground.jpg) integrated into PurificationStep/BlessingStep/DivinationStep. CSS ingot shapes removed from BlessingStep. Build passes.
-- **Next**: Steps 6-8 comprehensive quality review (UX/tech) before moving to Phase 2 (Viral Share Engine)
-- **Steps 6-8 quality review** (2026-04-20): UX review complete, coordinator synthesis done. Full report at `docs/step6-8-review.md`. Tech review pending (agent did not deliver). Key P0: total paid duration 8-11s vs free 60-90s, Step 7 is 3s passive nothing. Fix plan recorded, execution pending.
+- **Steps 6-8 AI image enhancement** (2026-04-20): 3 AI-generated atmospheric backgrounds integrated
+- **Steps 6-8 quality fix** (2026-04-20): Paid duration 8-11s → 20-25s. Step 6: 3→7 taps, 3→10s auto, warmth ring. Step 7: 3s→7.5s cinematic (gold particles, slow zoom, enemy name seal). Step 8: "..." replaced with meaningful i18n. Anger reframed. All text dark-cinematic tone (3 languages). Full report: `docs/step6-8-review.md`
 
 ### Phase 2: Viral Share Engine (parallel with Phase 1)
 - Revise share button UX and share content

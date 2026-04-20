@@ -356,18 +356,23 @@
         ]
       }
     },
-    "step6Title": "化解凶险",
-    "step6Subtitle": "散去残余阴气",
-    "step6Instruction": "摇手机撒米豆，化解凶险",
+    "step6Title": "化解凶煞",
+    "step6Subtitle": "撒米化煞，清除残余阴气",
+    "step6Instruction": "点击撒米豆 — 化解残留的煞气",
+    "step6EnemyCleanse": "{target} 的煞气正在消散",
     "step7Title": "祈福进宝",
-    "step7Subtitle": "愿贵人相助，好运降临",
+    "step7Subtitle": "元宝焚化，金光引贵人",
+    "step7EnemySealed": "对{target}的诅咒已封印",
     "step8Title": "掷筊问杯",
-    "step8Subtitle": "请神明确认仪式是否圆满",
+    "step8Subtitle": "掷筊请示 — 诅咒可曾生效？",
     "step8Button": "掷筊",
     "divination": {
+      "spinning": "筊杯落下，神明垂听...",
+      "landing": "解读神明的回应...",
       "saint": "仪式圆满，诅咒已成。",
       "laugh": "神明未定，结果未知。",
-      "anger": "仪式受阻，请再试一次。"
+      "anger": "神明另有回应。仪式已记录。",
+      "continue": "继续"
     },
     "paywallTitle": "诅咒已下……但未完成",
     "paywallSubtitle": "小人已毁，但残余阴气未散。完成收尾仪式——化解、祈福、掷筊——方能永绝后患。",

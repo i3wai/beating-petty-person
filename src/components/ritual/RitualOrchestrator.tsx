@@ -48,6 +48,7 @@ function StepLoader() {
 export default function RitualOrchestrator() {
   const { state } = useRitual();
   const [burningVisible, setBurningVisible] = useState(false);
+  const [paidStepVisible, setPaidStepVisible] = useState(false);
 
   // 1-second crossfade when transitioning to burning
   useEffect(() => {
@@ -58,6 +59,19 @@ export default function RitualOrchestrator() {
       setBurningVisible(false);
     }
   }, [state]);
+
+  // Crossfade for paid steps (purification → blessing → divination)
+  useEffect(() => {
+    if (state === 'purification' || state === 'blessing' || state === 'divination') {
+      setPaidStepVisible(false);
+      const timer = setTimeout(() => setPaidStepVisible(true), 50);
+      return () => clearTimeout(timer);
+    } else {
+      setPaidStepVisible(false);
+    }
+  }, [state]);
+
+  const isPaidStep = state === 'purification' || state === 'blessing' || state === 'divination';
 
   return (
     <Suspense fallback={<StepLoader />}>
@@ -76,9 +90,18 @@ export default function RitualOrchestrator() {
         </div>
       )}
       {state === 'paywall' && <PaywallTransition />}
-      {state === 'purification' && <PurificationStep />}
-      {state === 'blessing' && <BlessingStep />}
-      {state === 'divination' && <DivinationStep />}
+      {isPaidStep && (
+        <div
+          style={{
+            opacity: paidStepVisible ? 1 : 0,
+            transition: 'opacity 500ms ease-in',
+          }}
+        >
+          {state === 'purification' && <PurificationStep />}
+          {state === 'blessing' && <BlessingStep />}
+          {state === 'divination' && <DivinationStep />}
+        </div>
+      )}
     </Suspense>
   );
 }

@@ -9,6 +9,18 @@ import { getAudioManager } from '@/components/audio/AudioManager';
 import type { DivinationResult } from '@/components/ritual/RitualProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 
+const RESULT_IMAGE: Record<DivinationResult, string> = {
+  saint: '/images/result-saint.jpg',
+  laugh: '/images/result-laugh.jpg',
+  anger: '/images/result-anger.jpg',
+};
+
+const RESULT_SOUND: Record<DivinationResult, string> = {
+  saint: 'result-saint',
+  laugh: 'result-laugh',
+  anger: 'result-anger',
+};
+
 function rollDivination(): DivinationResult {
   const r = Math.random();
   if (r < 0.75) return 'saint';
@@ -20,7 +32,8 @@ type Phase = 'idle' | 'spinning' | 'landed' | 'result';
 
 const SPIN_DURATION_MS = 2000;
 const LAND_DURATION_MS = 1000;
-const RESULT_DISPLAY_MS = 2000;
+const CONTINUE_DELAY_MS = 1500;
+const AUTO_NAV_MS = 8000;
 
 export default function DivinationStep() {
   const t = useTranslations('ritual');
@@ -30,39 +43,43 @@ export default function DivinationStep() {
   const { vibrate } = useHaptic();
   const reducedMotion = useReducedMotion();
   const completedRef = useRef(false);
+  const navigatedRef = useRef(false);
 
   const [phase, setPhase] = useState<Phase>('idle');
   const [result, setResult] = useState<DivinationResult | null>(null);
   const [isLeftFaceUp, setIsLeftFaceUp] = useState(false);
   const [isRightFaceUp, setIsRightFaceUp] = useState(false);
+  const [showContinue, setShowContinue] = useState(false);
+
+  const navigateToCompletion = useCallback((divResult: string) => {
+    if (navigatedRef.current) return;
+    navigatedRef.current = true;
+    try {
+      localStorage.setItem('beatpetty_divination', divResult);
+    } catch {}
+    router.push(`/${locale}/completion`);
+  }, [locale, router]);
 
   const handleDivine = useCallback(() => {
     if (completedRef.current || phase !== 'idle') return;
     completedRef.current = true;
 
-    // Play sound
     const audio = getAudioManager();
     audio.playAction('action-divination');
 
-    // Start spin animation
     setPhase('spinning');
 
-    // Determine result
     const divinationResult = rollDivination();
     setResult(divinationResult);
 
-    // Determine final orientations
     if (divinationResult === 'saint') {
-      // One up, one down
       const leftUp = Math.random() > 0.5;
       setIsLeftFaceUp(leftUp);
       setIsRightFaceUp(!leftUp);
     } else if (divinationResult === 'laugh') {
-      // Both up
       setIsLeftFaceUp(true);
       setIsRightFaceUp(true);
     } else {
-      // Both down (anger)
       setIsLeftFaceUp(false);
       setIsRightFaceUp(false);
     }
@@ -70,7 +87,6 @@ export default function DivinationStep() {
 
   useEffect(() => {
     if (phase === 'spinning') {
-      // Reduced motion: skip to result after 500ms
       const duration = reducedMotion ? 500 : SPIN_DURATION_MS;
       const timer = setTimeout(() => {
         setPhase('landed');
@@ -81,35 +97,40 @@ export default function DivinationStep() {
 
   useEffect(() => {
     if (phase === 'landed') {
-      // Reduced motion: minimal bounce
       const duration = reducedMotion ? 100 : LAND_DURATION_MS;
       const timer = setTimeout(() => {
         setPhase('result');
-        // Haptic feedback when result is revealed
         vibrate(100);
       }, duration);
       return () => clearTimeout(timer);
     }
   }, [phase, reducedMotion, vibrate]);
 
+  // Show continue button + play result sound + auto-navigate safety net
   useEffect(() => {
-    if (phase === 'result' && result) {
-      const timer = setTimeout(() => {
-        // Save divination result for /completion page
-        try {
-          localStorage.setItem('beatpetty_divination', result);
-        } catch {}
+    if (phase !== 'result' || !result) return;
 
-        // Navigate to completion page
-        router.push(`/${locale}/completion`);
-      }, RESULT_DISPLAY_MS);
-      return () => clearTimeout(timer);
-    }
-  }, [phase, result, locale, router]);
+    // Play result-specific sound
+    const audio = getAudioManager();
+    audio.playTransition(RESULT_SOUND[result]);
 
-  const resultClassName = result
-    ? `divination-${result}`
-    : '';
+    // Show continue button after delay
+    const continueTimer = setTimeout(() => {
+      setShowContinue(true);
+    }, CONTINUE_DELAY_MS);
+
+    // Auto-navigate safety net
+    const navTimer = setTimeout(() => {
+      navigateToCompletion(result);
+    }, AUTO_NAV_MS);
+
+    return () => {
+      clearTimeout(continueTimer);
+      clearTimeout(navTimer);
+    };
+  }, [phase, result, navigateToCompletion]);
+
+  const resultClassName = result ? `divination-${result}` : '';
 
   return (
     <div className="flex flex-col items-center min-h-[80dvh] px-4 py-12 sm:py-16 max-w-lg mx-auto bg-ink">
@@ -120,6 +141,15 @@ export default function DivinationStep() {
         className="fixed inset-0 w-full h-full object-cover pointer-events-none opacity-60"
         aria-hidden="true"
       />
+      {/* Background switches to result image on reveal */}
+      {phase === 'result' && result && (
+        <img
+          src={RESULT_IMAGE[result]}
+          alt=""
+          className="fixed inset-0 w-full h-full object-cover pointer-events-none opacity-0 animate-[fade-in_1.5s_ease-out_0.2s_forwards]"
+          aria-hidden="true"
+        />
+      )}
       {/* Dark overlay for readability */}
       <div className="fixed inset-0 pointer-events-none bg-ink/45" aria-hidden="true" />
 
@@ -186,10 +216,12 @@ export default function DivinationStep() {
           onClick={handleDivine}
           className="
             mt-12 px-8 py-3 rounded-lg
-            bg-gold text-ink font-serif font-semibold text-base
-            hover:bg-gold-light active:bg-gold-dark
+            bg-gold/20 text-gold border border-gold/30
+            font-serif font-semibold text-base
+            hover:bg-gold/30 hover:border-gold/50
+            active:bg-gold/40
             transition-colors duration-200
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50
           "
           aria-label={t('step8Button')}
         >
@@ -200,8 +232,26 @@ export default function DivinationStep() {
       {/* Loading/processing text during animations */}
       {(phase === 'spinning' || phase === 'landed') && (
         <p className="mt-12 text-paper-muted font-serif text-sm animate-pulse" aria-live="polite">
-          {phase === 'spinning' ? '...' : '...'}
+          {phase === 'spinning' ? t('divination.spinning') : t('divination.landing')}
         </p>
+      )}
+
+      {/* Continue button — appears 1.5s after result */}
+      {showContinue && result && (
+        <button
+          onClick={() => navigateToCompletion(result)}
+          className="
+            mt-8 px-8 py-3 rounded-lg
+            bg-gold/20 text-gold border border-gold/30
+            font-serif font-semibold text-base
+            hover:bg-gold/30 hover:border-gold/50
+            active:bg-gold/40
+            transition-colors duration-200 animate-fade-in
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50
+          "
+        >
+          {t('divination.continue')}
+        </button>
       )}
     </div>
   );
