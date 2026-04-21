@@ -14,13 +14,15 @@ function getStoredData() {
     const reading = localStorage.getItem('beatpetty_reading');
     const guidanceRaw = localStorage.getItem('beatpetty_guidance');
     const divination = localStorage.getItem('beatpetty_divination') as DivinationResult | null;
+    const divinationThrows = localStorage.getItem('beatpetty_divination_throws');
 
     const paid = paidRaw ? JSON.parse(paidRaw) : null;
     const guidance: GuidanceResult | null = guidanceRaw ? JSON.parse(guidanceRaw) : null;
+    const throws = divinationThrows ? parseInt(divinationThrows, 10) : 1;
 
-    return { paid, reading, guidance, divination };
+    return { paid, reading, guidance, divination, throws };
   } catch {
-    return { paid: null, reading: null, guidance: null, divination: null };
+    return { paid: null, reading: null, guidance: null, divination: null, throws: 1 };
   }
 }
 
@@ -29,10 +31,10 @@ export default function CompletionPage() {
   const tRitual = useTranslations('ritual');
   const locale = useLocale();
 
-  const { paid, reading, guidance, divination } = getStoredData();
+  const { paid, reading, guidance, divination, throws } = getStoredData();
   const plan = paid?.plan as string;
   const isFull = plan === 'full';
-  const enemyTypeLabel = paid?.enemyCategory || '';
+  const enemyCategory = paid?.enemyCategory || '';
   const enemyName = paid?.enemyName || '';
 
   const handleShare = useCallback(async () => {
@@ -64,26 +66,39 @@ export default function CompletionPage() {
           {t('subtitle')}
         </p>
 
-        {/* Divination result */}
+        {/* Divination result — always 聖杯 for paid users */}
         {divination && (
           <div className="mt-8 px-6 py-6 bg-ink-light border border-gold/30 rounded-sm max-w-md mx-auto text-center animate-fade-in-up">
             <h2 className="text-lg font-bold text-gold font-serif mb-3">
               {t('divinationTitle')}
             </h2>
-            <p className={`text-xl font-serif font-bold ${
-              divination === 'saint' ? 'text-gold' :
-              divination === 'laugh' ? 'text-gray-400' :
-              'text-vermillion'
-            }`}>
-              {tRitual(`divination.${divination}`)}
+            <div className="flex justify-center mb-4">
+              <span className="text-4xl font-serif font-bold text-gold">聖杯</span>
+            </div>
+            <p className="text-paper font-serif text-base leading-relaxed">
+              {t('divinationSaint')}
             </p>
-            {divination === 'saint' && (
-              <p className="mt-2 text-sm text-paper-muted font-serif italic">
-                {tRitual('divination.saint')}
+            {throws > 1 && (
+              <p className="mt-4 text-sm text-gold/70 font-serif italic">
+                {t('divinationThrows', { count: throws })}
               </p>
             )}
+            <div className="h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent my-4" />
+            <p className="text-xs text-paper-muted font-serif italic leading-relaxed">
+              {t('divinationContext')}
+            </p>
           </div>
         )}
+
+        {/* Ritual summary */}
+        <div className="mt-6 px-6 py-5 bg-ink-light/50 border border-gold/15 rounded-sm max-w-md mx-auto text-center animate-fade-in-up">
+          <h3 className="text-sm font-bold text-gold/80 font-serif uppercase tracking-widest mb-3">
+            {t('ritualSummaryTitle')}
+          </h3>
+          <p className="text-sm text-paper-muted font-serif leading-relaxed">
+            {t('ritualSummary')}
+          </p>
+        </div>
 
         {/* Full reading — only for $6.99 (full plan) */}
         {isFull && reading && (
@@ -142,7 +157,7 @@ export default function CompletionPage() {
           <div className="mt-10">
             <CurseCertificate
               enemyName={enemyName || undefined}
-              enemyCategory={enemyTypeLabel}
+              enemyCategory={enemyCategory}
               permanent
             />
           </div>

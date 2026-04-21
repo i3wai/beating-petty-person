@@ -83,7 +83,7 @@ src/
 │   │       ├── BurningStep.tsx      # Step 5: AI-generated white tiger background + long-press ignite + Canvas FireFlame/Smoke + CSS fire + paper dissolution (rises toward tiger) + keyboard a11y
 │   │       ├── PurificationStep.tsx # Step 6: AI bg + tap-to-scatter (min 7 taps, auto 10s) + warmth ring + enemy cleanse text
 │   │       ├── BlessingStep.tsx     # Step 7: 7.5s cinematic (AI bg + slow zoom + 18 gold sparks + enemy seal) + ambient drone
-│   │       └── DivinationStep.tsx   # Step 8: AI bg + poe blocks + result sounds/images + continue button → /completion
+│   │       └── DivinationStep.tsx   # Step 8: AI bg + poe blocks + 3-throw mechanic (paid) + result sounds/images + Cast Again / Continue → /completion
 │   │
 │   │  # Canvas Engine
 │   ├── canvas/
@@ -162,7 +162,7 @@ select → SELECT_ENEMY → firePass → FIRE_PASS_COMPLETE → beating
 beating → BEATING_COMPLETE → burning → BURNING_COMPLETE → paywall
 paywall → [navigate to /result]                                    [free path, exits SPA]
 paywall → PAYMENT_COMPLETED → purification → PURIFICATION_COMPLETE → blessing
-blessing → BLESSING_COMPLETE → divination → [navigate to /completion]  [paid path, exits SPA]
+blessing → BLESSING_COMPLETE → divination → [up to 3 throws] → [navigate to /completion]  [paid path, exits SPA]
 ```
 
 **Continue flow** (`/ritual?continue=true`): RitualProvider initialized at `purification` state with enemy/payment data from localStorage. Steps 6-8 play normally, then navigate to `/completion`.
@@ -209,7 +209,8 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `FIRE_PASS_COMPL
 - `beatpetty_reading` — generated curse reading text
 - `beatpetty_guidance` — `{ insight, resolution, prophecy }` JSON
 - `beatpetty_paid` — `{ paid, plan, enemyCategory, enemyName }` from verify-session API
-- `beatpetty_divination` — `'saint' | 'laugh' | 'anger'`
+- `beatpetty_divination` — `'saint' | 'laugh' | 'anger'` (always `'saint'` for paid users)
+- `beatpetty_divination_throws` — number of throws to get 聖杯 (1-3 for paid users)
 
 **Page responsibilities**:
 - `/result` — 4 views based on payment state. Handles all Stripe checkout buttons.
@@ -226,15 +227,15 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `FIRE_PASS_COMPL
 | **Step 4: Beating** | ~30s | Canvas HitSpark, slipper cursor, curse chants, rage meter, aria-live, haptic escalation | action-beat + action-thwack + ambient-drone | Canvas 2D + keyboard a11y |
 | **Step 5: Burning** | 2s hold + 9s burn ≈ 11s | AI-generated white tiger background + long-press ignite + Canvas fire + CSS fire + paper dissolution (paper rises toward tiger) | ambient-drone → ambient-wind | AI background image + Canvas 2D + CSS fire + keyboard a11y |
 | **Paywall** | User-paced | Title + subtitle + "View Results" button (saves to localStorage → navigates to /result) | — | router.push → /result |
-| **Step 6: Purification** | 2-10s | AI bg + tap-to-scatter (min 7 taps), atmospheric warmth ring, enemy cleanse text | action-scatter (highpass noise 200ms) | CSS particles + haptic 30ms, auto 10s |
-| **Step 7: Blessing** | 7.5s cinematic | AI bg + slow zoom (1.0→1.15) + 18 rising gold sparks + enemy seal reveal at 5s + pulse flash | ambient-drone + transition-blessing (sine 300→600Hz 2s) | CSS animation, auto-advance |
-| **Step 8: Divination** | ~5s + user-paced | AI bg + poe blocks spin (2s) → land (1s) → result image reveal + result-specific sound + continue button (1.5s) + 8s auto-nav | action-divination + result-saint/laugh/anger (per result) | CSS 3D transforms + haptic 100ms → /completion |
+| **Step 6: Purification** | 2-10s | AI bg + tap-to-scatter (min 7 taps) + progress indicator "3/7" + atmospheric warmth ring + enemy cleanse text | action-scatter (highpass noise 200ms) | CSS particles + haptic 30ms, auto 10s |
+| **Step 7: Blessing** | 7.5s cinematic | AI bg + slow zoom (1.0→1.15) + "Receiving the blessing..." hint + 18 rising gold sparks + enemy seal reveal at 5s + pulse flash | ambient-drone + transition-blessing (sine 300→600Hz 2s) | CSS animation, auto-advance |
+| **Step 8: Divination** | ~5s per throw × up to 3 | AI bg + poe blocks spin (2s) → land (1s) → result reveal. **Paid users**: 3-throw mechanic (1st=50/50 laugh/anger, 2nd=33/33/33, 3rd=100% saint). Non-saint shows "Cast Again", saint shows "Continue" → /completion | action-divination + result-saint/laugh/anger (per result) | CSS 3D transforms + haptic 100ms → /completion |
 | **/result** | User-paced | Free: blurred reading + 3 pricing buttons. $2.99: reading + cert. $4.99/$6.99: "Continue" button. | — | React + Stripe + localStorage |
-| **/completion** | User-paced | $4.99: divination only. $6.99: divination + reading + guidance + permanent cert (grand finale). | — | React + localStorage |
+| **/completion** | User-paced | $4.99: 聖杯 interpretation + throw count + ritual summary. $6.99: same + reading + guidance + permanent cert (grand finale). | — | React + localStorage |
 
-**Total timing**: Free path ~45s (steps 1-5 + paywall skip + result). Paid path ($4.99/$6.99): steps 1-5 (~45s) + Stripe redirect → /result → Steps 6-8 (~22-30s) → /completion.
+**Total timing**: Free path ~45s (steps 1-5 + paywall skip + result). Paid path ($4.99/$6.99): steps 1-5 (~45s) + Stripe redirect → /result → Steps 6-8 (~25-45s depending on throws) → /completion.
 
-**Divination probabilities**: Saint (一正一反) 75% → gold burst. Laugh (兩面朝上) 20% → silver flash. Anger (兩面朝下) 5% → red flash.
+**Divination probabilities**: Free users: Saint 75%, Laugh 20%, Anger 5%. **Paid users**: 3-throw mechanic — 1st throw 50/50 laugh/anger, 2nd 33/33/33, 3rd 100% saint. Always ends with 聖杯 (guaranteed positive ending).
 
 ## Pricing & Stripe
 

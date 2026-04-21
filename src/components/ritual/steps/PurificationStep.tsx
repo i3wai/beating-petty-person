@@ -244,6 +244,16 @@ export default function PurificationStep() {
         />
       )}
 
+      {/* Tap progress indicator */}
+      {!reducedMotion && !completedRef.current && tapCount > 0 && (
+        <p className="mt-4 text-xs text-gold/50 font-serif z-10 animate-fade-in" aria-live="polite">
+          {tapCount < MIN_TAPS_TO_COMPLETE
+            ? `${tapCount} / ${MIN_TAPS_TO_COMPLETE}`
+            : t('step6Complete')
+          }
+        </p>
+      )}
+
       {/* Enemy cleanse text on completion */}
       {completedRef.current && enemyName && (
         <p className="mt-6 text-sm text-gold/80 font-serif text-center z-10 animate-fade-in">

@@ -21,11 +21,24 @@ const RESULT_SOUND: Record<DivinationResult, string> = {
   anger: 'result-anger',
 };
 
-function rollDivination(): DivinationResult {
-  const r = Math.random();
-  if (r < 0.75) return 'saint';
-  if (r < 0.95) return 'laugh';
-  return 'anger';
+function rollDivination(throwCount: number, isPaid: boolean): DivinationResult {
+  if (!isPaid) {
+    const r = Math.random();
+    if (r < 0.75) return 'saint';
+    if (r < 0.95) return 'laugh';
+    return 'anger';
+  }
+
+  if (throwCount === 1) {
+    return Math.random() < 0.5 ? 'laugh' : 'anger';
+  }
+  if (throwCount === 2) {
+    const r = Math.random();
+    if (r < 0.333) return 'saint';
+    if (r < 0.666) return 'laugh';
+    return 'anger';
+  }
+  return 'saint';
 }
 
 type Phase = 'idle' | 'spinning' | 'landed' | 'result';
@@ -39,10 +52,9 @@ export default function DivinationStep() {
   const t = useTranslations('ritual');
   const locale = useLocale();
   const router = useRouter();
-  const { dispatch } = useRitual();
+  const { dispatch, isPaid } = useRitual();
   const { vibrate } = useHaptic();
   const reducedMotion = useReducedMotion();
-  const completedRef = useRef(false);
   const navigatedRef = useRef(false);
 
   const [phase, setPhase] = useState<Phase>('idle');
@@ -50,26 +62,30 @@ export default function DivinationStep() {
   const [isLeftFaceUp, setIsLeftFaceUp] = useState(false);
   const [isRightFaceUp, setIsRightFaceUp] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
+  const [throwCount, setThrowCount] = useState(0);
 
-  const navigateToCompletion = useCallback((divResult: string) => {
+  const navigateToCompletion = useCallback((divResult: string, throws: number) => {
     if (navigatedRef.current) return;
     navigatedRef.current = true;
     try {
       localStorage.setItem('beatpetty_divination', divResult);
+      localStorage.setItem('beatpetty_divination_throws', String(throws));
     } catch {}
     router.push(`/${locale}/completion`);
   }, [locale, router]);
 
   const handleDivine = useCallback(() => {
-    if (completedRef.current || phase !== 'idle') return;
-    completedRef.current = true;
+    if (phase !== 'idle') return;
 
     const audio = getAudioManager();
     audio.playAction('action-divination');
 
+    const newThrowCount = throwCount + 1;
+    setThrowCount(newThrowCount);
     setPhase('spinning');
+    setShowContinue(false);
 
-    const divinationResult = rollDivination();
+    const divinationResult = rollDivination(newThrowCount, isPaid);
     setResult(divinationResult);
 
     if (divinationResult === 'saint') {
@@ -83,7 +99,13 @@ export default function DivinationStep() {
       setIsLeftFaceUp(false);
       setIsRightFaceUp(false);
     }
-  }, [phase]);
+  }, [phase, throwCount, isPaid]);
+
+  const handleThrowAgain = useCallback(() => {
+    setResult(null);
+    setPhase('idle');
+    setShowContinue(false);
+  }, []);
 
   useEffect(() => {
     if (phase === 'spinning') {
@@ -106,29 +128,30 @@ export default function DivinationStep() {
     }
   }, [phase, reducedMotion, vibrate]);
 
-  // Show continue button + play result sound + auto-navigate safety net
+  // Show continue/throw-again button + play result sound
   useEffect(() => {
     if (phase !== 'result' || !result) return;
 
-    // Play result-specific sound
     const audio = getAudioManager();
     audio.playTransition(RESULT_SOUND[result]);
 
-    // Show continue button after delay
     const continueTimer = setTimeout(() => {
       setShowContinue(true);
     }, CONTINUE_DELAY_MS);
 
-    // Auto-navigate safety net
-    const navTimer = setTimeout(() => {
-      navigateToCompletion(result);
-    }, AUTO_NAV_MS);
+    // Auto-navigate only on saint (final result)
+    let navTimer: ReturnType<typeof setTimeout> | undefined;
+    if (result === 'saint') {
+      navTimer = setTimeout(() => {
+        navigateToCompletion(result, throwCount);
+      }, AUTO_NAV_MS);
+    }
 
     return () => {
       clearTimeout(continueTimer);
-      clearTimeout(navTimer);
+      if (navTimer) clearTimeout(navTimer);
     };
-  }, [phase, result, navigateToCompletion]);
+  }, [phase, result, throwCount, navigateToCompletion]);
 
   const resultClassName = result ? `divination-${result}` : '';
 
@@ -236,22 +259,39 @@ export default function DivinationStep() {
         </p>
       )}
 
-      {/* Continue button — appears 1.5s after result */}
+      {/* Continue / Throw again button — appears 1.5s after result */}
       {showContinue && result && (
-        <button
-          onClick={() => navigateToCompletion(result)}
-          className="
-            mt-8 px-8 py-3 rounded-lg
-            bg-gold/20 text-gold border border-gold/30
-            font-serif font-semibold text-base
-            hover:bg-gold/30 hover:border-gold/50
-            active:bg-gold/40
-            transition-colors duration-200 animate-fade-in
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50
-          "
-        >
-          {t('divination.continue')}
-        </button>
+        result === 'saint' ? (
+          <button
+            onClick={() => navigateToCompletion(result, throwCount)}
+            className="
+              mt-8 px-8 py-3 rounded-lg
+              bg-gold/20 text-gold border border-gold/30
+              font-serif font-semibold text-base
+              hover:bg-gold/30 hover:border-gold/50
+              active:bg-gold/40
+              transition-colors duration-200 animate-fade-in
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50
+            "
+          >
+            {t('divination.continue')}
+          </button>
+        ) : (
+          <button
+            onClick={handleThrowAgain}
+            className="
+              mt-8 px-8 py-3 rounded-lg
+              bg-vermillion/20 text-vermillion border border-vermillion/30
+              font-serif font-semibold text-base
+              hover:bg-vermillion/30 hover:border-vermillion/50
+              active:bg-vermillion/40
+              transition-colors duration-200 animate-fade-in
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermillion/50
+            "
+          >
+            {t('divination.throwAgain')}
+          </button>
+        )
       )}
     </div>
   );

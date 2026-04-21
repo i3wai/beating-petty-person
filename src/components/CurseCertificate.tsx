@@ -32,6 +32,7 @@ function generateSerial(date: Date, name?: string): string {
 
 export default function CurseCertificate({ enemyName, enemyCategory, permanent }: CurseCertificateProps) {
   const t = useTranslations(permanent ? 'completion' : 'result');
+  const tRitual = useTranslations('ritual');
 
   const today = new Date();
   const expiry = new Date(today);
@@ -88,7 +89,7 @@ export default function CurseCertificate({ enemyName, enemyCategory, permanent }
                   {t('certificateType')}
                 </span>
                 <span className="certificate-value-type">
-                  {enemyCategory}
+                  {enemyCategory === 'custom' ? tRitual('enemies.custom.name') : tRitual(`enemies.${enemyCategory}.name`)}
                 </span>
               </div>
             )}

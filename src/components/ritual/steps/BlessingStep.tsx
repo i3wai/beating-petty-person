@@ -134,6 +134,11 @@ export default function BlessingStep() {
         ))}
       </div>
 
+      {/* Initial hint — visible immediately, fades out when text appears */}
+      <p className={`relative z-10 text-xs text-gold/40 font-serif italic animate-pulse transition-opacity duration-1000 ${showText ? 'opacity-0' : 'opacity-100'}`}>
+        {t('step7Receiving')}
+      </p>
+
       {/* Title + subtitle — fades in at 3s */}
       <div className={`relative z-10 text-center transition-all duration-[2000ms] ease-out ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif">
