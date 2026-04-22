@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import CurseCertificate from '@/components/CurseCertificate';
+import ShareButtons from '@/components/ShareButtons';
 import type { GuidanceResult } from '@/lib/curseReading';
 
 type DivinationResult = 'saint' | 'laugh' | 'anger';
@@ -37,19 +38,8 @@ export default function CompletionPage() {
   const enemyCategory = paid?.enemyCategory || '';
   const enemyName = paid?.enemyName || '';
 
-  const handleShare = useCallback(async () => {
-    const shareData = {
-      title: t('shareTitle'),
-      text: t('shareText'),
-      url: `https://beatpetty.com/${locale}`,
-    };
-
-    if (navigator.share) {
-      try { await navigator.share(shareData); } catch {}
-    } else {
-      await navigator.clipboard.writeText(`https://beatpetty.com/${locale}`);
-    }
-  }, [t, locale]);
+  const shareTier = plan === 'full' ? 'full' as const : 'completion' as const;
+  const readingTeaser = reading?.slice(0, 80) || undefined;
 
   return (
     <div className="min-h-[80dvh] flex flex-col items-center justify-center px-4 py-16">
@@ -164,21 +154,14 @@ export default function CompletionPage() {
         )}
 
         {/* Share + Start Over */}
-        <div className="flex flex-col items-center gap-4 mt-8">
-          <button
-            onClick={handleShare}
-            className="
-              px-8 py-3 rounded-sm
-              bg-ink-light border border-gold/40 text-gold
-              font-serif font-semibold
-              hover:border-gold hover:bg-ink-lighter
-              transition-colors duration-200
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
-            "
-          >
-            {t('shareTitle')}
-          </button>
+        <ShareButtons
+          enemyCategory={enemyCategory}
+          tier={shareTier}
+          locale={locale}
+          readingTeaser={readingTeaser}
+        />
 
+        <div className="flex flex-col items-center gap-4 mt-4">
           <Link
             href={`/${locale}/ritual`}
             className="text-sm text-paper-muted/60 font-serif underline underline-offset-4 hover:text-paper-muted transition-colors"

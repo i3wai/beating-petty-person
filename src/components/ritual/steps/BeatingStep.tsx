@@ -243,7 +243,7 @@ export default function BeatingStep() {
         }
 
         // --- Curse chant (skip in reduced motion) ---
-        if (!reducedMotion) {
+        if (!reducedMotion && chantPhrases.length > 0) {
           const chantId = nextIdRef.current++;
           const chantText = chantPhrases[next % chantPhrases.length];
           const chantEntry = { id: chantId, text: chantText, x, y };

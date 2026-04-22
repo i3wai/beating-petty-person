@@ -367,6 +367,7 @@
     "step8Title": "Divine Confirmation",
     "step8Subtitle": "Ask the gods — has the curse taken hold?",
     "step8Button": "Cast the Blocks",
+    "step8EnemyConfirmed": "The curse upon {target} is confirmed.",
     "divination": {
       "spinning": "The blocks fall through the air...",
       "landing": "Reading the divine answer...",
@@ -605,7 +606,7 @@
     "guidanceProphecy": "Prophecy"
   },
   "nav": {
-    "blog": "The Spellbook",
+    "blog": "The Grimoire",
     "ritual": "Begin the Ritual"
   },
   "blog": {
@@ -666,6 +667,56 @@
     "digitalP1": "Because our product is a digital experience, we do not require you to \"return\" anything. Simply email us and we'll take care of it.",
     "contactTitle": "Questions?",
     "contactP1": "Reach us anytime at"
+  },
+  "share": {
+    "sectionTitle": "Share This Ritual",
+    "sectionSubtitle": "Let others discover the ancient curse.",
+    "copySuccess": "Link copied!",
+    "whatsapp": "WhatsApp",
+    "twitter": "Post",
+    "copy": "Copy Link",
+    "nativeShare": "Share",
+    "previewAlt": "Share card preview",
+    "tiers": {
+      "free": {
+        "text": "I just experienced an ancient Chinese curse ritual — you beat a paper effigy and burn it. 300-year-old tradition. What if it works?",
+        "twitter": "I performed an ancient Chinese curse ritual online. Struck a paper effigy and burned it. 300-year-old tradition. What if it works?",
+        "whatsapp": "I just tried this ancient Chinese curse ritual — you beat a paper effigy and burn it. It's a 300-year-old Hong Kong tradition.\n\nIt's free. What if it works?\n\nTry it: "
+      },
+      "reading": {
+        "text": "I just had my curse read by an ancient Chinese ritual. 300-year-old Hong Kong tradition.",
+        "twitter": "I just had my curse read by a 300-year-old Chinese ritual. The reading was... unsettling.",
+        "whatsapp": "I experienced an ancient Chinese curse ritual and got a personalized reading. The things it said...\n\nTry it: "
+      },
+      "completion": {
+        "text": "I completed all 8 steps of an ancient Chinese curse ritual. The oracle confirmed: the curse holds.",
+        "twitter": "I completed all 8 steps of a 300-year-old Chinese curse ritual. The moon blocks confirmed: the curse holds.",
+        "whatsapp": "I completed the full 8-step ancient Chinese curse ritual. Purification, blessing, divination — the oracle confirmed my curse.\n\nExperience it: "
+      },
+      "full": {
+        "text": "I completed a full ancient Chinese curse ceremony. Personalized reading, oracle guidance, curse certificate. What if it works?",
+        "twitter": "I completed a full ancient Chinese curse ceremony. Got a reading, oracle guidance, and a curse certificate. What if it works?",
+        "whatsapp": "I completed a FULL ancient Chinese curse ceremony — all 8 steps, a personalized reading, oracle guidance, and an official curse certificate.\n\nThis is a 300-year-old tradition. What if it works?\n\nTry it: "
+      }
+    },
+    "enemyTypes": {
+      "backstabber": "a Backstabber",
+      "toxicBoss": "a Toxic Boss",
+      "ex": "an Ex",
+      "energyVampire": "an Energy Vampire",
+      "bully": "a Bully",
+      "custom": "a Petty Person"
+    }
+  },
+  "shared": {
+    "validTitle": "This ritual has been sealed",
+    "validDescription": "The curse has been cast and confirmed by the oracle. Are you ready to cast your own?",
+    "validCta": "Begin Your Own Ritual",
+    "invalidTitle": "This link has been sealed",
+    "invalidDescription": "The ritual details are no longer accessible.",
+    "invalidCta": "Begin Your Own Ritual",
+    "redirecting": "Redirecting in {countdown}s...",
+    "redirectingNow": "Redirecting..."
   },
   "common": {
     "comingSoon": "Coming Soon",

@@ -195,7 +195,7 @@ export default function BurningStep() {
         {t('step3Subtitle')}
       </p>
 
-      <div className="relative w-[320px] h-[400px] flex items-center justify-center pointer-events-none">
+      <div className="relative w-[min(320px,90vw)] h-[min(400px,75dvh)] flex items-center justify-center pointer-events-none">
         {/* Background — AI-generated scene with white tiger & ground */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

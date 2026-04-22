@@ -23,7 +23,7 @@ export function LanguageSwitcher({ locale }: { locale: string }) {
         <button
           key={l}
           onClick={() => handleChange(l)}
-          className={`px-2 py-1 text-xs font-serif rounded transition-colors focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-gold ${
+          className={`px-3 py-2 text-xs font-serif rounded transition-colors focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-gold min-h-[36px] min-w-[36px] ${
             l === locale
               ? "bg-gold text-ink"
               : "text-white hover:text-paper hover:bg-ink-light"

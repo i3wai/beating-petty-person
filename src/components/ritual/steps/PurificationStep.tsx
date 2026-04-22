@@ -11,12 +11,12 @@ const AUTO_COMPLETE_MS = 10000;
 const MIN_TAPS_TO_COMPLETE = 7;
 const HAPTIC_DURATION = 30;
 
-// Particle colors for rice (white/beige) and beans (brown)
+// Particle colors — bright with strong glow for visibility against dark overlay
 const PARTICLE_COLORS = [
-  'rgba(245, 240, 232, 0.9)',  // rice white
-  'rgba(232, 224, 208, 0.9)',  // rice beige
-  'rgba(180, 140, 100, 0.9)',  // bean brown
-  'rgba(160, 120, 80, 0.9)',   // bean dark brown
+  'rgba(255, 248, 235, 0.95)',  // bright rice white
+  'rgba(255, 235, 200, 0.95)',  // warm rice gold
+  'rgba(220, 180, 120, 0.95)',  // golden bean
+  'rgba(200, 155, 90, 0.95)',   // amber bean
 ];
 
 interface ParticleProps {
@@ -107,7 +107,7 @@ export default function PurificationStep() {
         x: 50, // center %
         y: 50, // center %
         color: PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)],
-        size: 3 + Math.random() * 4,
+        size: 4 + Math.random() * 5,
         angle,
         distance,
         delay,
@@ -146,14 +146,14 @@ export default function PurificationStep() {
       {/* Dark overlay for readability */}
       <div
         className="fixed inset-0 pointer-events-none"
-        style={{ background: `rgba(17, 17, 17, ${0.5 - sceneWarmth * 0.15})`, transition: 'background 1s ease-out' }}
+        style={{ background: `rgba(17, 17, 17, ${0.45 - sceneWarmth * 0.15})`, transition: 'background 1s ease-out' }}
         aria-hidden="true"
       />
 
       <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif text-center animate-fade-in z-10">
         {t('step6Title')}
       </h2>
-      <p className="mt-4 text-sm sm:text-base text-paper-muted font-serif text-center animate-fade-in-up z-10">
+      <p className="mt-4 text-sm sm:text-base text-gold/80 font-serif text-center animate-fade-in-up z-10">
         {t('step6Instruction')}
       </p>
 
@@ -175,7 +175,8 @@ export default function PurificationStep() {
           style={{
             width: '60px',
             height: '60px',
-            background: 'radial-gradient(circle, rgba(245, 240, 232, 0.6) 0%, rgba(180, 140, 100, 0.3) 60%, transparent 80%)',
+            background: 'radial-gradient(circle, rgba(255, 248, 235, 0.7) 0%, rgba(220, 180, 120, 0.4) 60%, transparent 80%)',
+            boxShadow: '0 0 15px 4px rgba(212, 168, 67, 0.2)',
             borderRadius: '50%',
             animation: reducedMotion ? 'none' : 'pile-pulse 2s ease-in-out infinite',
           }}
@@ -224,6 +225,7 @@ export default function PurificationStep() {
                 width: particle.size + 'px',
                 height: particle.size + 'px',
                 backgroundColor: particle.color,
+                boxShadow: `0 0 6px 2px ${particle.color}`,
                 '--particle-angle': particle.angle + 'rad',
                 '--particle-distance': particle.distance + 'px',
                 '--particle-delay': particle.delay + 'ms',
@@ -261,7 +263,7 @@ export default function PurificationStep() {
         </p>
       )}
 
-      <p className="mt-8 text-xs text-paper-muted/50 font-serif italic animate-fade-in-up z-10">
+      <p className="mt-8 text-xs text-gold/60 font-serif italic animate-fade-in-up z-10">
         {t('step6Subtitle')}
       </p>
     </div>

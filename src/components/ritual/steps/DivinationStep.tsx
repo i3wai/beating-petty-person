@@ -45,14 +45,14 @@ type Phase = 'idle' | 'spinning' | 'landed' | 'result';
 
 const SPIN_DURATION_MS = 2000;
 const LAND_DURATION_MS = 1000;
-const CONTINUE_DELAY_MS = 1500;
-const AUTO_NAV_MS = 8000;
+const CONTINUE_DELAY_MS = 1000;
+const AUTO_NAV_MS = 5000;
 
 export default function DivinationStep() {
   const t = useTranslations('ritual');
   const locale = useLocale();
   const router = useRouter();
-  const { dispatch, isPaid } = useRitual();
+  const { dispatch, isPaid, enemy } = useRitual();
   const { vibrate } = useHaptic();
   const reducedMotion = useReducedMotion();
   const navigatedRef = useRef(false);
@@ -79,6 +79,7 @@ export default function DivinationStep() {
 
     const audio = getAudioManager();
     audio.playAction('action-divination');
+    vibrate(50);
 
     const newThrowCount = throwCount + 1;
     setThrowCount(newThrowCount);
@@ -174,12 +175,12 @@ export default function DivinationStep() {
         />
       )}
       {/* Dark overlay for readability */}
-      <div className="fixed inset-0 pointer-events-none bg-ink/45" aria-hidden="true" />
+      <div className="fixed inset-0 pointer-events-none bg-ink/30" aria-hidden="true" />
 
       <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif text-center animate-fade-in">
         {t('step8Title')}
       </h2>
-      <p className="mt-4 text-sm sm:text-base text-paper-muted font-serif text-center animate-fade-in-up">
+      <p className="mt-4 text-sm sm:text-base text-gold/80 font-serif text-center animate-fade-in-up">
         {t('step8Subtitle')}
       </p>
 
@@ -229,6 +230,11 @@ export default function DivinationStep() {
             }`}>
               {t(`divination.${result}`)}
             </p>
+            {result === 'saint' && enemy?.name && (
+              <p className="mt-3 text-sm text-gold/60 font-serif">
+                {t('step8EnemyConfirmed', { target: enemy.name })}
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -254,7 +260,7 @@ export default function DivinationStep() {
 
       {/* Loading/processing text during animations */}
       {(phase === 'spinning' || phase === 'landed') && (
-        <p className="mt-12 text-paper-muted font-serif text-sm animate-pulse" aria-live="polite">
+        <p className="mt-12 text-gold/70 font-serif text-sm animate-pulse" aria-live="polite">
           {phase === 'spinning' ? t('divination.spinning') : t('divination.landing')}
         </p>
       )}

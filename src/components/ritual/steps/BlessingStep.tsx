@@ -29,6 +29,7 @@ export default function BlessingStep() {
 
   const [showText, setShowText] = useState(false);
   const [showEnemy, setShowEnemy] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const enemyName = enemy?.name || (enemy?.category ? t(`enemies.${enemy.category}.name` as Parameters<typeof t>[0]) : '');
 
@@ -58,6 +59,15 @@ export default function BlessingStep() {
       transitionPlayedRef.current = true;
       try { audio.playTransition(SOUND_IDS.TRANSITION_BLESSING); } catch { /* ignore */ }
     }
+
+    // Progress animation
+    const startTime = performance.now();
+    const tick = (now: number) => {
+      const p = Math.min((now - startTime) / DURATION_MS, 1);
+      setProgress(p);
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
 
     // Phase 2: reveal text at 3s
     const textTimer = setTimeout(() => setShowText(true), TEXT_REVEAL_MS);
@@ -103,7 +113,7 @@ export default function BlessingStep() {
       {/* Dark overlay — fades from 0.6 to 0.3 as blessing descends */}
       <div
         className="fixed inset-0 pointer-events-none transition-opacity duration-[7000ms] ease-out"
-        style={{ background: 'rgba(17, 17, 17, 0.6)', opacity: showEnemy ? 0.5 : 1 }}
+        style={{ background: 'rgba(17, 17, 17, 0.45)', opacity: showEnemy ? 0.4 : 1 }}
         aria-hidden="true"
       />
 
@@ -135,7 +145,7 @@ export default function BlessingStep() {
       </div>
 
       {/* Initial hint — visible immediately, fades out when text appears */}
-      <p className={`relative z-10 text-xs text-gold/40 font-serif italic animate-pulse transition-opacity duration-1000 ${showText ? 'opacity-0' : 'opacity-100'}`}>
+      <p className={`relative z-10 text-xs text-gold/70 font-serif italic animate-pulse transition-opacity duration-1000 ${showText ? 'opacity-0' : 'opacity-100'}`}>
         {t('step7Receiving')}
       </p>
 
@@ -144,7 +154,7 @@ export default function BlessingStep() {
         <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif">
           {t('step7Title')}
         </h2>
-        <p className="mt-4 text-sm sm:text-base text-paper-muted font-serif">
+        <p className="mt-4 text-sm sm:text-base text-gold/80 font-serif">
           {t('step7Subtitle')}
         </p>
       </div>
@@ -168,6 +178,18 @@ export default function BlessingStep() {
           aria-hidden="true"
         />
       )}
+
+      {/* Thin progress bar at bottom */}
+      <div className="fixed bottom-0 left-0 right-0 h-[3px] z-20" aria-hidden="true">
+        <div
+          className="h-full"
+          style={{
+            width: `${progress * 100}%`,
+            background: 'linear-gradient(90deg, rgba(212, 168, 67, 0.5), rgba(212, 168, 67, 1))',
+            transition: 'width 0.1s linear',
+          }}
+        />
+      </div>
     </div>
   );
 }

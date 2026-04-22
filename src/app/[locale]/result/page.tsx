@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CurseCertificate from '@/components/CurseCertificate';
+import ShareButtons from '@/components/ShareButtons';
 import type { GuidanceResult } from '@/lib/curseReading';
 import type { PlanType } from '@/lib/stripe';
 
@@ -108,20 +109,6 @@ function ResultContent() {
       setCheckoutLoading(null);
     }
   }, [locale]);
-
-  const handleShare = useCallback(async () => {
-    const shareData = {
-      title: t('shareTitle'),
-      text: t('shareText'),
-      url: `https://beatpetty.com/${locale}`,
-    };
-
-    if (navigator.share) {
-      try { await navigator.share(shareData); } catch {}
-    } else {
-      await navigator.clipboard.writeText(`https://beatpetty.com/${locale}`);
-    }
-  }, [t, locale]);
 
   const handleContinue = useCallback(() => {
     router.push(`/${locale}/ritual?continue=true`);
@@ -262,20 +249,14 @@ function ResultContent() {
             />
           </div>
 
-          <div className="flex flex-col items-center gap-4 mt-8">
-            <button
-              onClick={handleShare}
-              className="
-                px-8 py-3 rounded-sm
-                bg-ink-light border border-gold/40 text-gold
-                font-serif font-semibold
-                hover:border-gold hover:bg-ink-lighter
-                transition-colors duration-200
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
-              "
-            >
-              {t('shareTitle')}
-            </button>
+          <ShareButtons
+            enemyCategory={enemyTypeLabel}
+            tier="reading"
+            locale={locale}
+            readingTeaser={reading?.slice(0, 80) || undefined}
+          />
+
+          <div className="flex flex-col items-center gap-4 mt-4">
             <Link
               href={`/${locale}/ritual`}
               className="text-sm text-paper-muted/60 font-serif underline underline-offset-4 hover:text-paper-muted transition-colors"
@@ -371,17 +352,19 @@ function ResultContent() {
             onClick={() => handleCheckout('full')}
             disabled={checkoutLoading !== null}
             className="
-              w-full px-6 py-3 rounded-lg
-              bg-gold text-ink font-serif font-semibold text-base
+              w-full px-6 py-4 rounded-lg
+              bg-gold text-ink font-serif font-bold text-lg
               hover:bg-gold-light
               disabled:opacity-50 disabled:cursor-not-allowed
-              transition-colors duration-200
+              transition-all duration-200
               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
               relative
+              shadow-[0_0_20px_rgba(212,168,67,0.3)]
+              hover:shadow-[0_0_30px_rgba(212,168,67,0.5)]
             "
           >
             {checkoutLoading === 'full' ? '...' : tRitual('resultFullButton')}
-            <span className="absolute -top-2 -right-2 text-[10px] bg-vermillion text-paper px-1.5 py-0.5 rounded-sm font-serif">
+            <span className="absolute -top-2 -right-2 text-[10px] bg-vermillion text-paper px-1.5 py-0.5 rounded-sm font-serif font-bold">
               {tRitual('resultBestValue')}
             </span>
           </button>

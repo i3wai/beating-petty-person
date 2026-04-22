@@ -185,7 +185,7 @@
     "resultFreeTitle": "灰烬中有密语⋯",
     "resultFreeSubtitle": "纸人已毁。诅咒已出。",
     "resultFreeTemporary": "诅咒已下，但未完成收尾仪式，效果可能不持久。",
-    "resultPaidPrompt": "解锁完整解读，了解更深层的影呃。",
+    "resultPaidPrompt": "解锁完整解读，了解更深层的影晌。",
     "resultSealButton": "完成仪式 — $4.99",
     "resultNameButton": "揭示诅咒解读 — $2.99",
     "resultFullButton": "全套仪式+解读 — $6.99",
@@ -368,6 +368,7 @@
     "step8Title": "掷筊问杯",
     "step8Subtitle": "掷筊请示 — 诅咒可曾生效？",
     "step8Button": "掷筊",
+    "step8EnemyConfirmed": "对{target}的诅咒，已经应验。",
     "divination": {
       "spinning": "筊杯落下，神明垂听...",
       "landing": "解读神明的回应...",
@@ -666,6 +667,56 @@
     "digitalP1": "由于我们的产品是数字体验，您不需要「退货」。只需发送电子邮件给我们，我们会处理一切。",
     "contactTitle": "有疑问？",
     "contactP1": "随时联系我们"
+  },
+  "share": {
+    "sectionTitle": "分享此仪式",
+    "sectionSubtitle": "让更多人认识这门古老诅咒。",
+    "copySuccess": "链接已复制！",
+    "whatsapp": "WhatsApp",
+    "twitter": "发布",
+    "copy": "复制链接",
+    "nativeShare": "分享",
+    "previewAlt": "分享卡片预览",
+    "tiers": {
+      "free": {
+        "text": "我刚体验了一个古老的中国诅咒仪式——打纸人、烧纸人。三百年传统。万一呢？",
+        "twitter": "我刚在网上做了一个古老的中国诅咒仪式。打纸人，烧纸人。三百年传统。万一呢？",
+        "whatsapp": "我刚试了这个古老的中国诅咒仪式——你打纸人、烧纸人。三百年香港传统。\n\n免费的。万一呢？\n\n试试看："
+      },
+      "reading": {
+        "text": "我刚完成了一个古老中国诅咒仪式的解读。三百年香港传统。",
+        "twitter": "我刚完成了一个三百年历史的中国诅咒解读。解读内容……令人不安。",
+        "whatsapp": "我体验了一个古老的中国诅咒仪式，得到了个人化解读。它说的那些话……\n\n试试看："
+      },
+      "completion": {
+        "text": "我完成了完整的八部曲诅咒仪式。掷筊确认：诅咒生效。",
+        "twitter": "我完成了三百年历史的八部曲诅咒仪式。掷筊确认：诅咒生效。",
+        "whatsapp": "我完成了完整的八部曲诅咒仪式。化解、祈福、掷筊——全部完成。圣杯确认：诅咒生效。\n\n体验看看："
+      },
+      "full": {
+        "text": "我完成了全套古老中国诅咒仪式。个人化解读、神谕指引、诅咒证书。万一呢？",
+        "twitter": "我完成了全套古老中国诅咒仪式。得到了解读、神谕指引和诅咒证书。万一呢？",
+        "whatsapp": "我完成了全套古老中国诅咒仪式——八部曲全部完成，个人化诅咒解读、神谕指引、官方诅咒证书。\n\n三百年传统。万一呢？\n\n试试看："
+      }
+    },
+    "enemyTypes": {
+      "backstabber": "是非小人",
+      "toxicBoss": "职场小人",
+      "ex": "感情小人",
+      "energyVampire": "财运小人",
+      "bully": "官非小人",
+      "custom": "小人"
+    }
+  },
+  "shared": {
+    "validTitle": "此仪式已封印",
+    "validDescription": "诅咒已下，神明已确认。你准备好施放自己的诅咒了吗？",
+    "validCta": "开始你的仪式",
+    "invalidTitle": "此链接已封印",
+    "invalidDescription": "仪式详情已不可访问。",
+    "invalidCta": "开始你的仪式",
+    "redirecting": "{countdown} 秒后跳转...",
+    "redirectingNow": "跳转中..."
   },
   "common": {
     "comingSoon": "即将推出",

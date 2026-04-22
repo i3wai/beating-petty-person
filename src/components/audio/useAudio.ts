@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { getAudioManager } from './AudioManager';
 
 // --- Sound ID Constants ---
@@ -67,6 +67,9 @@ export function useAudio() {
     [getMgr],
   );
 
-  return { init, playAction, playAmbient, stopAmbient, playTransition, isReady };
+  return useMemo(
+    () => ({ init, playAction, playAmbient, stopAmbient, playTransition, isReady }),
+    [init, playAction, playAmbient, stopAmbient, playTransition, isReady],
+  );
 }
 

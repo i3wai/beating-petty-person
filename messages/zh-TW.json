@@ -367,6 +367,7 @@
     "step8Title": "擲筊問杯",
     "step8Subtitle": "擲筊請示 — 詛咒可曾生效？",
     "step8Button": "擲筊",
+    "step8EnemyConfirmed": "對{target}的詛咒，已經應驗。",
     "divination": {
       "spinning": "筊杯落下，神明垂聽...",
       "landing": "解讀神明的回應...",
@@ -666,6 +667,56 @@
     "digitalP1": "由於我們的產品是數位體驗，您不需要「退貨」。只需發送電子郵件給我們，我們會處理一切。",
     "contactTitle": "有疑問？",
     "contactP1": "隨時聯繫我們"
+  },
+  "share": {
+    "sectionTitle": "分享此儀式",
+    "sectionSubtitle": "讓更多人認識這門古老詛咒。",
+    "copySuccess": "連結已複製！",
+    "whatsapp": "WhatsApp",
+    "twitter": "發佈",
+    "copy": "複製連結",
+    "nativeShare": "分享",
+    "previewAlt": "分享卡片預覽",
+    "tiers": {
+      "free": {
+        "text": "我剛體驗了一個古老的中國詛咒儀式——打紙人、燒紙人。三百年傳統。萬一呢？",
+        "twitter": "我剛在網上做了一個古老的中國詛咒儀式。打紙人，燒紙人。三百年傳統。萬一呢？",
+        "whatsapp": "我剛試了這個古老的中國詛咒儀式——你打紙人、燒紙人。三百年香港傳統。\n\n免費的。萬一呢？\n\n試試看："
+      },
+      "reading": {
+        "text": "我剛完成了一個古老中國詛咒儀式的解讀。三百年香港傳統。",
+        "twitter": "我剛完成了一個三百年歷史的中國詛咒解讀。解讀內容……令人不安。",
+        "whatsapp": "我體驗了一個古老的中國詛咒儀式，得到了個人化解讀。它說的那些話……\n\n試試看："
+      },
+      "completion": {
+        "text": "我完成了完整的八部曲詛咒儀式。擲筊確認：詛咒生效。",
+        "twitter": "我完成了三百年歷史的八部曲詛咒儀式。擲筊確認：詛咒生效。",
+        "whatsapp": "我完成了完整的八部曲詛咒儀式。化解、祈福、擲筊——全部完成。聖杯確認：詛咒生效。\n\n體驗看看："
+      },
+      "full": {
+        "text": "我完成了全套古老中國詛咒儀式。個人化解讀、神諭指引、詛咒證書。萬一呢？",
+        "twitter": "我完成了全套古老中國詛咒儀式。得到了解讀、神諭指引和詛咒證書。萬一呢？",
+        "whatsapp": "我完成了全套古老中國詛咒儀式——八部曲全部完成，個人化詛咒解讀、神諭指引、官方詛咒證書。\n\n三百年傳統。萬一呢？\n\n試試看："
+      }
+    },
+    "enemyTypes": {
+      "backstabber": "是非小人",
+      "toxicBoss": "職場小人",
+      "ex": "感情小人",
+      "energyVampire": "財運小人",
+      "bully": "官非小人",
+      "custom": "小人"
+    }
+  },
+  "shared": {
+    "validTitle": "此儀式已封印",
+    "validDescription": "詛咒已下，神明已確認。你準備好施放自己的詛咒了嗎？",
+    "validCta": "開始你的儀式",
+    "invalidTitle": "此連結已封印",
+    "invalidDescription": "儀式詳情已不可存取。",
+    "invalidCta": "開始你的儀式",
+    "redirecting": "{countdown} 秒後跳轉...",
+    "redirectingNow": "跳轉中..."
   },
   "common": {
     "comingSoon": "即將推出",
