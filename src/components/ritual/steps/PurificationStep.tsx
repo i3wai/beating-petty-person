@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRitual } from '@/components/ritual/RitualProvider';
+import StepHeader from '@/components/ritual/StepHeader';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useHaptic } from '@/hooks/useHaptic';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
@@ -150,6 +151,7 @@ export default function PurificationStep() {
         aria-hidden="true"
       />
 
+      <StepHeader labelKey="stepLabel6" purposeKey="stepPurpose6" />
       <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif text-center animate-fade-in z-10">
         {t('step6Title')}
       </h2>

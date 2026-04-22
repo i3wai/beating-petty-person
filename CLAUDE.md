@@ -15,7 +15,7 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 
 ## Core Strategy: 「寧可信其有」
 - Position as **curse ritual**, NOT game or therapy — 暗黑 atmosphere
-- Hook: "萬一呢？" — suggest supernatural possibility without claiming results
+- Hook: "萬一有用呢？" — suggest supernatural possibility without claiming results
 - 不回避「詛咒」——用戶搜 "curse" 來的，就給他們 curse
 - 分享用語「酷」不「羞恥」——"I just experienced an ancient Chinese ritual"
 

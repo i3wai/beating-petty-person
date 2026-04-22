@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { encodeShareToken, generateSerial } from '@/lib/shareToken';
 import type { EnemyCategory } from '@/components/ritual/silhouettes';
@@ -18,7 +18,12 @@ export default function ShareButtons({ enemyCategory, tier, locale, readingTease
   const t = useTranslations('share');
   const [copied, setCopied] = useState(false);
   const [sharing, setSharing] = useState(false);
+  const [hasNativeShare, setHasNativeShare] = useState(false);
   const imageBlobRef = useRef<Blob | null>(null);
+
+  useEffect(() => {
+    setHasNativeShare(typeof navigator !== 'undefined' && 'share' in navigator);
+  }, []);
 
   const serial = useMemo(() => generateSerial(new Date()), []);
   const cat = (['backstabber', 'toxicBoss', 'ex', 'energyVampire', 'bully', 'custom'].includes(enemyCategory)
@@ -75,7 +80,13 @@ export default function ShareButtons({ enemyCategory, tier, locale, readingTease
           await navigator.share({ text: shareText + ' ' + shareUrl, files: [file] });
           setSharing(false);
           return;
-        } catch {}
+        } catch (e: unknown) {
+          // User cancelled — stop, don't fall through to wa.me
+          if (e instanceof Error && e.name === 'AbortError') {
+            setSharing(false);
+            return;
+          }
+        }
       }
       setSharing(false);
     }
@@ -188,7 +199,7 @@ export default function ShareButtons({ enemyCategory, tier, locale, readingTease
         </button>
 
         {/* Native Share (mobile) — sends image file */}
-        {typeof window !== 'undefined' && 'share' in navigator && (
+        {hasNativeShare && (
           <button
             onClick={handleNativeShare}
             disabled={sharing}

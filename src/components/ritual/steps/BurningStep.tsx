@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRitual } from '@/components/ritual/RitualProvider';
+import StepHeader from '@/components/ritual/StepHeader';
 import { ParticleSystem } from '@/components/canvas/ParticleSystem';
 import { ParticleType } from '@/components/canvas/particles';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -187,6 +188,7 @@ export default function BurningStep() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[80dvh] relative select-none">
+      <StepHeader labelKey="stepLabel5" purposeKey="stepPurpose5" />
       <h2 className="text-2xl sm:text-3xl font-bold text-vermillion font-serif mb-8 animate-fade-in">
         {t('step3Title')}
       </h2>

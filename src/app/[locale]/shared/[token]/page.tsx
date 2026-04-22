@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data) {
     return {
       title: 'BeatPetty — Ancient Chinese Curse Ritual',
-      description: 'An ancient Chinese curse ritual. Strike. Burn. What if it works?',
+      description: 'An ancient Chinese curse ritual. Strike. Burn. What if it works? — 萬一有用呢？',
     };
   }
 

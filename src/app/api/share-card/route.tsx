@@ -3,6 +3,34 @@ import { NextRequest } from 'next/server';
 
 export const runtime = 'nodejs';
 
+// --- CJK font loading (Google Fonts subset) ---
+let cjkFontCache: ArrayBuffer | null = null;
+
+function collectCJKChars(readingTeaser: string): string {
+  const fixed = '詛咒解讀儀式圓滿已成是非小人職場感情財運官非打焚完盡萬一有用呢';
+  const all = new Set(fixed.split(''));
+  readingTeaser.split('').forEach(c => all.add(c));
+  return [...all].join('');
+}
+
+async function loadCJKFont(chars: string): Promise<ArrayBuffer | null> {
+  if (cjkFontCache) return cjkFontCache;
+  try {
+    const cssUrl = `https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;900&text=${encodeURIComponent(chars)}`;
+    const cssRes = await fetch(cssUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120' },
+    });
+    const css = await cssRes.text();
+    const urlMatch = css.match(/src:\s*url\(["']?([^"')]+)["']?\)/);
+    if (!urlMatch) return null;
+    const fontRes = await fetch(urlMatch[1]);
+    cjkFontCache = await fontRes.arrayBuffer();
+    return cjkFontCache;
+  } catch {
+    return null;
+  }
+}
+
 const COLORS = {
   vermillion: '#ef6030',
   blood: '#a82020',
@@ -49,8 +77,8 @@ const TIER_LABELS: Record<string, Record<string, string>> = {
 
 const DEFAULT_TEASER: Record<string, string> = {
   en: 'Strike. Burn. What if it works?',
-  'zh-TW': '打。焚。萬一呢？',
-  'zh-Hans': '打。焚。万一呢？',
+  'zh-TW': '打完。焚盡。萬一有用呢？',
+  'zh-Hans': '打完。焚尽。万一有用呢？',
 };
 
 let compositedBgSrc: string | null = null;
@@ -75,6 +103,7 @@ export async function GET(request: NextRequest) {
     const bgImage = getCompositedBg(request.nextUrl.origin);
     const teaserText = readingTeaser || DEFAULT_TEASER[locale] || DEFAULT_TEASER.en;
     const isZH = locale === 'zh-TW' || locale === 'zh-Hans';
+    const cjkFont = await loadCJKFont(collectCJKChars(readingTeaser));
 
     return new ImageResponse(
       (
@@ -84,7 +113,7 @@ export async function GET(request: NextRequest) {
             height: 630,
             display: 'flex',
             position: 'relative',
-            fontFamily: 'serif',
+            fontFamily: cjkFont ? '"Noto Serif SC", serif' : 'serif',
           }}
         >
           {/* Pre-composited background (Gemini temple + paper figure + vignette + glow) */}
@@ -97,8 +126,8 @@ export async function GET(request: NextRequest) {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '60%',
-              marginLeft: '40%',
+              width: '45%',
+              marginLeft: '55%',
               padding: '36px 48px 28px',
               gap: 10,
             }}
@@ -227,7 +256,12 @@ export async function GET(request: NextRequest) {
           />
         </div>
       ),
-      { width: 1200, height: 630 },
+      {
+        width: 1200,
+        height: 630,
+        fonts: cjkFont ? [{ name: 'Noto Serif SC', data: cjkFont, style: 'normal' as const, weight: 400 }] : [],
+        headers: { 'Cache-Control': 'public, s-maxage=604800, max-age=86400' },
+      },
     );
   } catch (error) {
     console.error('share-card error:', error);

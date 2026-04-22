@@ -89,7 +89,7 @@ Western users searching "curse" come from occult/Wicca/witchcraft context. Match
 Chinese users searching 「打小人」「去霉運」「犯太歲」come from folk religion/道敎/命理 context. Use cultural authority, not Western occult framing. The trust basis is 「正宗」「師傅」「傳承」— reverence, not spectacle.
 
 - **Positioning**: Authentic folk tradition with 300+ years of history — cultural heritage, not game
-- **Hook**: 「萬一呢？」— same supernatural suggestion, but rooted in cultural belief, not Gothic fantasy
+- **Hook**: 「萬一有用呢？」— same supernatural suggestion, but rooted in cultural belief, not Gothic fantasy
 - **Language**: Authoritative, respectful, culturally grounded. Use authentic terminology:
   - **Use**: 科儀, 煞氣, 反噬, 因果, 符籙, 淨化, 磁場, 厄運, 封印, 傳承, 正宗, 師傅
   - **Avoid (translation tone)**: 詛咒儀式 → 用「打小人科儀」, 黑魔法 → 用「民間法術」, 驅魔 → 用「驅邪化煞」

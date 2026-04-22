@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useTranslations, useMessages } from 'next-intl';
 import { useRitual } from '@/components/ritual/RitualProvider';
+import StepHeader from '@/components/ritual/StepHeader';
 import { useCanvas } from '@/components/canvas/useCanvas';
 import { ParticleType } from '@/components/canvas/particles';
 import { useHaptic } from '@/hooks/useHaptic';
@@ -354,6 +355,7 @@ export default function BeatingStep() {
         {ariaAnnouncement}
       </div>
 
+      <StepHeader labelKey="stepLabel4" purposeKey="stepPurpose4" />
       {/* Title — staggered entrance */}
       <h2 className="text-2xl sm:text-3xl font-bold text-vermillion font-serif mb-6 stagger-fade-in stagger-1">
         {t('step2Title')}

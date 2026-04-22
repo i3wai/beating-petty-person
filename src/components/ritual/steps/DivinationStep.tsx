@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useRitual } from '@/components/ritual/RitualProvider';
+import StepHeader from '@/components/ritual/StepHeader';
 import { useHaptic } from '@/hooks/useHaptic';
 import { getAudioManager } from '@/components/audio/AudioManager';
 import type { DivinationResult } from '@/components/ritual/RitualProvider';
@@ -177,6 +178,7 @@ export default function DivinationStep() {
       {/* Dark overlay for readability */}
       <div className="fixed inset-0 pointer-events-none bg-ink/30" aria-hidden="true" />
 
+      <StepHeader labelKey="stepLabel8" purposeKey="stepPurpose8" />
       <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif text-center animate-fade-in">
         {t('step8Title')}
       </h2>

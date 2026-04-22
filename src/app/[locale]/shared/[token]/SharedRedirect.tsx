@@ -8,7 +8,7 @@ import Link from 'next/link';
 export default function SharedRedirect({ locale, valid }: { locale: string; valid: boolean }) {
   const router = useRouter();
   const t = useTranslations('shared');
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(3);
 
   useEffect(() => {
     if (!valid) return;

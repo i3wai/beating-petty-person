@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRitual } from '@/components/ritual/RitualProvider';
+import StepHeader from '@/components/ritual/StepHeader';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
 import { ENEMY_CATEGORIES, PAPER_FIGURE_IMAGES, type EnemyCategory } from '@/components/ritual/silhouettes';
 
@@ -37,6 +38,7 @@ export default function EnemySelectStep() {
 
   return (
     <div className="flex flex-col items-center min-h-[80dvh] px-4 py-8 sm:py-12 pb-24">
+      <StepHeader labelKey="stepLabel2" purposeKey="stepPurpose2" />
       {/* Title */}
       <h2 className="text-2xl sm:text-3xl font-bold text-vermillion font-serif mb-2 animate-fade-in">
         {t('step1Title')}

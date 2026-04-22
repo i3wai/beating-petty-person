@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRitual } from '@/components/ritual/RitualProvider';
+import StepHeader from '@/components/ritual/StepHeader';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
 
@@ -90,6 +91,7 @@ export default function BlessingStep() {
   if (reducedMotion) {
     return (
       <div className="flex flex-col items-center min-h-[80dvh] px-4 py-12 sm:py-16 max-w-lg mx-auto">
+        <StepHeader labelKey="stepLabel7" purposeKey="stepPurpose7" />
         <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif text-center">
           {t('step7Title')}
         </h2>
@@ -151,6 +153,7 @@ export default function BlessingStep() {
 
       {/* Title + subtitle — fades in at 3s */}
       <div className={`relative z-10 text-center transition-all duration-[2000ms] ease-out ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <StepHeader labelKey="stepLabel7" purposeKey="stepPurpose7" />
         <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif">
           {t('step7Title')}
         </h2>

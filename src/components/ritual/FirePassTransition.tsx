@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRitual } from '@/components/ritual/RitualProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { PAPER_FIGURE_PNG, DEFAULT_IMAGE_PNG, type EnemyCategory } from '@/components/ritual/silhouettes';
+import StepHeader from '@/components/ritual/StepHeader';
 
 const DURATION_MS = 3000;
 const REDUCED_DURATION_MS = 200;
@@ -91,7 +92,7 @@ export default function FirePassTransition() {
         }}
       >
         <div
-          className="w-16 h-24 relative overflow-hidden flex items-center justify-center"
+          className="w-32 h-48 relative overflow-hidden flex items-center justify-center"
           style={{
             boxShadow: phase === 'pass'
               ? '0 0 20px 4px rgba(239, 96, 48, 0.4), 0 0 40px 8px rgba(239, 96, 48, 0.15)'
@@ -111,13 +112,16 @@ export default function FirePassTransition() {
             style={{ pointerEvents: 'none', userSelect: 'none' }}
           />
           {enemy?.name && (
-            <span className="relative z-10 text-[10px] text-paper/90 font-serif text-center break-all px-1 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+            <span className="relative z-10 text-sm text-paper/90 font-serif text-center break-all px-1 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
               {enemy.name}
             </span>
           )}
         </div>
       </div>
 
+      <div className="absolute bottom-[22%] left-0 right-0 flex justify-center animate-fade-in">
+        <StepHeader labelKey="stepLabel3" purposeKey="stepPurpose3" />
+      </div>
       {/* Title — fades in during pass phase */}
       <h2
         className="absolute bottom-[15%] text-lg sm:text-xl font-bold text-gold font-serif text-center"

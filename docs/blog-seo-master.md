@@ -310,7 +310,7 @@ Terminology is relatively consistent across markets (打小人, 小人, 詛咒),
 
 - Don't avoid 詛咒 and 小人 — they're the product and the search terms
 - Orthodox cultural voice: 正宗, 傳統, 百年 — not comedy, not academic, but reverence
-- Imply supernatural: 萬一呢？ — never promise results, but suggest possibility
+- Imply supernatural: 萬一有用呢？ — never promise results, but suggest possibility
 - zh-TW: Cantonese/HK cultural references (驚蟄, 鵝頸橋)
 - zh-Hans: General mainland usage
 
