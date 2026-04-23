@@ -50,5 +50,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function SharedPage({ params }: Props) {
   const { token, locale } = await params;
   const data = decodeShareToken(token);
-  return <SharedRedirect locale={locale} valid={!!data} />;
+
+  let cardUrl: string | null = null;
+  if (data) {
+    cardUrl = `/api/share-card?cat=${encodeURIComponent(data.cat)}&tier=${encodeURIComponent(data.tier)}&serial=${encodeURIComponent(data.serial)}&locale=${encodeURIComponent(locale)}${data.rt ? `&rt=${encodeURIComponent(data.rt)}` : ''}`;
+  }
+
+  return <SharedRedirect locale={locale} valid={!!data} cardUrl={cardUrl} />;
 }

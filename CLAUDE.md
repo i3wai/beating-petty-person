@@ -58,7 +58,7 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 
 ## Current State
 
-- Phase: **Soft Launch — Stripe live, accepting payments**
+- Phase: **Soft Launch — Stripe live, share system live, accepting payments**
 - Owner: Allen (business, content, tool setup) | Claude (design, code, SEO, tech)
 - Deploy: `npx vercel --prod --yes`
 
@@ -73,9 +73,15 @@ Digital 打小人 website — one-person company. Global market, Chinese culture
 
 **Certificate**: $2.99 = cert + 7-day | $4.99 = no cert | $6.99 = cert + permanent (no expiry)
 
-**localStorage keys**: `beatpetty_enemy`, `beatpetty_seed`, `beatpetty_reading`, `beatpetty_guidance`, `beatpetty_paid`, `beatpetty_divination`
+**localStorage keys**: `beatpetty_enemy`, `beatpetty_seed`, `beatpetty_reading`, `beatpetty_guidance`, `beatpetty_paid`, `beatpetty_divination`, `beatpetty_divination_throws`
 
 **State machine**: 10 states, 10 actions (idle → invocation → select → firePass → beating → burning → paywall → purification → blessing → divination). No `result` state — results render on separate pages (`/result`, `/completion`). No `DIVINATION_COMPLETE` — DivinationStep navigates to `/completion` directly.
 
 ## Post-Launch → Phase 2
+
+Priority order:
+1. ~~**Viral Share Engine**~~ ✅ Done — Share cards with native image sharing across all platforms
+2. **Email 7-day hook** — Optional email input, "curse status" reminder after 7 days
+3. **More blog content** — Continue SEO content
+
 → 見 `docs/FUTURE_ROADMAP.md`

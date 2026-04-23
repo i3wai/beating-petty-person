@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import CurseCertificate from '@/components/CurseCertificate';
@@ -9,7 +9,15 @@ import type { GuidanceResult } from '@/lib/curseReading';
 
 type DivinationResult = 'saint' | 'laugh' | 'anger';
 
-function getStoredData() {
+interface StoredData {
+  paid: { plan: string; enemyCategory: string; enemyName: string } | null;
+  reading: string | null;
+  guidance: GuidanceResult | null;
+  divination: DivinationResult | null;
+  throws: number;
+}
+
+function getStoredData(): StoredData {
   try {
     const paidRaw = localStorage.getItem('beatpetty_paid');
     const reading = localStorage.getItem('beatpetty_reading');
@@ -32,7 +40,13 @@ export default function CompletionPage() {
   const tRitual = useTranslations('ritual');
   const locale = useLocale();
 
-  const { paid, reading, guidance, divination, throws } = getStoredData();
+  const [data, setData] = useState<StoredData>({ paid: null, reading: null, guidance: null, divination: null, throws: 1 });
+
+  useEffect(() => {
+    setData(getStoredData());
+  }, []);
+
+  const { paid, reading, guidance, divination, throws } = data;
   const plan = paid?.plan as string;
   const isFull = plan === 'full';
   const enemyCategory = paid?.enemyCategory || '';

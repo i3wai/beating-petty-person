@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
+import sharp from 'sharp';
 
 export const runtime = 'nodejs';
 
@@ -105,7 +106,7 @@ export async function GET(request: NextRequest) {
     const isZH = locale === 'zh-TW' || locale === 'zh-Hans';
     const cjkFont = await loadCJKFont(collectCJKChars(readingTeaser));
 
-    return new ImageResponse(
+    const imageResponse = new ImageResponse(
       (
         <div
           style={{
@@ -260,9 +261,19 @@ export async function GET(request: NextRequest) {
         width: 1200,
         height: 630,
         fonts: cjkFont ? [{ name: 'Noto Serif SC', data: cjkFont, style: 'normal' as const, weight: 400 }] : [],
-        headers: { 'Cache-Control': 'public, s-maxage=604800, max-age=86400' },
       },
     );
+
+    // Convert PNG to JPEG for much smaller file size (~100KB vs ~1.1MB)
+    const pngBuffer = Buffer.from(await imageResponse.arrayBuffer());
+    const jpegBuffer = await sharp(pngBuffer).jpeg({ quality: 85 }).toBuffer();
+
+    return new Response(new Uint8Array(jpegBuffer), {
+      headers: {
+        'Content-Type': 'image/jpeg',
+        'Cache-Control': 'public, s-maxage=604800, max-age=86400',
+      },
+    });
   } catch (error) {
     console.error('share-card error:', error);
     return new Response('Error generating image', { status: 500 });

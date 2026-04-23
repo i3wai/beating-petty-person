@@ -17,9 +17,11 @@ interface ShareButtonsProps {
 export default function ShareButtons({ enemyCategory, tier, locale, readingTeaser }: ShareButtonsProps) {
   const t = useTranslations('share');
   const [copied, setCopied] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
   const [sharing, setSharing] = useState(false);
   const [hasNativeShare, setHasNativeShare] = useState(false);
   const imageBlobRef = useRef<Blob | null>(null);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     setHasNativeShare(typeof navigator !== 'undefined' && 'share' in navigator);
@@ -56,6 +58,21 @@ export default function ShareButtons({ enemyCategory, tier, locale, readingTease
     }
   }, [t, tier]);
 
+  const showToast = useCallback((msg: string, duration = 3000) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToast(msg);
+    toastTimerRef.current = setTimeout(() => setToast(null), duration);
+  }, []);
+
+  const copyToClipboard = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      return true;
+    } catch {
+      return false;
+    }
+  }, [shareUrl]);
+
   const fetchImage = useCallback(async (): Promise<Blob | null> => {
     if (imageBlobRef.current) return imageBlobRef.current;
     try {
@@ -69,68 +86,94 @@ export default function ShareButtons({ enemyCategory, tier, locale, readingTease
     }
   }, [cardUrl]);
 
-  const handleWhatsApp = useCallback(async () => {
-    // On mobile with native share, send image directly
-    if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) {
-      setSharing(true);
-      const blob = await fetchImage();
-      if (blob && navigator.canShare?.({ files: [new File([blob], 'beatpetty-ritual.png', { type: 'image/png' })] })) {
-        const file = new File([blob], 'beatpetty-ritual.png', { type: 'image/png' });
-        try {
-          await navigator.share({ text: shareText + ' ' + shareUrl, files: [file] });
-          setSharing(false);
-          return;
-        } catch (e: unknown) {
-          // User cancelled — stop, don't fall through to wa.me
-          if (e instanceof Error && e.name === 'AbortError') {
-            setSharing(false);
-            return;
-          }
-        }
+  const shareWithNativeSheet = useCallback(async (fallbackText: string) => {
+    if (!navigator.share) return false;
+    setSharing(true);
+    const blob = await fetchImage();
+    const file = blob ? new File([blob], 'beatpetty-ritual.jpg', { type: blob.type || 'image/jpeg' }) : null;
+    const canShareFile = file && navigator.canShare?.({ files: [file] });
+    try {
+      if (canShareFile) {
+        await navigator.share({ text: fallbackText, url: shareUrl, files: [file!] });
+      } else {
+        await navigator.share({ text: fallbackText, url: shareUrl });
       }
       setSharing(false);
+      return true;
+    } catch (e: unknown) {
+      if (e instanceof Error && e.name === 'AbortError') {
+        setSharing(false);
+        return true;
+      }
     }
-    // Fallback: text + URL via wa.me
+    setSharing(false);
+    return false;
+  }, [fetchImage, shareUrl]);
+
+  const handleWhatsApp = useCallback(async () => {
+    // On mobile, use native share sheet with image
+    if (/Mobi|Android/i.test(navigator.userAgent) && typeof navigator.share === 'function') {
+      const shared = await shareWithNativeSheet(shareText);
+      if (shared) return;
+    }
+    // Desktop fallback: wa.me link (WhatsApp will crawl og:image for preview)
     let text: string;
     try { text = t(`tiers.${tier}.whatsapp`); } catch { text = t('tiers.free.whatsapp'); }
     window.open(`https://wa.me/?text=${encodeURIComponent(text + shareUrl)}`, '_blank');
-  }, [t, tier, shareUrl, shareText, fetchImage]);
+  }, [t, tier, shareUrl, shareText, shareWithNativeSheet]);
 
-  const handleTwitter = useCallback(() => {
+  const handleTwitter = useCallback(async () => {
+    // On mobile, use native share sheet with image
+    if (/Mobi|Android/i.test(navigator.userAgent) && typeof navigator.share === 'function') {
+      let text: string;
+      try { text = t(`tiers.${tier}.twitter`); } catch { text = t('tiers.free.twitter'); }
+      const shared = await shareWithNativeSheet(text);
+      if (shared) return;
+    }
+    // Desktop fallback: intent URL (Twitter will crawl og:image for preview)
     let text: string;
     try { text = t(`tiers.${tier}.twitter`); } catch { text = t('tiers.free.twitter'); }
     window.open(
       `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`,
       '_blank',
     );
-  }, [t, tier, shareUrl]);
+  }, [t, tier, shareUrl, shareWithNativeSheet]);
+
+  const handleInstagram = useCallback(async () => {
+    // Mobile: open native share sheet (user picks IG from the list, image included)
+    if (/Mobi|Android/i.test(navigator.userAgent) && typeof navigator.share === 'function') {
+      const shared = await shareWithNativeSheet(shareText);
+      if (shared) return;
+    }
+    // Desktop: copy link + guide user
+    const ok = await copyToClipboard();
+    if (ok) {
+      showToast(t('igToast'));
+    }
+  }, [copyToClipboard, showToast, t, shareText, shareWithNativeSheet]);
+
+  const handleTiktok = useCallback(async () => {
+    if (/Mobi|Android/i.test(navigator.userAgent) && typeof navigator.share === 'function') {
+      const shared = await shareWithNativeSheet(shareText);
+      if (shared) return;
+    }
+    const ok = await copyToClipboard();
+    if (ok) {
+      showToast(t('tiktokToast'));
+    }
+  }, [copyToClipboard, showToast, t, shareText, shareWithNativeSheet]);
 
   const handleCopy = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
+    const ok = await copyToClipboard();
+    if (ok) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch {}
-  }, [shareUrl]);
+    }
+  }, [copyToClipboard]);
 
   const handleNativeShare = useCallback(async () => {
-    if (!navigator.share) return;
-    setSharing(true);
-    const blob = await fetchImage();
-    if (blob && navigator.canShare?.({ files: [new File([blob], 'beatpetty-ritual.png', { type: 'image/png' })] })) {
-      const file = new File([blob], 'beatpetty-ritual.png', { type: 'image/png' });
-      try {
-        await navigator.share({ title: 'BeatPetty', text: shareText, url: shareUrl, files: [file] });
-        setSharing(false);
-        return;
-      } catch {}
-    }
-    // Fallback without image
-    try {
-      await navigator.share({ title: 'BeatPetty', text: shareText, url: shareUrl });
-    } catch {}
-    setSharing(false);
-  }, [shareText, shareUrl, fetchImage]);
+    await shareWithNativeSheet(shareText);
+  }, [shareText, shareWithNativeSheet]);
 
   return (
     <div className="w-full max-w-sm mx-auto mt-8">
@@ -170,13 +213,40 @@ export default function ShareButtons({ enemyCategory, tier, locale, readingTease
         {/* Twitter/X */}
         <button
           onClick={handleTwitter}
+          disabled={sharing}
           className="share-btn share-btn-twitter"
           aria-label={t('twitter')}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
           </svg>
-          <span>{t('twitter')}</span>
+          <span>{sharing ? '...' : t('twitter')}</span>
+        </button>
+
+        {/* Instagram */}
+        <button
+          onClick={handleInstagram}
+          disabled={sharing}
+          className="share-btn share-btn-instagram"
+          aria-label={t('instagram')}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+          <span>{sharing ? '...' : t('instagram')}</span>
+        </button>
+
+        {/* TikTok */}
+        <button
+          onClick={handleTiktok}
+          disabled={sharing}
+          className="share-btn share-btn-tiktok"
+          aria-label={t('tiktok')}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V13a8.28 8.28 0 005.58 2.15V11.7a4.83 4.83 0 01-3.77-1.35V6.69h3.77z"/>
+          </svg>
+          <span>{sharing ? '...' : t('tiktok')}</span>
         </button>
 
         {/* Copy Link */}
@@ -214,6 +284,13 @@ export default function ShareButtons({ enemyCategory, tier, locale, readingTease
           </button>
         )}
       </div>
+
+      {/* Toast for IG/TikTok */}
+      {toast && (
+        <div className="mt-4 px-4 py-3 bg-gold/15 border border-gold/30 rounded-sm text-center animate-fade-in">
+          <p className="text-sm text-gold font-serif">{toast}</p>
+        </div>
+      )}
     </div>
   );
 }

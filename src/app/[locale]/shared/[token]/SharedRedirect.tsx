@@ -1,29 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-export default function SharedRedirect({ locale, valid }: { locale: string; valid: boolean }) {
-  const router = useRouter();
+export default function SharedRedirect({ locale, valid, cardUrl }: { locale: string; valid: boolean; cardUrl: string | null }) {
   const t = useTranslations('shared');
-  const [countdown, setCountdown] = useState(3);
-
-  useEffect(() => {
-    if (!valid) return;
-    const interval = setInterval(() => {
-      setCountdown((c) => {
-        if (c <= 1) {
-          clearInterval(interval);
-          router.push(`/${locale}`);
-          return 0;
-        }
-        return c - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [locale, router, valid]);
 
   if (!valid) {
     return (
@@ -48,12 +29,24 @@ export default function SharedRedirect({ locale, valid }: { locale: string; vali
 
   return (
     <div className="min-h-[80dvh] flex flex-col items-center justify-center px-4">
-      <div className="text-center max-w-md animate-fade-in">
-        <div className="w-20 h-20 mx-auto mb-6 rounded-full border-2 border-gold flex items-center justify-center animate-fade-in-up">
-          <span className="text-2xl text-gold font-serif font-bold">成</span>
+      <div className="text-center max-w-lg animate-fade-in w-full">
+        {/* Share card image — large */}
+        {cardUrl && (
+          <div className="mb-8 rounded-sm overflow-hidden border border-gold/20 shadow-[0_0_40px_rgba(212,168,67,0.2)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={cardUrl}
+              alt="BeatPetty Curse Ritual"
+              className="w-full h-auto"
+            />
+          </div>
+        )}
+
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full border-2 border-gold flex items-center justify-center">
+          <span className="text-xl text-gold font-serif font-bold">成</span>
         </div>
 
-        <h1 className="text-2xl font-bold text-gold font-serif mb-4">
+        <h1 className="text-2xl font-bold text-gold font-serif mb-3">
           {t('validTitle')}
         </h1>
         <p className="text-paper-muted font-serif mb-8">
@@ -66,10 +59,6 @@ export default function SharedRedirect({ locale, valid }: { locale: string; vali
         >
           {t('validCta')}
         </Link>
-
-        <p className="mt-4 text-paper-muted/40 text-xs font-serif">
-          {countdown > 0 ? t('redirecting', { countdown }) : t('redirectingNow')}
-        </p>
       </div>
     </div>
   );

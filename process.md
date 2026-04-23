@@ -1,13 +1,13 @@
 # BeatPetty — Current Process State
 
 > **Every new session: read this file first. Every session end: update this file.**
-> Last updated: 2026-04-22
+> Last updated: 2026-04-23
 
 ---
 
-## Current Status: Phase 1 COMPLETE + UX Polish
+## Current Status: Soft Launch — All Systems Live
 
-Ritual redesign + payment flow + Steps 6-8 UX polish. All tested locally, pending deploy.
+Ritual flow + payment + share system all deployed to production at beatpetty.com.
 
 ### What's Built
 
@@ -32,6 +32,25 @@ Ritual redesign + payment flow + Steps 6-8 UX polish. All tested locally, pendin
 | **CurseCertificate fix** | Enemy category now translates `toxicBoss` → "The Toxic Boss" via i18n lookup |
 | **3-locale messages updated** | EN / zh-TW / zh-Hans all synced with new keys |
 
+### Latest Changes (2026-04-22) — Share System Overhaul + Ritual Polish
+
+| Change | Detail |
+|--------|--------|
+| **Fire Pass range** | Paper figure translateX ±80px → ±120px (50% wider sweep) |
+| **Step 7 text readability** | BlessingStep overlay 0.45→0.6, fade 0.4→0.45, h2 + subtitle + enemy text all get `drop-shadow` |
+| **Step 8 text readability** | DivinationStep overlay bg-ink/30→bg-ink/50, h2 + subtitle + result + enemy text get `drop-shadow` |
+| **Share card JPEG conversion** | API now converts PNG→JPEG via `sharp` (1.1MB → ~119KB). Response Content-Type: image/jpeg. 7-day CDN cache |
+| **Instagram share button** | Mobile: native share sheet with image. Desktop: copy link + toast guidance |
+| **TikTok share button** | Mobile: native share sheet with image. Desktop: copy link + toast guidance |
+| **Native share for all platforms** | WhatsApp, X, IG, TikTok all use `navigator.share({ files })` on mobile — actual image attached |
+| **X mobile image fix** | Desktop: intent/tweet URL. Mobile: native share sheet (X intent API doesn't support images) |
+| **Shared page enlarged** | Card image now `max-w-lg` with gold shadow border. Removed auto-redirect (was 5s countdown) |
+| **Completion page hydration fix** | localStorage reads wrapped in useState+useEffect to prevent SSR/client mismatch |
+| **`sharp` dependency** | Added for server-side PNG→JPEG conversion in share card API |
+| **CSS share buttons** | `.share-btn-instagram` (pink #e1306c), `.share-btn-tiktok` (white/light), disabled states |
+| **3-locale messages** | Added `instagram`, `tiktok`, `igToast`, `tiktokToast` keys |
+| **`NEXT_PUBLIC_SITE_URL`** | Added to `.env.local` for share URL generation |
+
 ### Latest Changes (2026-04-22) — Full Ritual Review + Bug Fixes + UX Polish
 
 | Change | Detail |
@@ -51,11 +70,11 @@ Ritual redesign + payment flow + Steps 6-8 UX polish. All tested locally, pendin
 
 | Change | Detail |
 |--------|--------|
-| **Share card API** | `/api/share-card` — server-side 1200x630 PNG via `next/og` ImageResponse. Params: cat, tier, serial, locale, rt |
+| **Share card API** | `/api/share-card` — server-side 1200x630 JPEG via `next/og` ImageResponse + sharp. Params: cat, tier, serial, locale, rt |
 | **Share card design** | Dark #1a1a1a bg, 詛 seal stamp circle, enemy category label, tier label, serial, reading teaser, BeatPetty branding |
 | **Share token system** | `/src/lib/shareToken.ts` — base64url encode/decode + serial generation (BP-YYYYMMDD-XXXX) |
-| **Shared landing page** | `/[locale]/shared/[token]` — server-rendered OG meta for crawlers, 3s redirect to homepage |
-| **ShareButtons component** | WhatsApp / Twitter/X / Copy Link / Native Share. Shows card preview thumbnail |
+| **Shared landing page** | `/[locale]/shared/[token]` — server-rendered OG meta for crawlers, prominent card image, no redirect |
+| **ShareButtons component** | WhatsApp / Twitter/X / Instagram / TikTok / Copy Link / Native Share. Mobile: native share with image. Desktop: platform links or copy+toast |
 | **Result page wiring** | ShareButtons in reading view ($2.99 tier) |
 | **Completion page wiring** | ShareButtons for completion ($4.99) and full ($6.99) tiers |
 | **3-locale messages** | `share` namespace in EN / zh-TW / zh-Hans — tiered text per platform |
@@ -72,7 +91,8 @@ Ritual redesign + payment flow + Steps 6-8 UX polish. All tested locally, pendin
 | **Step 7 stuck bug** | `useAudio()` returned new object every render → BlessingStep useEffect reset timers at 60fps. Fixed with `useMemo` wrapper on return value |
 | **Step 7 progress bar** | 2px → 3px, gradient opacity 0.3→0.8 → 0.5→1.0. Dark overlay 0.6 → 0.45 |
 | **Step 8 text readability** | Subtitle: `text-paper-muted` → `text-gold/80`. Spinner text: `text-paper-muted` → `text-gold/70`. Overlay: `bg-ink/45` → `bg-ink/30` |
-| **Image sharing (Web Share API)** | WhatsApp + Native Share now send actual PNG file via `navigator.share({ files })`. Desktop falls back to text+URL. Image blob cached in ref |
+| **Image sharing (Web Share API)** | All platforms send actual JPEG file via `navigator.share({ files })` on mobile. Desktop: WhatsApp→wa.me, X→intent/tweet, IG/TikTok→copy link + toast. Image blob cached in ref |
+| **Share card API** | Now returns JPEG (sharp PNG→JPEG, ~119KB). Content-Type: image/jpeg. Cache-Control: public, s-maxage=604800 |
 
 ### Key Architecture Decisions
 
@@ -101,7 +121,19 @@ Ritual redesign + payment flow + Steps 6-8 UX polish. All tested locally, pendin
 - OG image alt text is English-only
 - PWA is manifest-only (no service worker)
 - No error boundary around Canvas
-- Completion page hydration mismatch (localStorage SSR vs client — pre-existing, non-blocking)
+
+---
+
+## DONE: Share System Overhaul + Ritual Polish (2026-04-22)
+
+1. ✅ Fire Pass paper figure range ±80px → ±120px
+2. ✅ Steps 7 & 8 text readability — darker overlays + drop shadows
+3. ✅ Share card JPEG conversion — sharp, 1.1MB→~119KB
+4. ✅ Instagram + TikTok share buttons (native share mobile, copy link desktop)
+5. ✅ All platforms use native share with image on mobile
+6. ✅ Shared page enlarged, no auto-redirect
+7. ✅ Completion page hydration fix
+8. ✅ Deployed to beatpetty.com
 
 ---
 
@@ -111,7 +143,7 @@ Ritual redesign + payment flow + Steps 6-8 UX polish. All tested locally, pendin
 2. ✅ Steps 6/7/8 text readability — brighter text, lighter overlays
 3. ✅ Step 7 stuck 30s — useAudio useMemo fix, timers fire at 3s/5s/7.5s
 4. ✅ Share card layout — paper figure no longer covers Gemini background
-5. ✅ Image sharing — WhatsApp + Native Share send PNG via Web Share API
+5. ✅ Image sharing — WhatsApp + Native Share send JPEG via Web Share API
 6. ✅ `npx vercel --prod --yes` — deployed to beatpetty.com
 
 ---
@@ -141,7 +173,7 @@ Note: Stripe product names still use legacy names ("Sealing", "Full Power"). Can
 ## Next: Phase 2 — Growth
 
 Priority order:
-1. **Viral Share Engine** — Share cards after payment, turn payers into free traffic source
+1. ~~**Viral Share Engine**~~ ✅ Done — Share cards with native image sharing across all platforms
 2. **Email 7-day hook** — Optional email input, "curse status" reminder after 7 days
 3. **More blog content** — Continue SEO content攻势
 

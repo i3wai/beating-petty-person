@@ -176,13 +176,13 @@ export default function DivinationStep() {
         />
       )}
       {/* Dark overlay for readability */}
-      <div className="fixed inset-0 pointer-events-none bg-ink/30" aria-hidden="true" />
+      <div className="fixed inset-0 pointer-events-none bg-ink/50" aria-hidden="true" />
 
       <StepHeader labelKey="stepLabel8" purposeKey="stepPurpose8" />
-      <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif text-center animate-fade-in">
+      <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif text-center animate-fade-in drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
         {t('step8Title')}
       </h2>
-      <p className="mt-4 text-sm sm:text-base text-gold/80 font-serif text-center animate-fade-in-up">
+      <p className="mt-4 text-sm sm:text-base text-gold/80 font-serif text-center animate-fade-in-up drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
         {t('step8Subtitle')}
       </p>
 
@@ -225,7 +225,7 @@ export default function DivinationStep() {
         {/* Result text */}
         {phase === 'result' && result && (
           <div className="divination-result-text mt-8 text-center">
-            <p className={`text-lg font-serif ${
+            <p className={`text-lg font-serif drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)] ${
               result === 'saint' ? 'text-gold' :
               result === 'laugh' ? 'text-gray-400' :
               'text-vermillion'
@@ -233,7 +233,7 @@ export default function DivinationStep() {
               {t(`divination.${result}`)}
             </p>
             {result === 'saint' && enemy?.name && (
-              <p className="mt-3 text-sm text-gold/60 font-serif">
+              <p className="mt-3 text-sm text-gold/60 font-serif drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
                 {t('step8EnemyConfirmed', { target: enemy.name })}
               </p>
             )}

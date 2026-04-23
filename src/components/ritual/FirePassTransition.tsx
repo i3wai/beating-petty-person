@@ -81,10 +81,10 @@ export default function FirePassTransition() {
         className="relative z-10"
         style={{
           transform: phase === 'enter'
-            ? 'translateX(-80px) scale(0.9)'
+            ? 'translateX(-120px) scale(0.9)'
             : phase === 'pass'
-              ? 'translateX(80px) scale(1)'
-              : 'translateX(80px) scale(1)',
+              ? 'translateX(120px) scale(1)'
+              : 'translateX(120px) scale(1)',
           opacity: phase === 'enter' ? 0 : phase === 'glow' ? 0.6 : 1,
           transition: phase === 'enter'
             ? 'none'

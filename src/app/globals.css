@@ -1847,6 +1847,24 @@
   background: rgba(239, 96, 48, 0.2);
   border-color: rgba(239, 96, 48, 0.4);
 }
+.share-btn-instagram {
+  background: rgba(225, 48, 108, 0.12);
+  color: #e1306c;
+  border-color: rgba(225, 48, 108, 0.25);
+}
+.share-btn-instagram:hover {
+  background: rgba(225, 48, 108, 0.2);
+  border-color: rgba(225, 48, 108, 0.4);
+}
+.share-btn-tiktok {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e7e9ea;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.share-btn-tiktok:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
 
 /* ============================================
    BlessingStep — 祈福進寶動畫

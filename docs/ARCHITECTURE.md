@@ -1,7 +1,7 @@
 # BeatPetty Architecture Map
 
 > Quick reference for Claude sessions — read this instead of scanning the whole codebase.
-> Last updated: 2026-04-20
+> Last updated: 2026-04-23
 
 ## Tech Risks
 
@@ -21,6 +21,7 @@
 | Styling | Tailwind CSS (@theme in globals.css, NO tailwind.config.ts) | 4.2.2 |
 | i18n | next-intl | 4.9.0 |
 | Canvas | Canvas 2D API (ParticleSystem class) | — |
+| Image Processing | sharp (PNG→JPEG conversion for share cards) | — |
 | Audio | Web Audio API synthesis (OscillatorNode + noise buffers) | — |
 | State | React useReducer + Context (RitualProvider) | — |
 | Deploy | Vercel (CLI deploy `npx vercel --prod --yes`) | — |
@@ -43,12 +44,14 @@ src/
 │       ├── result/page.tsx      # Result page: 4 views (free/reading/completion/full) + 3 pricing buttons
 │       ├── completion/page.tsx  # Completion page: divination result + full reading ($6.99 grand finale)
 │       ├── ritual/page.tsx      # Ritual page wrapper (server component) + ?continue=true support
+│       ├── shared/[token]/page.tsx # Shared landing page: server-rendered OG meta + card image (no redirect)
 │       └── opengraph-image.tsx  # Dynamic OG image (1200x630, dark+vermillion)
 │
 │   └── api/
 │       ├── checkout/route.ts    # POST: create Stripe Checkout Session
 │       ├── webhook/route.ts     # POST: Stripe webhook signature verification
-│       └── verify-session/route.ts # GET: verify payment session status
+│       ├── verify-session/route.ts # GET: verify payment session status
+│       └── share-card/route.tsx # GET: OG share card (1200x630 JPEG via next/og + sharp)
 │
 ├── components/
 │   ├── Header.tsx               # Sticky header + LanguageSwitcher (client)
@@ -98,6 +101,7 @@ src/
 │   │
 │   │  # Shared
 │   ├── CurseCertificate.tsx        # Digital curse certificate (stamp: 詛), supports permanent mode for $6.99
+│   ├── ShareButtons.tsx             # Share buttons: WhatsApp / X / Instagram / TikTok / Copy Link / Native Share (mobile image via Web Share API)
 │
 ├── hooks/
 │   ├── useHaptic.ts             # Mobile vibration feedback
@@ -110,6 +114,7 @@ src/
 │
 ├── lib/
 │   ├── stripe.ts               # Stripe singleton + plan config (name/seal/full)
+│   ├── shareToken.ts           # Base64url share token encode/decode + serial generation (BP-YYYYMMDD-XXXX)
 │   ├── content.ts              # PostMeta interface, blog helpers (getPostsByCluster, getRelatedPosts)
 │   ├── json-ld.ts              # JSON-LD generators (Organization, Article, FAQPage, etc.)
 │   └── curseReading.ts         # Deterministic modular curse reading generator (~945 combinations) + Oracle guidance (54 fragments)
@@ -223,7 +228,7 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `FIRE_PASS_COMPL
 |-------|----------|--------|-------|------|
 | **Step 1: Invocation** | 6s | Candle CSS animation + dark overlay | transition-invocation (sine sweep 200→60Hz 5s) | CSS keyframes |
 | **Step 2: Select** | User-paced | 6-card grid, clip-path silhouettes, name input | action-paper (bandpass noise 120ms) | CSS + React state |
-| **Step 3: Fire Pass** | 3s passive | Paper figure (PNG) sweeps L→R over AI-generated flames background, vermillion→gold glow | transition-invocation (shared) | AI background image + CSS animation, auto-advance |
+| **Step 3: Fire Pass** | 3s passive | Paper figure (PNG) sweeps L→R over AI-generated flames background (±120px range), vermillion→gold glow | transition-invocation (shared) | AI background image + CSS animation, auto-advance |
 | **Step 4: Beating** | ~30s | Canvas HitSpark, slipper cursor, curse chants, rage meter, aria-live, haptic escalation | action-beat + action-thwack + ambient-drone | Canvas 2D + keyboard a11y |
 | **Step 5: Burning** | 2s hold + 9s burn ≈ 11s | AI-generated white tiger background + long-press ignite + Canvas fire + CSS fire + paper dissolution (paper rises toward tiger) | ambient-drone → ambient-wind | AI background image + Canvas 2D + CSS fire + keyboard a11y |
 | **Paywall** | User-paced | Title + subtitle + "View Results" button (saves to localStorage → navigates to /result) | — | router.push → /result |
@@ -336,13 +341,13 @@ Each step checks `useReducedMotion()` hook, conditionally renders fallback.
 
 ## i18n
 
-`messages/{en,zh-TW,zh-Hans}.json` — EN and ZH are NOT direct translations, completely different copy with same meaning. Namespaces: `site`, `landing`, `meta`, `ritual` (~60 keys), `pricing`, `result`, `about`, `common`. Use `t.raw()` for array values (not `t()`).
+`messages/{en,zh-TW,zh-Hans}.json` — EN and ZH are NOT direct translations, completely different copy with same meaning. Namespaces: `site`, `landing`, `meta`, `ritual` (~60 keys), `pricing`, `result`, `about`, `common`, `share` (tiered text per platform + IG/TikTok toasts). Use `t.raw()` for array values (not `t()`).
 
 ## CSS Architecture (globals.css)
 
 - **Tailwind v4 `@theme` block**: colors (ink/vermillion/gold/paper/ember/smoke), fonts (serif/body), animations
 - **NO tailwind.config.ts** — everything through `@theme` in globals.css
-- Component classes: candle, glow, particle, enemy-card, poe-block, purification, blessing, divination — all in globals.css
+- Component classes: candle, glow, particle, enemy-card, poe-block, purification, blessing, divination, share-btn (WhatsApp green, X white, Instagram pink, TikTok light, Copy gold, Native vermillion) — all in globals.css
 - **`@media (prefers-reduced-motion: reduce)`**: single block covering all components
 
 ## Color Palette
@@ -384,6 +389,7 @@ Each step checks `useReducedMotion()` hook, conditionally renders fallback.
 | `STRIPE_PRICE_ID_NAME` | Price for Curse Reading $2.99 | Set (live) |
 | `STRIPE_PRICE_ID_SEAL` | Price for Complete the Ritual $4.99 | Set (live) |
 | `STRIPE_PRICE_ID_FULL` | Price for Full Ritual + Reading $6.99 | Set (live) |
+| `NEXT_PUBLIC_SITE_URL` | Base URL for share links (https://beatpetty.com) | Set (.env.local) |
 
 ## Known Technical Debt
 
@@ -392,3 +398,23 @@ Each step checks `useReducedMotion()` hook, conditionally renders fallback.
 - OG image alt text is English-only
 - PWA is manifest-only — no service worker (@serwist/next incompatible with Turbopack)
 - No error boundary around Canvas — if context fails, particles silently skip
+
+## Share System
+
+### Share Card API (`/api/share-card`)
+- Server-side 1200x630 JPEG via `next/og` ImageResponse + `sharp` PNG→JPEG conversion
+- Params: `cat` (enemy category), `tier` (free/reading/completion/full), `serial` (BP-YYYYMMDD-XXXX), `locale`, `rt` (reading teaser)
+- CJK font loaded from Google Fonts (Noto Serif SC) with subset based on actual text content
+- Response: JPEG (quality 85, ~119KB), Cache-Control: public s-maxage=604800
+
+### ShareButtons Component
+- **Mobile**: All platforms use native share sheet (`navigator.share`) with JPEG image file attached via `navigator.canShare`
+- **Desktop**: WhatsApp→wa.me link, X→intent/tweet, Instagram/TikTok→copy link + toast guidance, Copy Link→clipboard
+- Image blob cached in `useRef` to avoid re-fetching
+- `sharing` state disables buttons during share sheet interaction
+- Platforms: WhatsApp, X (Twitter), Instagram, TikTok, Copy Link, Native Share (mobile only)
+
+### Share Token System (`src/lib/shareToken.ts`)
+- Base64url encode/decode for stateless URL sharing
+- Serial format: `BP-YYYYMMDD-XXXX`
+- Shared landing page: `/[locale]/shared/[token]` — server-rendered OG meta for crawlers, prominent card image, no auto-redirect

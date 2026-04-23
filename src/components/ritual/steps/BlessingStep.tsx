@@ -115,7 +115,7 @@ export default function BlessingStep() {
       {/* Dark overlay — fades from 0.6 to 0.3 as blessing descends */}
       <div
         className="fixed inset-0 pointer-events-none transition-opacity duration-[7000ms] ease-out"
-        style={{ background: 'rgba(17, 17, 17, 0.45)', opacity: showEnemy ? 0.4 : 1 }}
+        style={{ background: 'rgba(17, 17, 17, 0.6)', opacity: showEnemy ? 0.45 : 1 }}
         aria-hidden="true"
       />
 
@@ -154,10 +154,10 @@ export default function BlessingStep() {
       {/* Title + subtitle — fades in at 3s */}
       <div className={`relative z-10 text-center transition-all duration-[2000ms] ease-out ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <StepHeader labelKey="stepLabel7" purposeKey="stepPurpose7" />
-        <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
           {t('step7Title')}
         </h2>
-        <p className="mt-4 text-sm sm:text-base text-gold/80 font-serif">
+        <p className="mt-4 text-sm sm:text-base text-gold/80 font-serif drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
           {t('step7Subtitle')}
         </p>
       </div>
@@ -165,7 +165,7 @@ export default function BlessingStep() {
       {/* Enemy name seal — reveals at 5s */}
       {showEnemy && enemyName && (
         <div className="blessing-enemy-reveal relative z-10 mt-8 text-center">
-          <p className="text-gold font-serif text-base sm:text-lg tracking-wide">
+          <p className="text-gold font-serif text-base sm:text-lg tracking-wide drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
             {t('step7EnemySealed', { target: enemyName })}
           </p>
         </div>
