@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRitual } from '@/components/ritual/RitualProvider';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
 import { PAPER_FIGURE_PNG, DEFAULT_IMAGE_PNG, type EnemyCategory } from '@/components/ritual/silhouettes';
 import StepHeader from '@/components/ritual/StepHeader';
 
-const DURATION_MS = 3000;
+const DURATION_MS = 4500;
 const REDUCED_DURATION_MS = 200;
 
 /**
@@ -21,6 +22,7 @@ export default function FirePassTransition() {
   const reducedMotion = useReducedMotion();
   const completedRef = useRef(false);
   const [phase, setPhase] = useState<'enter' | 'pass' | 'glow'>('enter');
+  const audio = useAudio();
 
   const duration = reducedMotion ? REDUCED_DURATION_MS : DURATION_MS;
 
@@ -35,11 +37,14 @@ export default function FirePassTransition() {
       return () => clearTimeout(timer);
     }
 
-    // Phase 1: Enter (0-800ms) — paper figure appears
-    const enterTimer = setTimeout(() => setPhase('pass'), 800);
-    // Phase 2: Pass (800-2200ms) — paper sweeps over flames
-    const passTimer = setTimeout(() => setPhase('glow'), 2200);
-    // Phase 3: Glow (2200-3000ms) — purification complete, advance
+    // Play fire transition sound on mount
+    try { audio.playTransition(SOUND_IDS.TRANSITION_INVOCATION); } catch { /* ignore */ }
+
+    // Phase 1: Enter (0-1200ms) — paper figure appears
+    const enterTimer = setTimeout(() => setPhase('pass'), 1200);
+    // Phase 2: Pass (1200-3300ms) — paper sweeps over flames
+    const passTimer = setTimeout(() => setPhase('glow'), 3300);
+    // Phase 3: Glow (3300-4500ms) — purification complete, advance
     const completeTimer = setTimeout(() => {
       if (!completedRef.current) {
         completedRef.current = true;
@@ -81,14 +86,14 @@ export default function FirePassTransition() {
         className="relative z-10"
         style={{
           transform: phase === 'enter'
-            ? 'translateX(-120px) scale(0.9)'
+            ? 'translateX(-180px) scale(0.9)'
             : phase === 'pass'
-              ? 'translateX(120px) scale(1)'
-              : 'translateX(120px) scale(1)',
+              ? 'translateX(180px) scale(1)'
+              : 'translateX(180px) scale(1)',
           opacity: phase === 'enter' ? 0 : phase === 'glow' ? 0.6 : 1,
           transition: phase === 'enter'
             ? 'none'
-            : 'transform 1.4s ease-in-out, opacity 0.8s ease',
+            : 'transform 2.1s ease-in-out, opacity 0.8s ease',
         }}
       >
         <div

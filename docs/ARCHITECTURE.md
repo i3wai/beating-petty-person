@@ -84,8 +84,8 @@ src/
 │   │       ├── EnemySelectStep.tsx  # Step 2: 6-card grid + name input + shimmer loading + sticky confirm
 │   │       ├── BeatingStep.tsx      # Step 4: Rage meter + slipper cursor + curse chants + Canvas HitSpark + aria-live milestones + keyboard + haptic escalation + responsive area + name char-by-char
 │   │       ├── BurningStep.tsx      # Step 5: AI-generated white tiger background + long-press ignite + Canvas FireFlame/Smoke + CSS fire + paper dissolution (rises toward tiger) + keyboard a11y
-│   │       ├── PurificationStep.tsx # Step 6: AI bg + drag-to-scatter + grain scatter image (auto ~10s) + warmth ring + enemy cleanse text
-│   │       ├── BlessingStep.tsx     # Step 7: 7.5s cinematic (AI bg + slow zoom + talisman hold + 18 gold sparks + enemy seal) + ambient drone
+│   │       ├── PurificationStep.tsx # Step 6: AI bg + drag-to-scatter (30 interactions to complete) + ring + progress bar + enemy cleanse text
+│   │       ├── BlessingStep.tsx     # Step 7: 20s cinematic (AI bg + slow zoom + talisman hold 1.5x speed + 18 gold sparks + enemy seal) + ambient drone
 │   │       └── DivinationStep.tsx   # Step 8: AI bg + Gemini poe block images (3D flip) + swipe/click cast + silence phase + stamp overlays + 3-throw → /completion
 │   │
 │   │  # Canvas Engine
@@ -239,13 +239,13 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `FIRE_PASS_COMPL
 |-------|----------|--------|-------|------|
 | **Step 1: Invocation** | 6s | Candle CSS animation + dark overlay | transition-invocation (sine sweep 200→60Hz 5s) | CSS keyframes |
 | **Step 2: Select** | User-paced | 6-card grid, clip-path silhouettes, name input | action-paper (bandpass noise 120ms) | CSS + React state |
-| **Step 3: Fire Pass** | 3s passive | Paper figure (PNG) sweeps L→R over AI-generated flames background (±120px range), vermillion→gold glow | transition-invocation (shared) | AI background image + CSS animation, auto-advance |
-| **Step 4: Beating** | ~30s | Canvas HitSpark, slipper cursor, curse chants, rage meter, aria-live, haptic escalation | action-beat + action-thwack + ambient-drone | Canvas 2D + keyboard a11y |
+| **Step 3: Fire Pass** | 4.5s passive | Paper figure (PNG) sweeps L→R over AI-generated flames background (±180px range), vermillion→gold glow | transition-invocation | AI background image + CSS animation, audio on mount |
+| **Step 4: Beating** | ~30s | Canvas HitSpark, slipper cursor, curse chants (2600ms display), rage meter, aria-live, haptic escalation | action-beat + action-thwack + ambient-drone | Canvas 2D + keyboard a11y |
 | **Step 5: Burning** | 2s hold + 9s burn ≈ 11s | AI-generated white tiger background + long-press ignite + Canvas fire + CSS fire + paper dissolution (paper rises toward tiger) | ambient-drone → ambient-wind | AI background image + Canvas 2D + CSS fire + keyboard a11y |
 | **Paywall** | User-paced | Title + subtitle + "View Results" button (saves to localStorage → navigates to /result) | — | router.push → /result |
-| **Step 6: Purification** | 2-10s | AI bg + drag-to-scatter + grain scatter image + warmth ring + enemy cleanse text | action-scatter (highpass noise 200ms) | CSS particles + haptic 15ms, auto ~10s after first interaction |
-| **Step 7: Blessing** | 7.5s cinematic | AI bg + slow zoom (1.0→1.15) + talisman hold interaction (3s) + "Receiving the blessing..." + 18 rising gold sparks + enemy seal reveal at 5s | ambient-drone + transition-blessing (sine 300→600Hz 2s) | CSS animation, auto-advance |
-| **Step 8: Divination** | ~5.3s per throw × up to 3 | AI bg + Gemini poe block images (3D flip, spin 3s) → land (0.8s) → silence (1.5s) → stamp overlay + result reveal. Swipe/click to cast. **Paid**: 3-throw (1st=50/50, 2nd=33/33/33, 3rd=100% saint). Non-saint → "spirits invite again", saint → "Continue" | action-divination + result-saint/laugh/anger | CSS 3D flip + haptic 100ms → /completion |
+| **Step 6: Purification** | User-paced | AI bg + drag-to-scatter + grain scatter image + ring (30 interactions to complete) + progress bar + enemy cleanse text | action-scatter (highpass noise 200ms) | CSS particles + haptic 15ms, interaction-count driven |
+| **Step 7: Blessing** | 20s (1.5x w/ hold) | AI bg + slow zoom + talisman hold (1.5x speed boost) + 18 rising gold sparks + enemy seal reveal at 14s + progress bar | ambient-drone + transition-blessing (sine 300→600Hz 2s) | Virtual-time rAF, auto-advance |
+| **Step 8: Divination** | ~5.3s per throw × up to 3 | AI bg + Gemini poe block images (3D flip, spin 3s) → land (0.8s) → silence (1.5s) → stamp overlay + result reveal. Click/swipe to cast (cursor-pointer + pulse). **Paid**: 3-throw (1st=50/50, 2nd=33/33/33, 3rd=100% saint) | action-divination + result-saint/laugh/anger | CSS 3D flip + haptic 100ms → /completion |
 | **/result** | User-paced | Free: blurred reading + 3 pricing buttons. $2.99: reading + cert. $4.99/$6.99: "Continue" button. | — | React + Stripe + localStorage |
 | **/completion** | User-paced | $4.99: 聖杯 interpretation + throw count + ritual summary. $6.99: same + reading + guidance + permanent cert (grand finale). | — | React + localStorage |
 

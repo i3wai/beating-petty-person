@@ -256,7 +256,7 @@ export default function BeatingStep() {
             if (mountedRef.current) {
               setChantTexts((prev) => prev.filter((c) => c.id !== chantId));
             }
-          }, 1600);
+          }, 2600);
         }
 
         // --- Paper damage marks ---

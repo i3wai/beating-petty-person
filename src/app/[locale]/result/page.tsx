@@ -287,7 +287,7 @@ function ResultContent() {
 
         {/* Blurred reading preview */}
         {reading && (
-          <div className="mb-8 px-4 py-4 bg-ink-light border border-ink-lighter rounded-lg relative overflow-hidden animate-fade-in-up">
+          <div className="mb-4 px-4 py-4 bg-ink-light border border-ink-lighter rounded-lg relative overflow-hidden animate-fade-in-up">
             <p className="text-xs text-gold/60 font-serif mb-2 text-center">
               {tRitual('reading.title')}
             </p>
@@ -308,6 +308,37 @@ function ResultContent() {
             </div>
           </div>
         )}
+
+        {/* Blurred oracle guidance preview */}
+        <div className="mb-8 px-4 py-4 bg-ink-light border border-ink-lighter rounded-lg relative overflow-hidden animate-fade-in-up">
+          <p className="text-xs text-gold/60 font-serif mb-2 text-center">
+            {t('guidanceTitle')}
+          </p>
+          <div className="space-y-3 blur-[8px] select-none">
+            <div>
+              <p className="text-xs text-gold/50 font-serif uppercase tracking-widest mb-1">
+                {t('guidanceInsight')}
+              </p>
+              <p className="text-sm text-paper-muted font-serif italic leading-relaxed">
+                Insight awaits...
+              </p>
+            </div>
+            <div className="h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+            <div>
+              <p className="text-xs text-gold/50 font-serif uppercase tracking-widest mb-1">
+                {t('guidanceResolution')}
+              </p>
+              <p className="text-sm text-paper-muted font-serif italic leading-relaxed">
+                Resolution awaits...
+              </p>
+            </div>
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-gold font-serif text-sm">
+              {tRitual('readingPreviewBlur')}
+            </span>
+          </div>
+        </div>
 
         {checkoutError && (
           <p className="text-sm text-vermillion font-serif text-center mb-4">

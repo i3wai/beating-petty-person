@@ -205,7 +205,7 @@ export default function BurningStep() {
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           draggable={false}
-          style={{ pointerEvents: 'none', userSelect: 'none', opacity: 0.75 }}
+          style={{ pointerEvents: 'none', userSelect: 'none', opacity: 0.85 }}
           aria-hidden="true"
         />
 

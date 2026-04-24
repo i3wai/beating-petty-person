@@ -380,7 +380,7 @@
     "step7Subtitle": "Fortune descends upon the cursed ground",
     "step7Receiving": "Receiving the blessing...",
     "step7EnemySealed": "The curse upon {target} is sealed",
-    "step7HoldInstruction": "Hold to receive the blessing",
+    "step7HoldInstruction": "Hold to accumulate blessing faster",
     "step8Title": "Divine Confirmation",
     "step8Subtitle": "Ask the gods — has the curse taken hold?",
     "step8Button": "Cast the Blocks",
@@ -393,7 +393,7 @@
       "anger": "The deity has spoken differently. The ritual is recorded.",
       "continue": "Continue",
       "throwAgain": "The spirits invite you to ask again",
-      "swipeHint": "Swipe up to cast"
+      "swipeHint": "Click or swipe up to cast"
     },
     "paywallTitle": "The curse is cast... but incomplete",
     "paywallSubtitle": "The enemy is destroyed, but lingering dark energy remains. Complete the closing ritual to purify, bless, and divine the outcome.",

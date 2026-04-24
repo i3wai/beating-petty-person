@@ -7,9 +7,10 @@ import StepHeader from '@/components/ritual/StepHeader';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
 
-const DURATION_MS = 7500;
-const TEXT_REVEAL_MS = 3000;
-const ENEMY_REVEAL_MS = 5000;
+const DURATION_MS = 20000;
+const HOLD_SPEED_MULTIPLIER = 1.5;
+const TEXT_REVEAL_MS = 4000;
+const ENEMY_REVEAL_MS = 14000;
 
 // Pre-generated gold spark positions (avoids re-renders)
 const SPARKS = Array.from({ length: 18 }, (_, i) => ({
@@ -34,6 +35,10 @@ export default function BlessingStep() {
   const [isHolding, setIsHolding] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const isHoldingRef = useRef(false);
+  const virtualTimeRef = useRef(0);
+  const lastTickRef = useRef(0);
+
   const enemyName = enemy?.name || (enemy?.category ? t(`enemies.${enemy.category}.name` as Parameters<typeof t>[0]) : '');
 
   const handleComplete = useCallback(() => {
@@ -41,6 +46,11 @@ export default function BlessingStep() {
     completedRef.current = true;
     dispatch({ type: 'BLESSING_COMPLETE' });
   }, [dispatch]);
+
+  // Sync holding ref
+  useEffect(() => {
+    isHoldingRef.current = isHolding;
+  }, [isHolding]);
 
   // Initialize audio and start ambient drone on mount
   useEffect(() => {
@@ -51,7 +61,6 @@ export default function BlessingStep() {
 
   useEffect(() => {
     if (reducedMotion) {
-      // Reduced motion: show static content for 4s then complete
       const timer = setTimeout(() => {
         handleComplete();
       }, 4000);
@@ -63,33 +72,39 @@ export default function BlessingStep() {
       try { audio.playTransition(SOUND_IDS.TRANSITION_BLESSING); } catch { /* ignore */ }
     }
 
-    // Progress animation
-    const startTime = performance.now();
+    // Virtual-time progress: advances faster when holding
+    lastTickRef.current = performance.now();
+
     const tick = (now: number) => {
-      const p = Math.min((now - startTime) / DURATION_MS, 1);
+      const dt = now - lastTickRef.current;
+      lastTickRef.current = now;
+
+      const speed = isHoldingRef.current ? HOLD_SPEED_MULTIPLIER : 1;
+      virtualTimeRef.current += dt * speed;
+
+      const p = Math.min(virtualTimeRef.current / DURATION_MS, 1);
       setProgress(p);
-      if (p < 1) requestAnimationFrame(tick);
+
+      if (p < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        handleComplete();
+      }
     };
     requestAnimationFrame(tick);
 
-    // Phase 2: reveal text + talisman at 3s
+    // Phase 2: reveal text + talisman
     const textTimer = setTimeout(() => {
       setShowText(true);
       setShowTalisman(true);
     }, TEXT_REVEAL_MS);
 
-    // Phase 3: reveal enemy name at 5s
+    // Phase 3: reveal enemy name
     const enemyTimer = setTimeout(() => setShowEnemy(true), ENEMY_REVEAL_MS);
-
-    // Complete at 7.5s
-    const completeTimer = setTimeout(() => {
-      handleComplete();
-    }, DURATION_MS);
 
     return () => {
       clearTimeout(textTimer);
       clearTimeout(enemyTimer);
-      clearTimeout(completeTimer);
     };
   }, [reducedMotion, audio, handleComplete]);
 
@@ -157,7 +172,7 @@ export default function BlessingStep() {
         {t('step7Receiving')}
       </p>
 
-      {/* Title + subtitle — fades in at 3s */}
+      {/* Title + subtitle — fades in at 4s */}
       <div className={`relative z-10 text-center transition-all duration-[2000ms] ease-out ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <StepHeader labelKey="stepLabel7" purposeKey="stepPurpose7" />
         <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
@@ -168,7 +183,7 @@ export default function BlessingStep() {
         </p>
       </div>
 
-      {/* Enemy name seal — reveals at 5s */}
+      {/* Enemy name seal — reveals at 14s */}
       {showEnemy && enemyName && (
         <div className="blessing-enemy-reveal relative z-10 mt-8 text-center">
           <p className="text-gold font-serif text-base sm:text-lg tracking-wide drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
@@ -177,7 +192,7 @@ export default function BlessingStep() {
         </div>
       )}
 
-      {/* Talisman hold interaction — appears at 3s, optional */}
+      {/* Talisman hold interaction — appears at 4s, optional speed boost */}
       {showTalisman && !completedRef.current && (
         <div className="relative z-10 mt-10 flex flex-col items-center">
           <button
@@ -214,7 +229,7 @@ export default function BlessingStep() {
               />
             )}
           </button>
-          {/* Gentle instruction text */}
+          {/* Speed-up instruction */}
           <p className="mt-3 text-xs text-gold/50 font-serif italic select-none">
             {t('step7HoldInstruction')}
           </p>
@@ -232,14 +247,16 @@ export default function BlessingStep() {
         />
       )}
 
-      {/* Thin progress bar at bottom */}
+      {/* Progress bar at bottom */}
       <div className="fixed bottom-0 left-0 right-0 h-[3px] z-20" aria-hidden="true">
         <div
           className="h-full"
           style={{
             width: `${progress * 100}%`,
-            background: 'linear-gradient(90deg, rgba(212, 168, 67, 0.5), rgba(212, 168, 67, 1))',
-            transition: 'width 0.1s linear',
+            background: isHolding
+              ? 'linear-gradient(90deg, rgba(212, 168, 67, 0.8), rgba(239, 96, 48, 1))'
+              : 'linear-gradient(90deg, rgba(212, 168, 67, 0.5), rgba(212, 168, 67, 1))',
+            transition: 'width 0.1s linear, background 0.3s ease',
           }}
         />
       </div>

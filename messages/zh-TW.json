@@ -380,7 +380,7 @@
     "step7Subtitle": "元寶焚化，金光引貴人",
     "step7Receiving": "正在接收祝福……",
     "step7EnemySealed": "對{target}的詛咒已封印",
-    "step7HoldInstruction": "按住以接收祝福",
+    "step7HoldInstruction": "按住以加速累積祝福",
     "step8Title": "擲筊問杯",
     "step8Subtitle": "擲筊請示 — 詛咒可曾生效？",
     "step8Button": "擲筊",
@@ -393,7 +393,7 @@
       "anger": "神明另有回應。儀式已記錄。",
       "continue": "繼續",
       "throwAgain": "神明請您再問一次",
-      "swipeHint": "向上滑動擲筊"
+      "swipeHint": "點擊或向上滑動擲筊"
     },
     "paywallTitle": "詛咒已下……但未完成",
     "paywallSubtitle": "小人已毀，但殘餘陰氣未散。完成收尾儀式——化解、祈福、擲筊——方能永絕後患。",

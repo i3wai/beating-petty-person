@@ -381,7 +381,7 @@
     "step7Subtitle": "元宝焚化，金光引贵人",
     "step7Receiving": "正在接收祝福……",
     "step7EnemySealed": "对{target}的诅咒已封印",
-    "step7HoldInstruction": "按住以接收祝福",
+    "step7HoldInstruction": "按住以加速累积祝福",
     "step8Title": "掷筊问杯",
     "step8Subtitle": "掷筊请示 — 诅咒可曾生效？",
     "step8Button": "掷筊",
@@ -394,7 +394,7 @@
       "anger": "神明另有回应。仪式已记录。",
       "continue": "继续",
       "throwAgain": "神明请您再问一次",
-      "swipeHint": "向上滑动掷筊"
+      "swipeHint": "点击或向上滑动掷筊"
     },
     "paywallTitle": "诅咒已下……但未完成",
     "paywallSubtitle": "小人已毁，但残余阴气未散。完成收尾仪式——化解、祈福、掷筊——方能永绝后患。",

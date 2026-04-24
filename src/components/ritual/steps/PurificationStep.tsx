@@ -8,7 +8,7 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useHaptic } from '@/hooks/useHaptic';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
 
-const AUTO_COMPLETE_MS = 10000;
+const INTERACTIONS_TO_COMPLETE = 30;
 const DRAG_COOLDOWN_MS = 120;
 const HAPTIC_DURATION = 15;
 
@@ -40,12 +40,11 @@ export default function PurificationStep() {
   const completedRef = useRef(false);
   const lastDragRef = useRef(0);
   const [particles, setParticles] = useState<ParticleProps[]>([]);
-  const [sceneWarmth, setSceneWarmth] = useState(0);
-  const [showEnemyCleanse, setShowEnemyCleanse] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const interactionCountRef = useRef(0);
+  const [interactionCount, setInteractionCount] = useState(0);
 
   const enemyName = enemy?.name || (enemy?.category ? t(`enemies.${enemy.category}.name` as Parameters<typeof t>[0]) : '');
+
+  const progress = Math.min(interactionCount / INTERACTIONS_TO_COMPLETE, 1);
 
   const handleComplete = useCallback(() => {
     if (completedRef.current) return;
@@ -57,35 +56,19 @@ export default function PurificationStep() {
     audio.init().catch(() => {});
   }, [audio]);
 
-  // Auto-complete timer — starts after first interaction
+  // Auto-complete when interactions reach threshold
   useEffect(() => {
-    if (completedRef.current || !hasInteracted) return;
-
-    if (reducedMotion) {
+    if (reducedMotion && interactionCount > 0) {
       const timer = setTimeout(() => handleComplete(), 4000);
       return () => clearTimeout(timer);
     }
-
-    const timer = setTimeout(() => {
+    if (interactionCount >= INTERACTIONS_TO_COMPLETE && !completedRef.current) {
       handleComplete();
-    }, AUTO_COMPLETE_MS);
-    return () => clearTimeout(timer);
-  }, [hasInteracted, reducedMotion, handleComplete]);
-
-  // Warm up the scene based on interaction count
-  useEffect(() => {
-    if (reducedMotion) return;
-    const warmth = Math.min(interactionCountRef.current / 15, 1);
-    setSceneWarmth(warmth);
-  }, [particles.length, reducedMotion]);
+    }
+  }, [interactionCount, reducedMotion, handleComplete]);
 
   const spawnParticles = useCallback(
     (xPct: number, yPct: number) => {
-      if (interactionCountRef.current === 0) {
-        setHasInteracted(true);
-      }
-      interactionCountRef.current += 1;
-
       const count = 5 + Math.floor(Math.random() * 4);
       const newParticles: ParticleProps[] = [];
 
@@ -109,6 +92,25 @@ export default function PurificationStep() {
       setParticles((prev) => [...prev, ...newParticles]);
     },
     [],
+  );
+
+  const handleInteraction = useCallback(
+    (xPct: number, yPct: number) => {
+      if (completedRef.current) return;
+
+      setInteractionCount((prev) => {
+        const next = prev + 1;
+        if (next >= INTERACTIONS_TO_COMPLETE) {
+          // Will be caught by useEffect above
+        }
+        return next;
+      });
+
+      vibrate(HAPTIC_DURATION);
+      try { audio.playAction(SOUND_IDS.ACTION_SCATTER); } catch { /* ignore */ }
+      spawnParticles(xPct, yPct);
+    },
+    [vibrate, audio, spawnParticles],
   );
 
   const handleDrag = useCallback(
@@ -135,15 +137,11 @@ export default function PurificationStep() {
       const xPct = ((clientX - rect.left) / rect.width) * 100;
       const yPct = ((clientY - rect.top) / rect.height) * 100;
 
-      vibrate(HAPTIC_DURATION);
-      try { audio.playAction(SOUND_IDS.ACTION_SCATTER); } catch { /* ignore */ }
-
-      spawnParticles(xPct, yPct);
+      handleInteraction(xPct, yPct);
     },
-    [reducedMotion, vibrate, audio, spawnParticles],
+    [reducedMotion, handleInteraction],
   );
 
-  // Click fallback — tap to scatter at center
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (completedRef.current || reducedMotion) return;
@@ -152,12 +150,9 @@ export default function PurificationStep() {
       const xPct = ((e.clientX - rect.left) / rect.width) * 100;
       const yPct = ((e.clientY - rect.top) / rect.height) * 100;
 
-      vibrate(HAPTIC_DURATION);
-      try { audio.playAction(SOUND_IDS.ACTION_SCATTER); } catch { /* ignore */ }
-
-      spawnParticles(xPct, yPct);
+      handleInteraction(xPct, yPct);
     },
-    [reducedMotion, vibrate, audio, spawnParticles],
+    [reducedMotion, handleInteraction],
   );
 
   // Clean up old particles
@@ -176,13 +171,13 @@ export default function PurificationStep() {
         src="/images/purification-ground.jpg"
         alt=""
         className="fixed inset-0 w-full h-full object-cover pointer-events-none"
-        style={{ opacity: 0.55 + sceneWarmth * 0.2, transition: 'opacity 1s ease-out' }}
+        style={{ opacity: 0.55 + progress * 0.2, transition: 'opacity 1s ease-out' }}
         aria-hidden="true"
       />
       {/* Dark overlay for readability */}
       <div
         className="fixed inset-0 pointer-events-none"
-        style={{ background: `rgba(17, 17, 17, ${0.45 - sceneWarmth * 0.15})`, transition: 'background 1s ease-out' }}
+        style={{ background: `rgba(17, 17, 17, ${0.45 - progress * 0.15})`, transition: 'background 1s ease-out' }}
         aria-hidden="true"
       />
 
@@ -191,7 +186,7 @@ export default function PurificationStep() {
         src="/images/grain-scatter.png"
         alt=""
         className="fixed inset-0 w-full h-full object-cover pointer-events-none"
-        style={{ opacity: 0.15 + sceneWarmth * 0.15, transition: 'opacity 1.5s ease-out' }}
+        style={{ opacity: 0.15 + progress * 0.15, transition: 'opacity 1.5s ease-out' }}
         aria-hidden="true"
       />
 
@@ -210,20 +205,20 @@ export default function PurificationStep() {
         onClick={handleClick}
         className="mt-8 relative w-full max-w-md flex-1 min-h-[300px] rounded-xl cursor-grab active:cursor-grabbing z-10"
         style={{
-          background: reducedMotion ? 'transparent' : `radial-gradient(circle at 50% 50%, rgba(212, 168, 67, ${0.03 + sceneWarmth * 0.08}) 0%, transparent 60%)`,
+          background: reducedMotion ? 'transparent' : `radial-gradient(circle at 50% 50%, rgba(212, 168, 67, ${0.03 + progress * 0.08}) 0%, transparent 60%)`,
           touchAction: 'none',
         }}
         role="application"
         aria-label={t('step6Instruction')}
       >
-        {/* Warmth ring indicator */}
-        {!reducedMotion && sceneWarmth > 0 && (
+        {/* Warmth ring indicator — driven by interaction count */}
+        {!reducedMotion && progress > 0 && (
           <div
             className="absolute inset-0 rounded-xl pointer-events-none"
             style={{
-              background: `conic-gradient(rgba(212, 168, 67, ${sceneWarmth * 0.4}) ${sceneWarmth * 360}deg, transparent ${sceneWarmth * 360}deg)`,
+              background: `conic-gradient(rgba(212, 168, 67, ${progress * 0.4}) ${progress * 360}deg, transparent ${progress * 360}deg)`,
               filter: 'blur(6px)',
-              transition: 'background 0.5s ease-out',
+              transition: 'background 0.3s ease-out',
             }}
             aria-hidden="true"
           />
@@ -269,6 +264,20 @@ export default function PurificationStep() {
         <p className="mt-6 text-sm text-gold/80 font-serif text-center z-10 animate-fade-in">
           {t('step6EnemyCleanse', { target: enemyName })}
         </p>
+      )}
+
+      {/* Progress bar at bottom — driven by interaction count */}
+      {!reducedMotion && !completedRef.current && (
+        <div className="fixed bottom-0 left-0 right-0 h-[3px] z-20" aria-hidden="true">
+          <div
+            className="h-full"
+            style={{
+              width: `${progress * 100}%`,
+              background: 'linear-gradient(90deg, rgba(212, 168, 67, 0.5), rgba(212, 168, 67, 1))',
+              transition: 'width 0.3s ease-out',
+            }}
+          />
+        </div>
       )}
 
       <p className="mt-6 text-xs text-gold/60 font-serif italic animate-fade-in-up z-10">

@@ -1,7 +1,7 @@
 # BeatPetty — Current Process State
 
 > **Every new session: read this file first. Every session end: update this file.**
-> Last updated: 2026-04-23
+> Last updated: 2026-04-24
 
 ---
 
@@ -56,6 +56,21 @@ Ritual flow + payment + share system all deployed to production at beatpetty.com
 - **Tone shift**: Steps 1-5 = destruction arc (aggressive, physical). Steps 6-8 = restoration arc (deliberate, solemn, cinematic). The contrast IS the value.
 - **Optional interaction**: Step 7 hold is purely optional — auto-completes regardless. Step 6 click is fallback for drag. Step 8 click is fallback for swipe.
 - **3-throw divination kept**: Paid users guaranteed saint on throw 3. Reframed as "re-consultation" not retry. Language changed from failure/retry to invitation.
+
+### Latest Changes (2026-04-24) — Steps 1-8 UX Polish Round 2
+
+| Change | Detail |
+|--------|--------|
+| **FirePass audio** | Added `transition-invocation` sound to Step 3 (was completely silent) |
+| **FirePass longer** | Duration 3s→4.5s, sweep range ±120→±180px, transition 1.4s→2.1s |
+| **BeatingStep chant text** | Display time 1600ms→2600ms (user couldn't read before disappearing) |
+| **BurningStep white tiger** | Opacity 0.75→0.85 (+10% more visible) |
+| **Free result oracle preview** | Added blurred "The Oracle Speaks" section below blurred reading — visitors see payment has 2 parts |
+| **Step 6 interaction-driven** | Ring = interaction count (30 to complete), NOT timer. No timer. User controls pace. Mouse must move within zone. |
+| **Step 6 progress bar** | Bottom 3px bar tracks interaction progress (same as ring) |
+| **Step 7 blessing 20s** | Duration 7.5s→20s base. Hold talisman = 1.5x speed boost. Text: "Hold to accumulate blessing faster" |
+| **Step 7 virtual time** | rAF tick uses `dt * speed` — holding advances virtual clock faster |
+| **Step 8 desktop UX** | Cursor `cursor-grab`→`cursor-pointer` + `animate-pulse`. Text: "Click or swipe up to cast" |
 
 ### Latest Changes (2026-04-22) — Share System Overhaul + Ritual Polish
 

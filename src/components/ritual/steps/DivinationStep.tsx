@@ -290,7 +290,7 @@ export default function DivinationStep() {
             mt-12 px-8 py-6 rounded-xl
             bg-gold/10 border border-gold/20
             font-serif text-center text-gold/70 text-sm
-            select-none cursor-grab active:cursor-grabbing
+            select-none cursor-pointer animate-pulse
             transition-colors duration-200
             hover:bg-gold/15 hover:border-gold/30
             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50
