@@ -1,7 +1,7 @@
 # BeatPetty Architecture Map
 
 > Quick reference for Claude sessions — read this instead of scanning the whole codebase.
-> Last updated: 2026-04-24
+> Last updated: 2026-04-24 (hero video + landing audio added)
 
 ## Tech Risks
 
@@ -59,7 +59,7 @@ src/
 │   ├── LanguageSwitcher.tsx     # EN/繁/简 buttons (client)
 │   │
 │   │  # Landing Page Sections — all client components
-│   ├── HeroSection.tsx          # 85dvh hero: CandleFlame + FlickerGlow + FloatingParticles + title + CTA
+│   ├── HeroSection.tsx          # 85dvh hero: dual video (desktop 30s seamless 16:9 + mobile 15s 9:16) + FloatingParticles + suspense audio + title + CTA
 │   ├── WhatIsSection.tsx        # 打小人 explanation with dark atmospheric bg (goose-neck-bridge-ground.jpg + overlay)
 │   ├── HowItWorksSection.tsx    # 8-step 八部曲 grid: Chinese numerals (壹-捌) + Arabic step numbers (1-8), free/paid phases
 │   ├── TrustSection.tsx         # Honest heritage messaging (no fake counters)
@@ -96,7 +96,7 @@ src/
 │   │
 │   │  # Audio Engine — Web Audio API synthesis (no MP3 files)
 │   ├── audio/
-│   │   ├── AudioManager.ts         # Singleton: 12 sounds, 3 volume layers
+│   │   ├── AudioManager.ts         # Singleton: 13 sounds, 3 volume layers, LFO modulation support
 │   │   └── useAudio.ts             # React hook: init, playAction, playAmbient, stopAmbient, playTransition
 │   │
 │   │  # Shared
@@ -141,6 +141,14 @@ scripts/
 
 public/
 ├── manifest.json               # PWA manifest (Add to Home Screen)
+├── videos/
+│   ├── hero-seamless.mp4       # Desktop hero: 30s seamless loop (15s forward + 15s reverse), 720p 16:9, 5.3MB
+│   ├── hero-mobile-seamless.mp4 # Mobile hero: 15s forward-only, 480p 9:16, 397KB
+│   ├── hero-15s.mp4            # Desktop source: 15s forward original (pre-reverse)
+│   ├── hero-15s-rev.mp4        # Desktop source: 15s reversed
+│   ├── hero-mobile.mp4         # Mobile source: 15s forward original (pre-compression)
+│   ├── hero-mobile-rev.mp4     # Mobile source: 15s reversed (unused, upward smoke visible)
+│   └── hero-loop.mp4           # Original 5s desktop video (legacy, unused)
 ├── robots.txt                  # Search engine crawling rules
 ├── sitemap.xml                 # All locale URLs for search engines
 ├── icons/
@@ -284,6 +292,7 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `FIRE_PASS_COMPL
 |----------|-------|-----------|----------|
 | ambient-drone | Ambient | 55Hz sawtooth + lowpass 200Hz | Continuous |
 | ambient-wind | Ambient | White noise + bandpass 800Hz | Continuous |
+| landing-suspense | Ambient | 85Hz sine + lowpass 200Hz + LFO (freq ±8Hz @0.15Hz, gain ±0.04 @0.15Hz) | Continuous |
 | action-beat | Action | White noise + highpass 2000Hz | 80ms burst |
 | action-paper | Action | White noise + bandpass 4000Hz | 120ms burst |
 | action-thwack | Action | White noise + bandpass 1200Hz | 60ms burst |
@@ -291,7 +300,7 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `FIRE_PASS_COMPL
 | action-divination | Action | White noise + bandpass 800Hz | 150ms burst |
 | transition-invocation | Transition | Sine sweep 200→60Hz | 5s |
 | transition-blessing | Transition | Sine sweep 300→600Hz | 2s |
-| result-saint | Transition | Sine 180→120Hz | 1.5s |
+| result-saint | Transition | Sine sweep 220→440Hz | 2s |
 | result-laugh | Transition | Noise + bandpass 2000Hz | 80ms |
 | result-anger | Transition | Noise + lowpass 200Hz (Q=3) | 250ms |
 | transition-result | Transition | White noise + lowpass 500Hz | 1s |
@@ -302,7 +311,7 @@ Volume layers: ambient 0.3, action 0.6, transition 0.8
 
 **Critical pattern**: useAudio does NOT dispose AudioManager on unmount. Singleton survives across step transitions.
 
-**Audio init**: InvocationTransition is the first component to call `audio.init()` (iOS AudioContext unlock). Subsequent steps that play audio (PurificationStep, BlessingStep) also call `audio.init()` on mount for robustness. DivinationStep uses `getAudioManager()` singleton directly.
+**Audio init**: InvocationTransition is the first component to call `audio.init()` (iOS AudioContext unlock). Subsequent steps that play audio (PurificationStep, BlessingStep) also call `audio.init()` on mount for robustness. DivinationStep uses `getAudioManager()` singleton directly. **Landing page**: HeroSection triggers `getAudioManager().init()` + `playAmbient('landing-suspense')` on first `pointerDown`/`keyDown`. Audio stops on "Begin the Ritual" click via `stopAmbient()`.
 
 ## Canvas Architecture
 

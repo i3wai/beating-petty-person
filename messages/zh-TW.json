@@ -7,7 +7,7 @@
   "landing": {
     "hero": {
       "title": "你的小人，氣數已盡",
-      "subtitle": "BeatPetty — 源自香港的三百年詛咒儀式，線上免費體驗。拍打紙人。燃燒成灰。正宗八部曲。萬一有用呢？",
+      "subtitle": "打小人 — 源自香港的三百年詛咒儀式，線上免費體驗。拍打紙人。燃燒成灰。正宗八部曲。萬一有用呢？",
       "cta": "開始打小人"
     },
     "whatIs": {
@@ -199,9 +199,9 @@
     "resultFreeTitle": "灰燼中有密語⋯",
     "resultFreeSubtitle": "紙人已毀。詛咒已出。",
     "resultPaidPrompt": "解鎖完整解讀，了解更深層的影響。",
-    "resultSealButton": "完成儀式 — $4.99",
-    "resultNameButton": "揭示詛咒解讀 — $2.99",
-    "resultFullButton": "全套儀式+解讀 — $6.99",
+    "resultSealButton": "完成儀式 — US$4.99",
+    "resultNameButton": "揭示詛咒解讀 — US$2.99",
+    "resultFullButton": "全套儀式+解讀 — US$6.99",
     "viewResultButton": "查看結果",
     "resultCheckoutError": "付款功能尚未開放，請稍後再試。",
     "resultShareButton": "分享此儀式",

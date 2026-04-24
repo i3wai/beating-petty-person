@@ -7,10 +7,9 @@ import StepHeader from '@/components/ritual/StepHeader';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
 
-const DURATION_MS = 20000;
-const HOLD_SPEED_MULTIPLIER = 1.5;
-const TEXT_REVEAL_MS = 4000;
-const ENEMY_REVEAL_MS = 14000;
+const DURATION_MS = 30000;
+const HOLD_SPEED_MULTIPLIER = 2;
+const ENEMY_REVEAL_MS = 20000;
 
 // Pre-generated gold spark positions (avoids re-renders)
 const SPARKS = Array.from({ length: 18 }, (_, i) => ({
@@ -29,9 +28,8 @@ export default function BlessingStep() {
   const completedRef = useRef(false);
   const transitionPlayedRef = useRef(false);
 
-  const [showText, setShowText] = useState(false);
   const [showEnemy, setShowEnemy] = useState(false);
-  const [showTalisman, setShowTalisman] = useState(false);
+  const [showTalisman] = useState(true);
   const [isHolding, setIsHolding] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -93,17 +91,10 @@ export default function BlessingStep() {
     };
     requestAnimationFrame(tick);
 
-    // Phase 2: reveal text + talisman
-    const textTimer = setTimeout(() => {
-      setShowText(true);
-      setShowTalisman(true);
-    }, TEXT_REVEAL_MS);
-
-    // Phase 3: reveal enemy name
+    // Enemy name reveal at 20s
     const enemyTimer = setTimeout(() => setShowEnemy(true), ENEMY_REVEAL_MS);
 
     return () => {
-      clearTimeout(textTimer);
       clearTimeout(enemyTimer);
     };
   }, [reducedMotion, audio, handleComplete]);
@@ -167,13 +158,8 @@ export default function BlessingStep() {
         ))}
       </div>
 
-      {/* Initial hint — visible immediately, fades out when text appears */}
-      <p className={`relative z-10 text-xs text-gold/70 font-serif italic animate-pulse transition-opacity duration-1000 ${showText ? 'opacity-0' : 'opacity-100'}`}>
-        {t('step7Receiving')}
-      </p>
-
-      {/* Title + subtitle — fades in at 4s */}
-      <div className={`relative z-10 text-center transition-all duration-[2000ms] ease-out ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      {/* Title + subtitle — visible immediately */}
+      <div className="relative z-10 text-center animate-fade-in">
         <StepHeader labelKey="stepLabel7" purposeKey="stepPurpose7" />
         <h2 className="text-2xl sm:text-3xl font-bold text-gold font-serif drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
           {t('step7Title')}
@@ -192,8 +178,8 @@ export default function BlessingStep() {
         </div>
       )}
 
-      {/* Talisman hold interaction — appears at 4s, optional speed boost */}
-      {showTalisman && !completedRef.current && (
+      {/* Talisman hold interaction — visible immediately, optional speed boost */}
+      {!completedRef.current && (
         <div className="relative z-10 mt-10 flex flex-col items-center">
           <button
             onPointerDown={() => setIsHolding(true)}
@@ -230,7 +216,7 @@ export default function BlessingStep() {
             )}
           </button>
           {/* Speed-up instruction */}
-          <p className="mt-3 text-xs text-gold/50 font-serif italic select-none">
+          <p className="mt-3 text-xs text-vermillion font-serif font-bold select-none drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
             {t('step7HoldInstruction')}
           </p>
         </div>

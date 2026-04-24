@@ -99,9 +99,8 @@ export default function DivinationStep() {
     setResult(divinationResult);
 
     if (divinationResult === 'saint') {
-      const leftUp = Math.random() > 0.5;
-      setIsLeftFaceUp(leftUp);
-      setIsRightFaceUp(!leftUp);
+      setIsLeftFaceUp(true);
+      setIsRightFaceUp(false);
     } else if (divinationResult === 'laugh') {
       setIsLeftFaceUp(true);
       setIsRightFaceUp(true);
@@ -222,17 +221,24 @@ export default function DivinationStep() {
         <div className="poe-container">
           {/* Left poe block */}
           <div className="poe-wrapper">
-            <div className={`poe-block ${phase === 'spinning' ? 'poe-spinning-left' : ''} ${phase === 'landed' ? 'poe-landed' : ''}`}>
+            <div
+              className={`poe-block ${phase === 'spinning' ? 'poe-spinning-left' : ''} ${phase === 'landed' ? 'poe-landed' : ''}`}
+              style={{
+                transformStyle: 'preserve-3d',
+                transform: (phase === 'result' || phase === 'silence') && !isLeftFaceUp ? 'rotateY(180deg)' : undefined,
+                transition: (phase === 'result' || phase === 'silence') && !isLeftFaceUp ? 'transform 0.6s ease-out' : undefined,
+              }}
+            >
               <img
                 src={POE_FACE_UP}
                 alt=""
-                className={`poe-block-img ${isLeftFaceUp || phase !== 'result' ? '' : 'opacity-0'}`}
+                className="poe-block-img"
                 draggable={false}
               />
               <img
                 src={POE_FACE_DOWN}
                 alt=""
-                className={`poe-block-img ${!isLeftFaceUp || phase !== 'result' ? '' : 'opacity-0'}`}
+                className="poe-block-img"
                 style={{ transform: 'rotateY(180deg)' }}
                 draggable={false}
               />
@@ -241,17 +247,24 @@ export default function DivinationStep() {
 
           {/* Right poe block */}
           <div className="poe-wrapper">
-            <div className={`poe-block ${phase === 'spinning' ? 'poe-spinning-right' : ''} ${phase === 'landed' ? 'poe-landed' : ''}`}>
+            <div
+              className={`poe-block ${phase === 'spinning' ? 'poe-spinning-right' : ''} ${phase === 'landed' ? 'poe-landed' : ''}`}
+              style={{
+                transformStyle: 'preserve-3d',
+                transform: (phase === 'result' || phase === 'silence') && !isRightFaceUp ? 'rotateY(180deg)' : undefined,
+                transition: (phase === 'result' || phase === 'silence') && !isRightFaceUp ? 'transform 0.6s ease-out' : undefined,
+              }}
+            >
               <img
                 src={POE_FACE_UP}
                 alt=""
-                className={`poe-block-img ${isRightFaceUp || phase !== 'result' ? '' : 'opacity-0'}`}
+                className="poe-block-img"
                 draggable={false}
               />
               <img
                 src={POE_FACE_DOWN}
                 alt=""
-                className={`poe-block-img ${!isRightFaceUp || phase !== 'result' ? '' : 'opacity-0'}`}
+                className="poe-block-img"
                 style={{ transform: 'rotateY(180deg)' }}
                 draggable={false}
               />

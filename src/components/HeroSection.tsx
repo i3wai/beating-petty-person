@@ -1,17 +1,28 @@
 'use client';
 
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import Image from "next/image";
 import FloatingParticles from "@/components/FloatingParticles";
+import { getAudioManager } from "@/components/audio/AudioManager";
 
 export function HeroSection() {
   const t = useTranslations("landing.hero");
   const tCommon = useTranslations("common");
   const router = useRouter();
+  const audioStarted = useRef(false);
+
+  const startLandingAudio = useCallback(() => {
+    if (audioStarted.current) return;
+    audioStarted.current = true;
+    const mgr = getAudioManager();
+    mgr.init().then(() => {
+      mgr.playAmbient('landing-suspense');
+    }).catch(() => {});
+  }, []);
 
   const handleBeginRitual = useCallback(() => {
+    getAudioManager().stopAmbient();
     const main = document.getElementById('main-content') || document.body;
     main.classList.add('landing-fade-out');
     setTimeout(() => {
@@ -20,11 +31,15 @@ export function HeroSection() {
   }, [router]);
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-[85dvh] px-4 py-16 overflow-hidden bg-ink">
-      {/* Cinematic black curtain — fades out to reveal scene */}
+    <section
+      className="relative flex flex-col items-center justify-center min-h-[85dvh] px-4 py-16 overflow-hidden bg-ink"
+      onPointerDown={startLandingAudio}
+      onKeyDown={startLandingAudio}
+    >
+      {/* Cinematic black curtain */}
       <div className="absolute inset-0 bg-ink z-[20] animate-curtain-lift pointer-events-none" />
 
-      {/* Candle ignite glow — brief warm flash before curtain lifts */}
+      {/* Candle ignite glow */}
       <div
         className="absolute bottom-1/4 left-1/2 w-[400px] h-[400px] rounded-full pointer-events-none z-[19] animate-candle-ignite"
         style={{
@@ -32,25 +47,33 @@ export function HeroSection() {
         }}
       />
 
-      {/* Hero background — portrait for mobile, landscape for desktop */}
-      <Image
-        src="/hero-candidate-1.jpg"
-        alt=""
-        fill
-        className="object-cover object-center sm:hidden animate-hero-image-reveal"
-        priority
-        sizes="100vw"
+      {/* Mobile hero video — 9:16 portrait, 5s loop */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/hero-candidate-1.jpg"
+        preload="metadata"
+        className="absolute inset-0 w-full h-full object-cover object-center sm:hidden animate-hero-image-reveal"
         aria-hidden="true"
-      />
-      <Image
-        src="/hero-v2-wide-2.jpg"
-        alt=""
-        fill
-        className="object-cover object-center hidden sm:block animate-hero-image-reveal"
-        priority
-        sizes="100vw"
+      >
+        <source src="/videos/hero-mobile-seamless.mp4" type="video/mp4" />
+      </video>
+
+      {/* Desktop hero video — 16:9 landscape, 30s seamless loop */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/hero-v2-wide-2.jpg"
+        preload="metadata"
+        className="absolute inset-0 w-full h-full object-cover object-center hidden sm:block animate-hero-image-reveal"
         aria-hidden="true"
-      />
+      >
+        <source src="/videos/hero-seamless.mp4" type="video/mp4" />
+      </video>
 
       {/* Dark gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/40 to-ink/10 z-[1]" />

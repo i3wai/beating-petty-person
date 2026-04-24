@@ -270,7 +270,7 @@ function ResultContent() {
   }
 
   // --- Free View ---
-  const { reading } = getStoredData();
+  const { reading, guidance } = getStoredData();
 
   return (
     <div className="min-h-[80dvh] flex flex-col items-center justify-center px-4 py-16">
@@ -309,32 +309,64 @@ function ResultContent() {
           </div>
         )}
 
-        {/* Blurred oracle guidance preview */}
+        {/* Oracle guidance preview — first sentence revealed as hook */}
         <div className="mb-8 px-4 py-4 bg-ink-light border border-ink-lighter rounded-lg relative overflow-hidden animate-fade-in-up">
           <p className="text-xs text-gold/60 font-serif mb-2 text-center">
             {t('guidanceTitle')}
           </p>
-          <div className="space-y-3 blur-[8px] select-none">
-            <div>
-              <p className="text-xs text-gold/50 font-serif uppercase tracking-widest mb-1">
-                {t('guidanceInsight')}
-              </p>
-              <p className="text-sm text-paper-muted font-serif italic leading-relaxed">
-                Insight awaits...
-              </p>
+          {guidance ? (
+            <div className="space-y-3 relative">
+              <div>
+                <p className="text-xs text-gold/50 font-serif uppercase tracking-widest mb-1">
+                  {t('guidanceInsight')}
+                </p>
+                <p className="text-sm text-paper-muted font-serif italic leading-relaxed">
+                  {guidance.insight}
+                </p>
+              </div>
+              <div className="h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+              <div className="blur-[8px] select-none">
+                <p className="text-xs text-gold/50 font-serif uppercase tracking-widest mb-1">
+                  {t('guidanceResolution')}
+                </p>
+                <p className="text-sm text-paper-muted font-serif italic leading-relaxed">
+                  {guidance.resolution}
+                </p>
+              </div>
+              <div className="h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent blur-[8px] select-none" />
+              <div className="blur-[8px] select-none">
+                <p className="text-xs text-gold/50 font-serif uppercase tracking-widest mb-1">
+                  {t('guidanceProphecy')}
+                </p>
+                <p className="text-sm text-paper-muted font-serif italic leading-relaxed">
+                  {guidance.prophecy}
+                </p>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-ink-light to-transparent pointer-events-none" />
             </div>
-            <div className="h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
-            <div>
-              <p className="text-xs text-gold/50 font-serif uppercase tracking-widest mb-1">
-                {t('guidanceResolution')}
-              </p>
-              <p className="text-sm text-paper-muted font-serif italic leading-relaxed">
-                Resolution awaits...
-              </p>
+          ) : (
+            <div className="space-y-3 blur-[8px] select-none">
+              <div>
+                <p className="text-xs text-gold/50 font-serif uppercase tracking-widest mb-1">
+                  {t('guidanceInsight')}
+                </p>
+                <p className="text-sm text-paper-muted font-serif italic leading-relaxed">
+                  Insight awaits...
+                </p>
+              </div>
+              <div className="h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+              <div>
+                <p className="text-xs text-gold/50 font-serif uppercase tracking-widest mb-1">
+                  {t('guidanceResolution')}
+                </p>
+                <p className="text-sm text-paper-muted font-serif italic leading-relaxed">
+                  Resolution awaits...
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-gold font-serif text-sm">
+          )}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span className="text-gold font-serif text-sm drop-shadow-[0_0_8px_rgba(212,168,67,0.3)]">
               {tRitual('readingPreviewBlur')}
             </span>
           </div>

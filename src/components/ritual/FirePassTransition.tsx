@@ -8,7 +8,7 @@ import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
 import { PAPER_FIGURE_PNG, DEFAULT_IMAGE_PNG, type EnemyCategory } from '@/components/ritual/silhouettes';
 import StepHeader from '@/components/ritual/StepHeader';
 
-const DURATION_MS = 4500;
+const DURATION_MS = 6500;
 const REDUCED_DURATION_MS = 200;
 
 /**
@@ -42,9 +42,9 @@ export default function FirePassTransition() {
 
     // Phase 1: Enter (0-1200ms) — paper figure appears
     const enterTimer = setTimeout(() => setPhase('pass'), 1200);
-    // Phase 2: Pass (1200-3300ms) — paper sweeps over flames
-    const passTimer = setTimeout(() => setPhase('glow'), 3300);
-    // Phase 3: Glow (3300-4500ms) — purification complete, advance
+    // Phase 2: Pass (1200-5300ms) — paper sweeps over flames
+    const passTimer = setTimeout(() => setPhase('glow'), 5300);
+    // Phase 3: Glow (5300-6500ms) — purification complete, advance
     const completeTimer = setTimeout(() => {
       if (!completedRef.current) {
         completedRef.current = true;
@@ -124,20 +124,22 @@ export default function FirePassTransition() {
         </div>
       </div>
 
-      <div className="absolute bottom-[22%] left-0 right-0 flex justify-center animate-fade-in">
-        <StepHeader labelKey="stepLabel3" purposeKey="stepPurpose3" />
+      {/* Text overlay — positioned in upper-middle area */}
+      <div className="absolute top-[15%] left-0 right-0 z-20 flex flex-col items-center">
+        <div className="px-6 py-4">
+          <StepHeader labelKey="stepLabel3" purposeKey="stepPurpose3" />
+          <h2
+            className="mt-2 text-lg sm:text-xl font-bold text-paper font-serif text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]"
+            style={{
+              opacity: phase === 'pass' || phase === 'glow' ? 1 : 0,
+              transform: phase === 'pass' || phase === 'glow' ? 'translateY(0)' : 'translateY(10px)',
+              transition: 'opacity 0.6s ease, transform 0.6s ease',
+            }}
+          >
+            {t('firePassTitle')}
+          </h2>
+        </div>
       </div>
-      {/* Title — fades in during pass phase */}
-      <h2
-        className="absolute bottom-[15%] text-lg sm:text-xl font-bold text-gold font-serif text-center"
-        style={{
-          opacity: phase === 'pass' || phase === 'glow' ? 1 : 0,
-          transform: phase === 'pass' || phase === 'glow' ? 'translateY(0)' : 'translateY(10px)',
-          transition: 'opacity 0.6s ease, transform 0.6s ease',
-        }}
-      >
-        {t('firePassTitle')}
-      </h2>
     </div>
   );
 }

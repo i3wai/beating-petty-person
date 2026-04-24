@@ -12,7 +12,7 @@ import { PAPER_FIGURE_PNG, DEFAULT_IMAGE_PNG, type EnemyCategory } from '@/compo
 
 const BURN_DURATION_MS = 9000;
 const FLAME_INTERVAL_MS = 200;
-const IGNITE_DURATION_MS = 2000;
+const IGNITE_DURATION_MS = 4000;
 const IGNITE_BURST_COUNT = 3;
 
 export default function BurningStep() {
@@ -32,7 +32,9 @@ export default function BurningStep() {
   // Long-press ignition state
   const [ignited, setIgnited] = useState(false);
   const [pressing, setPressing] = useState(false);
+  const [igniteProgress, setIgniteProgress] = useState(0);
   const igniteTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const igniteRafRef = useRef(0);
   const pressStartTimeRef = useRef(0);
   const rumbleActiveRef = useRef(false);
 
@@ -140,12 +142,25 @@ export default function BurningStep() {
     if (ignited) return;
     pressStartTimeRef.current = performance.now();
     setPressing(true);
+    setIgniteProgress(0);
     startRumble();
+
+    // Track hold progress for fire framing
+    const tickProgress = (now: number) => {
+      const elapsed = now - pressStartTimeRef.current;
+      const p = Math.min(elapsed / IGNITE_DURATION_MS, 1);
+      setIgniteProgress(p);
+      if (p < 1) {
+        igniteRafRef.current = requestAnimationFrame(tickProgress);
+      }
+    };
+    igniteRafRef.current = requestAnimationFrame(tickProgress);
 
     // Auto-ignite after IGNITE_DURATION_MS
     igniteTimeoutRef.current = setTimeout(() => {
       setIgnited(true);
       setPressing(false);
+      setIgniteProgress(0);
       stopRumble();
       try { audioPlayActionRef.current(SOUND_IDS.ACTION_PAPER); } catch { /* ignore */ }
     }, IGNITE_DURATION_MS);
@@ -155,11 +170,16 @@ export default function BurningStep() {
     if (ignited) return;
     const elapsed = performance.now() - pressStartTimeRef.current;
     setPressing(false);
+    setIgniteProgress(0);
 
-    // Clear the auto-ignite timeout
+    // Clear the auto-ignite timeout and progress rAF
     if (igniteTimeoutRef.current) {
       clearTimeout(igniteTimeoutRef.current);
       igniteTimeoutRef.current = null;
+    }
+    if (igniteRafRef.current) {
+      cancelAnimationFrame(igniteRafRef.current);
+      igniteRafRef.current = 0;
     }
     stopRumble();
 
@@ -174,6 +194,7 @@ export default function BurningStep() {
   useEffect(() => {
     return () => {
       if (igniteTimeoutRef.current) clearTimeout(igniteTimeoutRef.current);
+      if (igniteRafRef.current) cancelAnimationFrame(igniteRafRef.current);
       stopRumble();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -230,6 +251,37 @@ export default function BurningStep() {
           aria-hidden="true"
           style={{ '--smoke-duration': '15s', '--smoke-drift-duration': '10s', width: 60, height: 40, left: '80%', bottom: 0 } as React.CSSProperties}
         />
+
+        {/* Progressive fire framing during hold — base fire visible immediately, grows with progress */}
+        {pressing && !ignited && (
+          <div
+            className="absolute bottom-0 left-0 right-0 z-5 pointer-events-none overflow-hidden"
+            aria-hidden="true"
+            style={{ height: `${10 + igniteProgress * 30}%` }}
+          >
+            <div
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(to top,
+                  rgba(194, 54, 22, ${0.5 + igniteProgress * 0.3}) 0%,
+                  rgba(255, 107, 53, ${0.4 + igniteProgress * 0.2}) 25%,
+                  rgba(255, 165, 0, ${0.25 + igniteProgress * 0.15}) 50%,
+                  rgba(255, 200, 50, ${0.1 + igniteProgress * 0.1}) 75%,
+                  transparent 100%)`,
+              }}
+            />
+            <div
+              className="absolute bottom-0 left-0 right-0"
+              style={{
+                height: '40%',
+                background: `linear-gradient(to top,
+                  rgba(255, 200, 80, 0.3) 0%,
+                  transparent 100%)`,
+                animation: 'flame-core-flicker 0.4s ease-in-out infinite alternate',
+              }}
+            />
+          </div>
+        )}
 
         {/* Canvas — particles drawn after ignition (embers only) */}
         {!reducedMotion && (

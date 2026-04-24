@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { RitualProvider, useRitual, type EnemyData, type PaymentTier } from '@/components/ritual/RitualProvider';
 import RitualOrchestrator from '@/components/ritual/RitualOrchestrator';
+import { getAudioManager } from '@/components/audio/AudioManager';
 
 interface ContinueState {
   ritualState: 'purification';
@@ -57,7 +58,11 @@ function IdleScreen() {
 
       <button
         id="ritual-main-content"
-        onClick={() => dispatch({ type: 'START_RITUAL' })}
+        onClick={() => {
+          // Init AudioContext synchronously in click handler for iOS Safari
+          getAudioManager().init().catch(() => {});
+          dispatch({ type: 'START_RITUAL' });
+        }}
         className="
           px-10 py-4 rounded-sm
           bg-gold text-ink font-serif font-semibold text-lg

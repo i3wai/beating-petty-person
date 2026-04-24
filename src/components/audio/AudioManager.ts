@@ -17,6 +17,10 @@ interface SynthConfig {
   filterFreq?: number;
   filterQ?: number;
   filterType?: BiquadFilterType;
+  // LFO modulation
+  lfoFreq?: number;
+  lfoDepth?: number;
+  lfoGainDepth?: number;
 }
 
 const SOUND_SYNTH: Record<SoundId, SynthConfig> = {
@@ -106,9 +110,9 @@ const SOUND_SYNTH: Record<SoundId, SynthConfig> = {
   'result-saint': {
     type: 'oscillator',
     oscType: 'sine',
-    frequency: 180,
-    frequencyEnd: 120,
-    duration: 1500,
+    frequency: 220,
+    frequencyEnd: 440,
+    duration: 2000,
     gain: 0.35,
   },
   'result-laugh': {
@@ -127,6 +131,19 @@ const SOUND_SYNTH: Record<SoundId, SynthConfig> = {
     filterQ: 3,
     filterType: 'lowpass',
   },
+  'landing-suspense': {
+    type: 'oscillator',
+    oscType: 'sine',
+    frequency: 85,
+    duration: 0,
+    gain: 0.18,
+    filterFreq: 200,
+    filterQ: 3,
+    filterType: 'lowpass',
+    lfoFreq: 0.15,
+    lfoDepth: 8,
+    lfoGainDepth: 0.04,
+  },
 };
 
 const VOLUME = {
@@ -142,8 +159,16 @@ class AudioManagerSingleton {
   private ambientNodes: AudioNode[] = [];
   private ambientGains: GainNode[] = [];
   private initialized = false;
+  private initPromise: Promise<void> | null = null;
 
   async init(): Promise<void> {
+    if (this.initPromise) return this.initPromise;
+
+    this.initPromise = this._doInit();
+    return this.initPromise;
+  }
+
+  private async _doInit(): Promise<void> {
     if (this.initialized) {
       if (this.ctx?.state === 'suspended') {
         await this.ctx.resume();
@@ -186,10 +211,16 @@ class AudioManagerSingleton {
 
   // --- Ambient sounds (loop) ---
 
-  async playAmbient(id: SoundId, volume?: number): Promise<void> {
+  playAmbientLayers(ids: SoundId[]): void {
     if (!this.ctx || !this.masterGain) return;
-
     this.stopAmbient();
+    for (const id of ids) {
+      this.startAmbientLayer(id);
+    }
+  }
+
+  private startAmbientLayer(id: SoundId, volume?: number): void {
+    if (!this.ctx || !this.masterGain) return;
 
     const config = SOUND_SYNTH[id];
     if (!config) return;
@@ -197,7 +228,6 @@ class AudioManagerSingleton {
     const layerGain = this.makeGain(volume ?? VOLUME.ambient);
 
     if (config.type === 'oscillator') {
-      // Low-frequency drone
       const osc = this.ctx.createOscillator();
       osc.type = config.oscType ?? 'sine';
       osc.frequency.value = config.frequency ?? 100;
@@ -221,11 +251,33 @@ class AudioManagerSingleton {
 
       lastNode.connect(layerGain);
       osc.start();
+
+      // LFO modulation — slow frequency + gain breathing
+      if (config.lfoFreq) {
+        const lfo = this.ctx.createOscillator();
+        lfo.frequency.value = config.lfoFreq;
+        const lfoGainNode = this.ctx.createGain();
+        lfoGainNode.gain.value = config.lfoDepth ?? 5;
+        lfo.connect(lfoGainNode);
+        lfoGainNode.connect(osc.frequency);
+        lfo.start();
+        this.ambientNodes.push(lfo, lfoGainNode);
+      }
+      if (config.lfoGainDepth) {
+        const gainLfo = this.ctx.createOscillator();
+        gainLfo.frequency.value = config.lfoFreq ?? 0.1;
+        const gainLfoNode = this.ctx.createGain();
+        gainLfoNode.gain.value = config.lfoGainDepth;
+        gainLfo.connect(gainLfoNode);
+        gainLfoNode.connect(layerGain.gain);
+        gainLfo.start();
+        this.ambientNodes.push(gainLfo, gainLfoNode);
+      }
+
       this.ambientNodes.push(osc);
       this.ambientGains.push(layerGain);
 
     } else if (config.type === 'filtered-noise') {
-      // Wind-like ambient
       const buffer = this.createNoiseBuffer(2);
       const source = this.ctx.createBufferSource();
       source.buffer = buffer;
@@ -242,6 +294,12 @@ class AudioManagerSingleton {
       this.ambientNodes.push(source, filter);
       this.ambientGains.push(layerGain);
     }
+  }
+
+  async playAmbient(id: SoundId, volume?: number): Promise<void> {
+    if (!this.ctx || !this.masterGain) return;
+    this.stopAmbient();
+    this.startAmbientLayer(id, volume);
   }
 
   stopAmbient(): void {
@@ -278,7 +336,6 @@ class AudioManagerSingleton {
     const config = SOUND_SYNTH[id];
     if (!config) return;
 
-    // Random pitch variation for action sounds
     const pitchVar = 0.9 + Math.random() * 0.2;
     const freq = (config.frequency ?? 100) * pitchVar;
 
@@ -321,7 +378,6 @@ class AudioManagerSingleton {
       filter.frequency.value = (config.filterFreq ?? 1000) * pitchVar;
       filter.Q.value = config.filterQ ?? 1;
 
-      // Envelope: quick attack, fast decay
       const envelope = this.ctx.createGain();
       envelope.gain.setValueAtTime(0, this.ctx.currentTime);
       envelope.gain.linearRampToValueAtTime(1, this.ctx.currentTime + 0.005);

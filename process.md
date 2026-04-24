@@ -16,7 +16,7 @@ Ritual flow + payment + share system all deployed to production at beatpetty.com
 - **Content**: Curse reading (~945 combos) + Oracle guidance (54 fragments) + Curse certificate
 - **Blog**: 9 EN + 11 ZH articles, all with AI images, deployed
 - **AI Images**: 7 atmospheric backgrounds (white tiger, flames, purification, blessing, divination, 3 result images)
-- **Audio**: 12 synthesized sounds (Web Audio API, no MP3)
+- **Audio**: 13 synthesized sounds (Web Audio API, no MP3) + LFO modulation support
 - **i18n**: EN + zh-TW + zh-Hans, culturally accurate (not direct translations)
 
 ### Latest Changes (2026-04-21) — Steps 6-8 UX Polish
@@ -31,6 +31,19 @@ Ritual flow + payment + share system all deployed to production at beatpetty.com
 | **Step 7 status hint** | "Receiving the blessing..." pulse text, fades when title appears at 3s |
 | **CurseCertificate fix** | Enemy category now translates `toxicBoss` → "The Toxic Boss" via i18n lookup |
 | **3-locale messages updated** | EN / zh-TW / zh-Hans all synced with new keys |
+
+### Latest Changes (2026-04-24) — Hero Animated Video + Suspense Audio
+
+| Change | Detail |
+|--------|--------|
+| **Hero video (desktop)** | 30s seamless loop (15s forward + 15s reverse), 720p 16:9, 5.3MB. Generated via Seedance 2.0 API from hero-v2-wide-2.jpg. Non-directional prompt (candle flicker + light pulse only, no rising smoke). `preload="metadata"` + poster image for LCP protection. |
+| **Hero video (mobile)** | 15s forward-only, 480p 9:16, 397KB. Generated via Seedance 2.0 API from hero-candidate-1.jpg. Same non-directional prompt. Compressed via ffmpeg CRF 30 baseline H.264. |
+| **Landing suspense audio** | 85Hz sine with LFO modulation: frequency breathes 77-93Hz (0.15Hz LFO, ±8Hz), gain pulses ±0.04 (0.15Hz LFO). Triggers on first touch/click, stops on "Begin the Ritual". |
+| **AudioManager LFO support** | Added `lfoFreq`, `lfoDepth`, `lfoGainDepth` to SynthConfig. `startAmbientLayer` creates secondary oscillators modulating main frequency and gain. |
+| **AudioManager refactor** | Extracted `startAmbientLayer()` private method. Added `playAmbientLayers(ids[])` for multi-layer simultaneous playback. `playAmbient()` now delegates to `startAmbientLayer()`. |
+| **HeroSection video** | Replaced static Image components with dual `<video>` elements (mobile 9:16 + desktop 16:9), `autoPlay muted loop playsInline`, poster images, `preload="metadata"`. |
+| **Seedance 2.0 API** | ModelsLab endpoint: `POST https://modelslab.com/api/v7/video-fusion/image-to-video`. Async — returns fetch URL, poll for completion (~2-4 min for 15s). API key in `.env.local` as `MODELSLAB_API_KEY`. |
+| **ffmpeg video processing** | Installed via brew. Used for: reverse, concat (forward+reverse), re-encode (baseline H.264, faststart, CRF compression). |
 
 ### Latest Changes (2026-04-24) — Steps 6-8 UX Overhaul + AI-Generated UI Elements
 

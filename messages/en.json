@@ -7,7 +7,7 @@
   "landing": {
     "hero": {
       "title": "Your Enemy's Luck Ends Here",
-      "subtitle": "BeatPetty — a free online curse ritual born in Hong Kong 300 years ago. Strike a paper effigy. Burn your enemy's influence. What if it works?",
+      "subtitle": "BeatPetty — a free online curse ritual born in Hong Kong 300 years ago. Da Siu Yan (打小人). Strike a paper effigy. Burn your enemy's influence. What if it works?",
       "cta": "Begin the Ritual"
     },
     "whatIs": {
@@ -199,9 +199,9 @@
     "resultFreeTitle": "The ashes hold a message...",
     "resultFreeSubtitle": "The paper is destroyed. The curse has been spoken.",
     "resultPaidPrompt": "Unlock the full reading to understand the deeper implications.",
-    "resultSealButton": "Complete the Ritual — $4.99",
-    "resultNameButton": "Reveal the Curse Reading — $2.99",
-    "resultFullButton": "Full Ritual + Reading — $6.99",
+    "resultSealButton": "Complete the Ritual — US$4.99",
+    "resultNameButton": "Reveal the Curse Reading — US$2.99",
+    "resultFullButton": "Full Ritual + Reading — US$6.99",
     "viewResultButton": "View Results",
     "resultCheckoutError": "Payment is not yet available. Please try again later.",
     "resultShareButton": "Share This Ritual",

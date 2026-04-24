@@ -8,8 +8,8 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useHaptic } from '@/hooks/useHaptic';
 import { useAudio, SOUND_IDS } from '@/components/audio/useAudio';
 
-const INTERACTIONS_TO_COMPLETE = 30;
-const DRAG_COOLDOWN_MS = 120;
+const INTERACTIONS_TO_COMPLETE = 50;
+const DRAG_COOLDOWN_MS = 300;
 const HAPTIC_DURATION = 15;
 
 const PARTICLE_COLORS = [
