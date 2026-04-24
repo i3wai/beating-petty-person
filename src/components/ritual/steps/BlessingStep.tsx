@@ -30,6 +30,8 @@ export default function BlessingStep() {
 
   const [showText, setShowText] = useState(false);
   const [showEnemy, setShowEnemy] = useState(false);
+  const [showTalisman, setShowTalisman] = useState(false);
+  const [isHolding, setIsHolding] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const enemyName = enemy?.name || (enemy?.category ? t(`enemies.${enemy.category}.name` as Parameters<typeof t>[0]) : '');
@@ -70,8 +72,11 @@ export default function BlessingStep() {
     };
     requestAnimationFrame(tick);
 
-    // Phase 2: reveal text at 3s
-    const textTimer = setTimeout(() => setShowText(true), TEXT_REVEAL_MS);
+    // Phase 2: reveal text + talisman at 3s
+    const textTimer = setTimeout(() => {
+      setShowText(true);
+      setShowTalisman(true);
+    }, TEXT_REVEAL_MS);
 
     // Phase 3: reveal enemy name at 5s
     const enemyTimer = setTimeout(() => setShowEnemy(true), ENEMY_REVEAL_MS);
@@ -119,11 +124,12 @@ export default function BlessingStep() {
         aria-hidden="true"
       />
 
-      {/* Expanding gold radial glow */}
+      {/* Expanding gold radial glow — intensifies when holding */}
       <div
         className="fixed inset-0 pointer-events-none blessing-radial-glow-slow"
         style={{
-          background: 'radial-gradient(circle at center, rgba(212, 168, 67, 0.15) 0%, rgba(212, 168, 67, 0.05) 30%, transparent 60%)',
+          background: `radial-gradient(circle at center, rgba(212, 168, 67, ${isHolding ? 0.35 : 0.15}) 0%, rgba(212, 168, 67, ${isHolding ? 0.12 : 0.05}) 30%, transparent 60%)`,
+          transition: 'background 0.8s ease-out',
         }}
         aria-hidden="true"
       />
@@ -167,6 +173,50 @@ export default function BlessingStep() {
         <div className="blessing-enemy-reveal relative z-10 mt-8 text-center">
           <p className="text-gold font-serif text-base sm:text-lg tracking-wide drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
             {t('step7EnemySealed', { target: enemyName })}
+          </p>
+        </div>
+      )}
+
+      {/* Talisman hold interaction — appears at 3s, optional */}
+      {showTalisman && !completedRef.current && (
+        <div className="relative z-10 mt-10 flex flex-col items-center">
+          <button
+            onPointerDown={() => setIsHolding(true)}
+            onPointerUp={() => setIsHolding(false)}
+            onPointerLeave={() => setIsHolding(false)}
+            className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 select-none touch-none"
+            style={{
+              background: 'transparent',
+              WebkitTapHighlightColor: 'transparent',
+            }}
+            aria-label={t('step7HoldInstruction')}
+          >
+            {/* Talisman image */}
+            <img
+              src="/images/talisman-glow.png"
+              alt=""
+              className="w-full h-full object-contain rounded-full"
+              style={{
+                filter: isHolding ? 'brightness(1.4) drop-shadow(0 0 20px rgba(212, 168, 67, 0.6))' : 'brightness(1) drop-shadow(0 0 8px rgba(212, 168, 67, 0.2))',
+                transition: 'filter 0.6s ease-out',
+              }}
+              draggable={false}
+            />
+            {/* Holding pulse ring */}
+            {isHolding && (
+              <div
+                className="absolute inset-[-8px] rounded-full pointer-events-none"
+                style={{
+                  border: '2px solid rgba(212, 168, 67, 0.4)',
+                  animation: 'blessing-pulse 1.5s ease-out infinite',
+                }}
+                aria-hidden="true"
+              />
+            )}
+          </button>
+          {/* Gentle instruction text */}
+          <p className="mt-3 text-xs text-gold/50 font-serif italic select-none">
+            {t('step7HoldInstruction')}
           </p>
         </div>
       )}

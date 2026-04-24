@@ -1396,9 +1396,21 @@
 /* Poe Block (筊杯) — crescent moon shape */
 .poe-block {
   position: relative;
-  width: 40px;
-  height: 60px;
+  width: 56px;
+  height: 80px;
   transform-style: preserve-3d;
+}
+
+/* Poe block image — replaces CSS shapes with real wooden block images */
+.poe-block-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50% 50% 20% 20%;
+  backface-visibility: hidden;
+  transition: opacity 0.3s ease;
 }
 
 /* The curved face (round side visible when face-down) */
@@ -1449,17 +1461,17 @@
   transform-style: preserve-3d;
 }
 
-/* Spin animation state */
+/* Spin animation state — 3s for solemn pacing */
 .poe-spinning {
-  animation: poe-spin 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: poe-spin 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .poe-spinning-left {
-  animation: poe-spin-left 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: poe-spin-left 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .poe-spinning-right {
-  animation: poe-spin-right 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: poe-spin-right 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 /* Land animation state */

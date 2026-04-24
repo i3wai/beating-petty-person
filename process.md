@@ -32,6 +32,31 @@ Ritual flow + payment + share system all deployed to production at beatpetty.com
 | **CurseCertificate fix** | Enemy category now translates `toxicBoss` → "The Toxic Boss" via i18n lookup |
 | **3-locale messages updated** | EN / zh-TW / zh-Hans all synced with new keys |
 
+### Latest Changes (2026-04-24) — Steps 6-8 UX Overhaul + AI-Generated UI Elements
+
+| Change | Detail |
+|--------|--------|
+| **Step 6 drag-to-scatter** | Replaced tap counter ("3/7") with drag/click scatter. Particles spawn at pointer position. No progress counter. Auto-completes ~10s after first interaction. Scene warmth via `hasInteracted` state. |
+| **Step 6 grain image** | Added `grain-scatter.png` (Gemini-generated) as background layer, opacity increases with scene warmth |
+| **Step 6 i18n** | Instruction changed: "Tap to scatter" → "Drag to scatter" (EN), "點擊撒米豆" → "滑動撒米豆" (zh-TW/Hans) |
+| **Step 7 hold-to-receive** | Added optional talisman interaction at 3s mark. `talisman-glow.png` (Gemini-generated) fades in. Hold intensifies gold radial glow + adds pulse ring. Auto-completes at 7.5s regardless — no failure state. |
+| **Step 7 i18n** | Added `step7HoldInstruction`: "Hold to receive the blessing" / "按住以接收祝福" |
+| **Step 8 swipe-to-cast** | Replaced button with swipe/click area. Swipe up (50px min) or click triggers throw. Added `onClick` fallback for tap accessibility. Keyboard (Enter/Space) still works. |
+| **Step 8 slower animation** | Spin 2s→3s. Added `silence` phase (1.5s) between land and result. Total reveal ~5.3s (was ~3s). |
+| **Step 8 solemn language** | "Cast Again" red button → "神明請您再問一次" / "The spirits invite you to ask again" in subdued gold style |
+| **Step 8 poe block images** | CSS shapes replaced with Gemini-generated `poe-block-face-up.png` and `poe-block-face-down.png`. Added `backface-visibility: hidden` + `rotateY(180deg)` for proper 3D flip. Poe block size 40x60→56x80. |
+| **Step 8 result stamps** | Added Gemini-generated stamp overlays: `stamp-saint.png` (gold), `stamp-laugh.png` (silver), `stamp-anger.png` (red) — fade in during result phase |
+| **Step 8 swipe hint i18n** | Added `divination.swipeHint`: "Swipe up to cast" / "向上滑動擲筊" |
+| **8 Gemini-generated images** | `poe-block-face-up.png`, `poe-block-face-down.png`, `talisman-glow.png`, `stamp-saint.png`, `stamp-laugh.png`, `stamp-anger.png`, `grain-scatter.png`, `gold-ingots-float.png` — all in `/public/images/` |
+| **Generation script** | `scripts/generate-ui-elements.mjs` — generates ritual UI element images via Gemini API |
+
+### Design Decisions (2026-04-24)
+
+- **Ritual gestures, not game mechanics**: Steps 6-8 interactions map to real traditional actions (drag=scatter rice, hold=receive blessing, swipe=throw poe blocks). No scores, points, badges, or combos.
+- **Tone shift**: Steps 1-5 = destruction arc (aggressive, physical). Steps 6-8 = restoration arc (deliberate, solemn, cinematic). The contrast IS the value.
+- **Optional interaction**: Step 7 hold is purely optional — auto-completes regardless. Step 6 click is fallback for drag. Step 8 click is fallback for swipe.
+- **3-throw divination kept**: Paid users guaranteed saint on throw 3. Reframed as "re-consultation" not retry. Language changed from failure/retry to invitation.
+
 ### Latest Changes (2026-04-22) — Share System Overhaul + Ritual Polish
 
 | Change | Detail |
