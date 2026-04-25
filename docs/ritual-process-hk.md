@@ -87,13 +87,13 @@
 
 ## 我們產品的對應
 
-| 傳統步驟 | 產品現有 | 產品狀態 |
-|---------|---------|---------|
-| 1 請神 | ❌ | 需新增 |
-| 2 稟告 | ✅ Step 1 選敵人 | 已有 |
-| 3 過火 | ❌ | 需新增 |
-| 4 打小人 | ✅ Step 2 互動點擊 | 已有 |
-| 5 祭白虎/焚化 | ⚠️ Step 3 只有燒 | 需升級（加白虎） |
-| 6 化解 | ❌ | 需新增 |
-| 7 祈福/進寶 | ❌ | 需新增 |
-| 8 擲筊 | ❌ | 需新增 |
+| 傳統步驟 | 產品實作 | 組件 |
+|---------|---------|------|
+| 1 請神 | ✅ Step 1 點燭動畫 | InvocationTransition |
+| 2 稟告 | ✅ Step 2 選敵人+名字 | EnemySelectStep |
+| 3 過火 | ✅ Step 3 紙人過火焰 | FirePassTransition |
+| 4 打小人 | ✅ Step 4 互動點擊 | BeatingStep |
+| 5 祭白虎/焚化 | ✅ Step 5 白虎背景+焚化 | BurningStep |
+| 6 化解 | ✅ Step 6 撒米豆 | PurificationStep |
+| 7 祈福/進寶 | ✅ Step 7 金光祈福 | BlessingStep |
+| 8 擲筊 | ✅ Step 8 擲筊確認 | DivinationStep |

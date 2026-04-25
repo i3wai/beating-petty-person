@@ -1,7 +1,7 @@
 # BeatPetty Architecture Map
 
 > Quick reference for Claude sessions — read this instead of scanning the whole codebase.
-> Last updated: 2026-04-24 (hero video + landing audio added)
+> Last updated: 2026-04-25
 
 ## Tech Risks
 
@@ -38,7 +38,7 @@ src/
 │   ├── page.tsx                 # Root redirect (middleware handles locale)
 │   └── [locale]/
 │       ├── layout.tsx           # Locale layout: fonts (Noto Serif TC, Crimson Text), SEO metadata, Header/Footer, GA4
-│       ├── page.tsx             # Landing page: 6 sections composition (server component)
+│       ├── page.tsx             # Landing page: 7 sections composition (server component)
 │       ├── about/page.tsx       # About page: founder story + cultural mission
 │       ├── pricing/page.tsx     # Pricing page: 4-tier cards + Stripe Checkout
 │       ├── result/page.tsx      # Result page: 4 views (free/reading/completion/full) + 3 pricing buttons
@@ -64,6 +64,8 @@ src/
 │   ├── HowItWorksSection.tsx    # 8-step 八部曲 grid: Chinese numerals (壹-捌) + Arabic step numbers (1-8), free/paid phases
 │   ├── TrustSection.tsx         # Honest heritage messaging (no fake counters)
 │   ├── FinalCtaSection.tsx      # Bold headline + vermillion pulsing CTA
+│   ├── AtmosphereSection.tsx    # Dark atmospheric mood section
+│   ├── FaqSection.tsx           # FAQ accordion section
 │   ├── FooterNote.tsx           # Heritage statement — NOT rendered on landing page
 │   │
 │   │  # Atmospheric Effects — pure CSS animation
@@ -77,7 +79,7 @@ src/
 │   │   ├── RitualOrchestrator.tsx  # Lazy-loads step components, renders by state
 │   │   ├── RitualPageClient.tsx    # Client wrapper: reads ?continue=true, sets up RitualProvider, IdleScreen + RitualOrchestrator
 │   │   ├── InvocationTransition.tsx # Step 1: 6s candle-lighting transition + focus trap
-│   │   ├── FirePassTransition.tsx  # Step 3: Passive 3s paper-over-AI-flames animation + paper figure (PNG)
+│   │   ├── FirePassTransition.tsx  # Step 3: Passive 6.5s paper-over-AI-flames animation + paper figure (PNG)
 │   │   ├── PaywallTransition.tsx   # Payment wall: saves to localStorage + navigates to /result
 │   │   ├── silhouettes.ts         # Shared clip-paths + paper figure images for 6 enemy types
 │   │   └── steps/
@@ -96,7 +98,7 @@ src/
 │   │
 │   │  # Audio Engine — Web Audio API synthesis (no MP3 files)
 │   ├── audio/
-│   │   ├── AudioManager.ts         # Singleton: 13 sounds, 3 volume layers, LFO modulation support
+│   │   ├── AudioManager.ts         # Singleton: 14 sounds, 3 volume layers, LFO modulation support
 │   │   └── useAudio.ts             # React hook: init, playAction, playAmbient, stopAmbient, playTransition
 │   │
 │   │  # Shared
@@ -132,23 +134,19 @@ docs/
 ├── BLOG_SEO_STANDARD.md        # Blog writing standard (read before writing any blog)
 ├── blog-seo-master.md          # Blog SEO master strategy (EN + ZH, consolidated)
 ├── FUTURE_ROADMAP.md           # Business roadmap & analysis
-├── ritual-redesign.md          # Ritual redesign decisions + implementation plan (COMPLETE)
 ├── ritual-process-hk.md        # Traditional Hong Kong 8-step process reference
-├── ritual-name-redesign.md     # Curse Reading system design ($2.99 tier, completed)
 
 scripts/
-└── generate-ui-elements.mjs    # Gemini API image generator for ritual UI elements (8 images)
+├── generate-b4-images.mjs      # Gemini API: Step 4 beating images
+├── generate-blog-images.mjs    # Gemini API: blog post images
+├── generate-ritual-images.mjs  # Gemini API: ritual step backgrounds
+└── generate-ui-elements.mjs    # Gemini API: ritual UI elements (poe blocks, stamps, talisman)
 
 public/
 ├── manifest.json               # PWA manifest (Add to Home Screen)
 ├── videos/
-│   ├── hero-seamless.mp4       # Desktop hero: 30s seamless loop (15s forward + 15s reverse), 720p 16:9, 5.3MB
-│   ├── hero-mobile-seamless.mp4 # Mobile hero: 15s forward-only, 480p 9:16, 397KB
-│   ├── hero-15s.mp4            # Desktop source: 15s forward original (pre-reverse)
-│   ├── hero-15s-rev.mp4        # Desktop source: 15s reversed
-│   ├── hero-mobile.mp4         # Mobile source: 15s forward original (pre-compression)
-│   ├── hero-mobile-rev.mp4     # Mobile source: 15s reversed (unused, upward smoke visible)
-│   └── hero-loop.mp4           # Original 5s desktop video (legacy, unused)
+│   ├── hero-seamless.mp4       # Desktop: 30s seamless loop, 720p 16:9, 5.3MB
+│   └── hero-mobile-seamless.mp4 # Mobile: 15s forward, 480p 9:16, 397KB
 ├── robots.txt                  # Search engine crawling rules
 ├── sitemap.xml                 # All locale URLs for search engines
 ├── icons/
@@ -247,7 +245,7 @@ Actions: `START_RITUAL`, `INVOCATION_COMPLETE`, `SELECT_ENEMY`, `FIRE_PASS_COMPL
 |-------|----------|--------|-------|------|
 | **Step 1: Invocation** | 6s | Candle CSS animation + dark overlay | transition-invocation (sine sweep 200→60Hz 5s) | CSS keyframes |
 | **Step 2: Select** | User-paced | 6-card grid, clip-path silhouettes, name input | action-paper (bandpass noise 120ms) | CSS + React state |
-| **Step 3: Fire Pass** | 4.5s passive | Paper figure (PNG) sweeps L→R over AI-generated flames background (±180px range), vermillion→gold glow | transition-invocation | AI background image + CSS animation, audio on mount |
+| **Step 3: Fire Pass** | 6.5s passive | Paper figure (PNG) sweeps over AI-generated flames background (±180px range), vermillion→gold glow | transition-invocation | AI background image + CSS animation, audio on mount |
 | **Step 4: Beating** | ~30s | Canvas HitSpark, slipper cursor, curse chants (2600ms display), rage meter, aria-live, haptic escalation | action-beat + action-thwack + ambient-drone | Canvas 2D + keyboard a11y |
 | **Step 5: Burning** | 2s hold + 9s burn ≈ 11s | AI-generated white tiger background + long-press ignite + Canvas fire + CSS fire + paper dissolution (paper rises toward tiger) | ambient-drone → ambient-wind | AI background image + Canvas 2D + CSS fire + keyboard a11y |
 | **Paywall** | User-paced | Title + subtitle + "View Results" button (saves to localStorage → navigates to /result) | — | router.push → /result |
@@ -335,11 +333,11 @@ Each step checks `useReducedMotion()` hook, conditionally renders fallback.
 |---------|--------|----------------|
 | Particle effects | Canvas 2D animation | Disabled entirely |
 | Invocation (step 1) | 6s candle flicker | Instant state change (return null) |
-| Fire pass (step 3) | 3s paper animation | Return null, auto-advance 200ms |
+| Fire pass (step 3) | 6.5s paper animation | Return null, auto-advance 200ms |
 | Beating sparks | Canvas burst per tap | Simple CSS scale pulse |
 | Burning fire + tiger | Canvas particles + AI tiger background | Skip particles, CSS fade-out 2s |
 | Purification particles | CSS rice/bean scatter | 4s static bg + text + enemy cleanse |
-| Blessing glow | 7.5s cinematic zoom + sparks + seal | 4s static bg + text |
+| Blessing glow | 20s cinematic zoom + sparks + seal | 4s static bg + text |
 | Divination poe blocks | 3s spin + 0.8s land + 1.5s silence + stamp overlay + sound | 500ms spin + 100ms land |
 | Ambient audio | Plays | Still plays (not motion-related) |
 | Haptic feedback | Vibrates | Still vibrates (not motion-related) |
